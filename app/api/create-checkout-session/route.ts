@@ -1,0 +1,63 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { stripe, TIERS, TierType } from '@/lib/stripe'
+import { createClient } from '@/lib/supabase/server'
+
+export async function POST(request: NextRequest) {
+  try {
+    const { tier } = await request.json() as { tier: TierType }
+    
+    if (!tier || !TIERS[tier]) {
+      return NextResponse.json(
+        { error: 'Invalid tier selected' },
+        { status: 400 }
+      )
+    }
+
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const selectedTier = TIERS[tier]
+
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      customer_email: user.email,
+      client_reference_id: user.id,
+      payment_method_types: ['card'],
+      mode: 'subscription',
+      line_items: [
+        {
+          price: selectedTier.priceId,
+          quantity: 1,
+        },
+      ],
+      subscription_data: {
+        trial_period_days: 7, // 7-day trial
+        metadata: {
+          user_id: user.id,
+          tier: tier,
+        },
+      },
+      metadata: {
+        user_id: user.id,
+        tier: tier,
+      },
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/protected?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
+    })
+
+    return NextResponse.json({ sessionId: session.id, url: session.url })
+  } catch (error: any) {
+    console.error('Error creating checkout session:', error)
+    return NextResponse.json(
+      { error: error.message || 'Failed to create checkout session' },
+      { status: 500 }
+    )
+  }
+}
