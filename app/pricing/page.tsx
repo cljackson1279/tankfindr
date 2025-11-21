@@ -4,10 +4,7 @@ import { useState } from 'react'
 import { Check, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { loadStripe } from '@stripe/stripe-js'
 import { useRouter } from 'next/navigation'
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 const tiers = [
   {
@@ -82,18 +79,11 @@ export default function PricingPage() {
         throw new Error(data.error || 'Failed to create checkout session')
       }
 
-      const stripe = await stripePromise
-      if (!stripe) {
-        throw new Error('Failed to load Stripe')
-      }
-
-      // Redirect to Stripe Checkout
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: data.sessionId
-      })
-
-      if (error) {
-        throw error
+      // Redirect directly to Stripe Checkout URL
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('No checkout URL returned')
       }
     } catch (error: any) {
       console.error('Error:', error)

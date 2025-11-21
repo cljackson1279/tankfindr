@@ -1,17 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Check, MapPin, Zap, Shield } from 'lucide-react'
 
-export default async function HomePage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // If user is logged in, redirect to protected page
-  if (user) {
-    redirect('/protected')
-  }
+export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">

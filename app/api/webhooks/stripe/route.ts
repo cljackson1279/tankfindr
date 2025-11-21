@@ -3,12 +3,14 @@ import { stripe } from '@/lib/stripe'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 
-// Initialize Supabase admin client
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  { auth: { persistSession: false } }
-)
+// Lazy initialize Supabase admin client
+function getSupabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
+  )
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -94,6 +96,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   // Update user profile with subscription info
+  const supabaseAdmin = getSupabaseAdmin()
   const { error } = await supabaseAdmin
     .from('profiles')
     .upsert({
@@ -119,15 +122,25 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
     return
   }
 
+  const subData = subscription as any
+  const updateData: any = {
+    subscription_status: subscription.status,
+    subscription_id: subscription.id,
+    updated_at: new Date().toISOString()
+  }
+
+  // Add period dates if they exist
+  if (subData.current_period_start) {
+    updateData.current_period_start = new Date(subData.current_period_start * 1000).toISOString()
+  }
+  if (subData.current_period_end) {
+    updateData.current_period_end = new Date(subData.current_period_end * 1000).toISOString()
+  }
+
+  const supabaseAdmin = getSupabaseAdmin()
   const { error } = await supabaseAdmin
     .from('profiles')
-    .update({
-      subscription_status: subscription.status,
-      subscription_id: subscription.id,
-      current_period_start: new Date(subscription.current_period_start * 1000).toISOString(),
-      current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
-      updated_at: new Date().toISOString()
-    })
+    .update(updateData)
     .eq('id', userId)
 
   if (error) {
@@ -143,6 +156,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     return
   }
 
+  const supabaseAdmin = getSupabaseAdmin()
   const { error } = await supabaseAdmin
     .from('profiles')
     .update({
@@ -160,6 +174,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
   // Reset monthly locate count on successful payment
   const customerId = invoice.customer as string
+  const supabaseAdmin = getSupabaseAdmin()
 
   const { data: profile } = await supabaseAdmin
     .from('profiles')
@@ -180,6 +195,7 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
 
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
   const customerId = invoice.customer as string
+  const supabaseAdmin = getSupabaseAdmin()
 
   const { data: profile } = await supabaseAdmin
     .from('profiles')
