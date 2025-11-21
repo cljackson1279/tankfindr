@@ -3,10 +3,12 @@
 import { useState, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { AlertCircle, CheckCircle, Navigation, Loader2 } from 'lucide-react'
+import { AlertCircle, CheckCircle, Navigation, Loader2, TrendingUp, AlertTriangle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 
 interface TankResult {
   lat: number
@@ -15,12 +17,19 @@ interface TankResult {
   depth: number
 }
 
+const TIERS = {
+  starter: { name: 'Starter', locates: 10, overage: 8, price: 99 },
+  pro: { name: 'Pro', locates: 40, overage: 6, price: 249 },
+  enterprise: { name: 'Enterprise', locates: 150, overage: 4, price: 599 }
+}
+
 export default function TankLocator() {
   const [address, setAddress] = useState('')
   const [result, setResult] = useState<TankResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [profile, setProfile] = useState<any>(null)
+  const [showOverageWarning, setShowOverageWarning] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markerRef = useRef<mapboxgl.Marker | null>(null)
@@ -51,13 +60,9 @@ export default function TankLocator() {
   }, [])
 
   const fetchProfile = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
-      .eq('id', user.id)
       .single()
 
     if (!error && data) {
@@ -65,14 +70,64 @@ export default function TankLocator() {
     }
   }
 
-  const handleLocate = async () => {
+  const getUsageInfo = () => {
+    if (!profile) return null
+
+    if (profile.subscription_status === 'trialing') {
+      const used = profile.trial_locates_used || 0
+      const limit = 5
+      return {
+        used,
+        limit,
+        remaining: limit - used,
+        isOverage: false,
+        isTrial: true
+      }
+    }
+
+    const tier = TIERS[profile.subscription_tier as keyof typeof TIERS]
+    if (!tier) return null
+
+    const used = profile.monthly_locates_used || 0
+    const limit = tier.locates
+    
+    return {
+      used,
+      limit,
+      remaining: Math.max(0, limit - used),
+      isOverage: used >= limit,
+      isTrial: false,
+      tierName: tier.name,
+      overageRate: tier.overage
+    }
+  }
+
+  const getNextTier = () => {
+    if (!profile) return null
+    
+    const currentTier = profile.subscription_tier
+    if (currentTier === 'starter') return { tier: 'pro', ...TIERS.pro }
+    if (currentTier === 'pro') return { tier: 'enterprise', ...TIERS.enterprise }
+    return null
+  }
+
+  const handleLocate = async (confirmOverage = false) => {
     if (!address.trim()) {
       setError('Please enter an address')
       return
     }
 
+    const usage = getUsageInfo()
+    
+    // Check if user is about to go into overage
+    if (usage && usage.isOverage && !confirmOverage) {
+      setShowOverageWarning(true)
+      return
+    }
+
     setLoading(true)
     setError('')
+    setShowOverageWarning(false)
 
     try {
       const response = await fetch('/api/locate', {
@@ -118,146 +173,239 @@ export default function TankLocator() {
   }
 
   const openGoogleMaps = () => {
-    if (!result) return
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${result.lat},${result.lng}`
-    window.open(url, '_blank')
-  }
-
-  const getConfidenceColor = (score: number) => {
-    if (score >= 90) return 'text-green-600 bg-green-50 border-green-200'
-    if (score >= 70) return 'text-yellow-600 bg-yellow-50 border-yellow-200'
-    return 'text-red-600 bg-red-50 border-red-200'
-  }
-
-  const getConfidenceMessage = (score: number) => {
-    if (score >= 90) return 'High accuracy - trust this location'
-    if (score >= 70) return 'Medium accuracy - probe suggested area'
-    return 'Low accuracy - manual verification needed'
-  }
-
-  const getUsageDisplay = () => {
-    if (!profile) return 'Loading...'
-    
-    if (profile.subscription_status === 'trialing') {
-      return `${profile.trial_locates_used || 0}/5 free locates used`
+    if (result) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${result.lat},${result.lng}`
+      window.open(url, '_blank')
     }
-    
-    const tier = profile.subscription_tier
-    const tiers: any = {
-      starter: 10,
-      pro: 40,
-      enterprise: 150
-    }
-    
-    const limit = tiers[tier] || 10
-    const used = profile.monthly_locates_used || 0
-    
-    return `${used}/${limit} locates used this month`
   }
+
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 80) return 'text-green-600'
+    if (confidence >= 60) return 'text-yellow-600'
+    return 'text-red-600'
+  }
+
+  const getConfidenceLabel = (confidence: number) => {
+    if (confidence >= 80) return 'High Confidence'
+    if (confidence >= 60) return 'Medium Confidence'
+    return 'Low Confidence'
+  }
+
+  const usage = getUsageInfo()
+  const nextTier = getNextTier()
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 p-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              TF
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">TankFindr</h1>
-              <p className="text-xs text-gray-500">AI Septic Tank Locator</p>
-            </div>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header with Usage Stats */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold text-gray-900">TankFindr</h1>
+            <Link href="/pricing">
+              <Button variant="outline">Manage Subscription</Button>
+            </Link>
           </div>
-          <div className="text-sm text-gray-600">
-            {getUsageDisplay()}
-          </div>
-        </div>
-      </header>
 
-      {/* Error Banner */}
-      {error && (
-        <div className="bg-red-50 text-red-700 p-3 mx-4 mt-4 rounded-lg flex items-center gap-2">
-          <AlertCircle className="w-5 h-5 flex-shrink-0" />
-          <span>{error}</span>
-        </div>
-      )}
-
-      {/* Map */}
-      <div className="flex-1 relative">
-        <div ref={mapContainerRef} className="absolute inset-0" />
-      </div>
-
-      {/* Controls */}
-      <div className="bg-white p-4 border-t border-gray-200 space-y-4">
-        <Input
-          type="text"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Enter property address..."
-          className="input-field text-lg min-h-[60px]"
-          onKeyDown={(e) => e.key === 'Enter' && handleLocate()}
-        />
-
-        <Button
-          onClick={handleLocate}
-          disabled={loading}
-          className="btn-primary w-full"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-              Locating...
-            </>
-          ) : (
-            'LOCATE TANK'
-          )}
-        </Button>
-      </div>
-
-      {/* Results */}
-      {result && (
-        <div className="bg-white border-t-2 border-emerald-600 p-4 space-y-4">
-          <div className={`card border-2 ${getConfidenceColor(result.confidence)}`}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {result.confidence >= 90 ? (
-                  <CheckCircle className="w-6 h-6" />
-                ) : (
-                  <AlertCircle className="w-6 h-6" />
+          {/* Usage Counter */}
+          {usage && (
+            <Card className="p-4 bg-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600">
+                    {usage.isTrial ? 'Trial Locates' : `${usage.tierName} Plan Locates`}
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {usage.used} / {usage.limit}
+                    {usage.isOverage && (
+                      <span className="text-lg text-orange-600 ml-2">
+                        (+{usage.used - usage.limit} overage)
+                      </span>
+                    )}
+                  </p>
+                  {!usage.isTrial && usage.isOverage && (
+                    <p className="text-sm text-orange-600 mt-1">
+                      ${usage.overageRate} per additional locate
+                    </p>
+                  )}
+                </div>
+                
+                {usage.remaining > 0 && usage.remaining <= 3 && !usage.isTrial && (
+                  <div className="flex items-center gap-2 text-orange-600">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      {usage.remaining} locate{usage.remaining !== 1 ? 's' : ''} remaining
+                    </span>
+                  </div>
                 )}
-                <span className="font-bold">Confidence Score</span>
+
+                {usage.isOverage && nextTier && (
+                  <Link href="/pricing">
+                    <Button variant="default" className="gap-2">
+                      <TrendingUp className="w-4 h-4" />
+                      Upgrade to {nextTier.name}
+                    </Button>
+                  </Link>
+                )}
               </div>
-              <span className="text-2xl font-bold">{result.confidence}%</span>
-            </div>
-            <p className="text-sm mt-2">
-              {getConfidenceMessage(result.confidence)}
-            </p>
-          </div>
-
-          <div className="card space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Depth Estimate</span>
-              <span className="font-bold">{result.depth.toFixed(1)} ft</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Coordinates</span>
-              <span className="font-mono text-sm">
-                {result.lat.toFixed(5)}, {result.lng.toFixed(5)}
-              </span>
-            </div>
-          </div>
-
-          <Button
-            onClick={openGoogleMaps}
-            className="btn-secondary w-full flex items-center justify-center gap-2"
-            variant="secondary"
-          >
-            <Navigation className="w-5 h-5" />
-            Open in Google Maps
-          </Button>
+            </Card>
+          )}
         </div>
-      )}
+
+        {/* Overage Warning Modal */}
+        {showOverageWarning && usage && (
+          <Card className="mb-6 p-6 bg-orange-50 border-orange-200">
+            <div className="flex items-start gap-4">
+              <AlertTriangle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  You've reached your monthly limit
+                </h3>
+                <p className="text-gray-700 mb-4">
+                  You've used all {usage.limit} locates included in your {usage.tierName} plan. 
+                  Continuing will charge <strong>${usage.overageRate}</strong> per additional locate.
+                </p>
+                
+                {nextTier && (
+                  <div className="bg-white p-4 rounded-lg mb-4 border border-orange-200">
+                    <p className="text-sm text-gray-700 mb-2">
+                      <strong>💡 Save money:</strong> Upgrade to {nextTier.name} for:
+                    </p>
+                    <ul className="text-sm text-gray-700 space-y-1 ml-4">
+                      <li>• {nextTier.locates} locates per month</li>
+                      <li>• Only ${nextTier.overage} per overage (vs ${usage.overageRate})</li>
+                      <li>• ${nextTier.price}/month</li>
+                    </ul>
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => handleLocate(true)}
+                    variant="default"
+                    disabled={loading}
+                  >
+                    Continue & Charge ${usage.overageRate}
+                  </Button>
+                  {nextTier && (
+                    <Link href="/pricing">
+                      <Button variant="outline">
+                        Upgrade to {nextTier.name}
+                      </Button>
+                    </Link>
+                  )}
+                  <Button
+                    onClick={() => setShowOverageWarning(false)}
+                    variant="ghost"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Column: Search and Results */}
+          <div className="space-y-6">
+            {/* Search Card */}
+            <Card className="p-6">
+              <h2 className="text-xl font-bold mb-4">Locate Septic Tank</h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Property Address
+                  </label>
+                  <Input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="123 Main St, City, State ZIP"
+                    className="input-field"
+                    onKeyPress={(e) => e.key === 'Enter' && handleLocate()}
+                  />
+                </div>
+
+                <Button
+                  onClick={() => handleLocate()}
+                  disabled={loading || !address.trim()}
+                  className="btn-primary w-full"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Analyzing Satellite Imagery...
+                    </>
+                  ) : (
+                    'Locate Tank'
+                  )}
+                </Button>
+
+                {error && (
+                  <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg">
+                    <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                    <p className="text-sm">{error}</p>
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            {/* Results Card */}
+            {result && (
+              <Card className="p-6">
+                <h3 className="text-lg font-bold mb-4">Tank Located!</h3>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm text-gray-600">Confidence Score</p>
+                      <p className={`text-2xl font-bold ${getConfidenceColor(result.confidence)}`}>
+                        {result.confidence}%
+                      </p>
+                      <p className={`text-sm ${getConfidenceColor(result.confidence)}`}>
+                        {getConfidenceLabel(result.confidence)}
+                      </p>
+                    </div>
+                    {result.confidence >= 80 ? (
+                      <CheckCircle className="h-12 w-12 text-green-600" />
+                    ) : (
+                      <AlertCircle className="h-12 w-12 text-yellow-600" />
+                    )}
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600">Estimated Depth</p>
+                    <p className="text-xl font-bold text-gray-900">{result.depth} feet</p>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">GPS Coordinates</p>
+                    <p className="text-sm font-mono text-gray-900">
+                      {result.lat.toFixed(6)}, {result.lng.toFixed(6)}
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={openGoogleMaps}
+                    className="btn-primary w-full gap-2"
+                  >
+                    <Navigation className="h-5 w-5" />
+                    Navigate with Google Maps
+                  </Button>
+                </div>
+              </Card>
+            )}
+          </div>
+
+          {/* Right Column: Map */}
+          <div className="lg:sticky lg:top-6 h-[600px]">
+            <Card className="p-0 h-full overflow-hidden">
+              <div ref={mapContainerRef} className="w-full h-full" />
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
