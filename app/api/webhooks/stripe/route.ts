@@ -88,15 +88,47 @@ export async function POST(request: NextRequest) {
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const userId = session.metadata?.user_id
-  const tier = session.metadata?.tier
+  const type = session.metadata?.type
+  const supabaseAdmin = getSupabaseAdmin()
 
+  // Handle Pay-Per-Locate
+  if (type === 'pay_per_locate') {
+    const address = session.metadata?.address
+    await supabaseAdmin.from('usage').insert({
+      user_id: userId,
+      action: 'locate',
+      payment_type: 'pay_per',
+      metadata: { 
+        address, 
+        payment_id: session.payment_intent,
+        source: 'pay_per_locate',
+        amount_paid: 1500
+      }
+    })
+    return
+  }
+
+  // Handle Compliance Report
+  if (type === 'compliance_report') {
+    const tankId = session.metadata?.tankId
+    await supabaseAdmin.from('reports').insert({
+      user_id: userId,
+      tank_id: tankId,
+      report_url: `pending_generation_${session.payment_intent}`,
+      stripe_payment_id: session.payment_intent as string,
+      price_paid: 2500
+    })
+    return
+  }
+
+  // Handle Subscription Checkout
+  const tier = session.metadata?.tier
   if (!userId || !tier) {
     console.error('Missing metadata in checkout session')
     return
   }
 
   // Update user profile with subscription info
-  const supabaseAdmin = getSupabaseAdmin()
   const { error } = await supabaseAdmin
     .from('profiles')
     .upsert({

@@ -3,18 +3,21 @@
 import { useState, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { AlertCircle, CheckCircle, Navigation, Loader2, TrendingUp, AlertTriangle } from 'lucide-react'
+import { AlertCircle, CheckCircle, Navigation, Loader2, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
+import ComplianceReportButton from './ComplianceReportButton'
+import { loadStripe } from '@stripe/stripe-js'
 
 interface TankResult {
   lat: number
   lng: number
   confidence: number
   depth: number
+  tankId?: string
 }
 
 const TIERS = {
@@ -30,6 +33,8 @@ export default function TankLocator() {
   const [error, setError] = useState('')
   const [profile, setProfile] = useState<any>(null)
   const [showOverageWarning, setShowOverageWarning] = useState(false)
+  const [showPayPerOption, setShowPayPerOption] = useState(false)
+  const [reportPurchased, setReportPurchased] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markerRef = useRef<mapboxgl.Marker | null>(null)
@@ -38,6 +43,15 @@ export default function TankLocator() {
 
   useEffect(() => {
     fetchProfile()
+    
+    // Check if returning from successful payment
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('payment') === 'success') {
+      fetchProfile() // Refresh to show updated usage
+    }
+    if (urlParams.get('report') === 'success') {
+      setReportPurchased(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -81,7 +95,8 @@ export default function TankLocator() {
         limit,
         remaining: limit - used,
         isOverage: false,
-        isTrial: true
+        isTrial: true,
+        hasSubscription: false
       }
     }
 
@@ -98,7 +113,8 @@ export default function TankLocator() {
       isOverage: used >= limit,
       isTrial: false,
       tierName: tier.name,
-      overageRate: tier.overage
+      overageRate: tier.overage,
+      hasSubscription: profile.subscription_status === 'active'
     }
   }
 
@@ -111,6 +127,29 @@ export default function TankLocator() {
     return null
   }
 
+  const handlePayPerLocate = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const response = await fetch('/api/locate/pay-per', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, address })
+      })
+
+      const { sessionId } = await response.json()
+      
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+      if (stripe) {
+        window.location.href = `https://checkout.stripe.com/c/pay/${sessionId}`
+      }
+    } catch (error) {
+      console.error('Pay-per-locate error:', error)
+      setError('Failed to process payment. Please try again.')
+    }
+  }
+
   const handleLocate = async (confirmOverage = false) => {
     if (!address.trim()) {
       setError('Please enter an address')
@@ -119,8 +158,14 @@ export default function TankLocator() {
 
     const usage = getUsageInfo()
     
+    // If trial user hits limit and no subscription, show pay-per option
+    if (usage && usage.isTrial && usage.used >= usage.limit && !usage.hasSubscription) {
+      setShowPayPerOption(true)
+      return
+    }
+    
     // Check if user is about to go into overage
-    if (usage && usage.isOverage && !confirmOverage) {
+    if (usage && usage.isOverage && !confirmOverage && !usage.isTrial) {
       setShowOverageWarning(true)
       return
     }
@@ -128,6 +173,7 @@ export default function TankLocator() {
     setLoading(true)
     setError('')
     setShowOverageWarning(false)
+    setShowPayPerOption(false)
 
     try {
       const response = await fetch('/api/locate', {
@@ -142,7 +188,7 @@ export default function TankLocator() {
         throw new Error(data.error || 'Failed to locate tank')
       }
 
-      setResult(data)
+      setResult({ ...data, tankId: data.tankId })
 
       // Update map
       if (mapRef.current) {
@@ -201,9 +247,14 @@ export default function TankLocator() {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-gray-900">TankFindr</h1>
-            <Link href="/pricing">
-              <Button variant="outline">Manage Subscription</Button>
-            </Link>
+            <div className="flex gap-3">
+              <Link href="/profile">
+                <Button variant="outline">Profile</Button>
+              </Link>
+              <Link href="/pricing">
+                <Button variant="outline">Manage Subscription</Button>
+              </Link>
+            </div>
           </div>
 
           {/* Usage Counter */}
@@ -250,6 +301,45 @@ export default function TankLocator() {
             </Card>
           )}
         </div>
+
+        {/* Pay-Per-Locate Option */}
+        {showPayPerOption && (
+          <Card className="mb-6 p-6 bg-blue-50 border-blue-200">
+            <div className="flex items-start gap-4">
+              <DollarSign className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  You've used all 5 free trial locates
+                </h3>
+                <p className="text-gray-700 mb-4">
+                  Continue with a one-time payment of <strong>$15</strong> per locate, or subscribe for unlimited access.
+                </p>
+                
+                <div className="flex gap-3">
+                  <Button
+                    onClick={handlePayPerLocate}
+                    variant="default"
+                    className="gap-2"
+                  >
+                    <DollarSign className="w-4 h-4" />
+                    Pay $15 for One Locate
+                  </Button>
+                  <Link href="/pricing">
+                    <Button variant="outline">
+                      View Subscription Plans
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => setShowPayPerOption(false)}
+                    variant="ghost"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
 
         {/* Overage Warning Modal */}
         {showOverageWarning && usage && (
@@ -393,6 +483,42 @@ export default function TankLocator() {
                     <Navigation className="h-5 w-5" />
                     Navigate with Google Maps
                   </Button>
+
+                  {/* Compliance Report Button */}
+                  <div className="pt-4 border-t border-gray-200">
+                    <ComplianceReportButton
+                      tankData={{
+                        address,
+                        lat: result.lat,
+                        lng: result.lng,
+                        confidence: result.confidence,
+                        depth: result.depth,
+                        technician: profile?.technician_name || 'Certified Technician',
+                        license: profile?.license_number || 'Pending',
+                        company: profile?.company_name || 'Your Company'
+                      }}
+                      onPurchase={async () => {
+                        const { data: { user } } = await supabase.auth.getUser()
+                        if (!user) throw new Error('Not authenticated')
+                        
+                        const response = await fetch('/api/report/generate', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            userId: user.id,
+                            tankId: result.tankId,
+                            address,
+                            lat: result.lat,
+                            lng: result.lng,
+                            confidence: result.confidence,
+                            depth: result.depth
+                          })
+                        })
+                        
+                        return await response.json()
+                      }}
+                    />
+                  </div>
                 </div>
               </Card>
             )}
