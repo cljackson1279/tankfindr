@@ -155,11 +155,7 @@ export default function PricingPage() {
               <Button
                 onClick={() => handleSubscribe(tier.id)}
                 disabled={loading !== null}
-                className={`w-full min-h-[60px] text-lg font-bold ${
-                  tier.popular
-                    ? 'bg-emerald-600 hover:bg-emerald-700'
-                    : 'bg-gray-900 hover:bg-gray-800'
-                }`}
+                className="w-full min-h-[60px] text-lg font-bold bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 {loading === tier.id ? (
                   <>
