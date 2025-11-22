@@ -368,7 +368,7 @@ export default function TankLocator() {
                 <Button
                   onClick={() => handleLocate()}
                   disabled={loading || !address.trim()}
-                  className="btn-primary w-full"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold min-h-[60px] text-lg"
                 >
                   {loading ? (
                     <>

@@ -25,6 +25,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Admin bypass: Check email directly (works even without database migration)
+    const isAdmin = user.email === 'cljackson79@gmail.com'
+
     // Get user profile
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if user can perform locate
-    const canLocate = await checkLocatePermission(profile)
+    const canLocate = await checkLocatePermission(profile, isAdmin)
 
     if (!canLocate.allowed) {
       return NextResponse.json(
@@ -78,11 +81,11 @@ export async function POST(request: NextRequest) {
     // Update locate counts (skip for admin)
     if (!canLocate.isAdmin) {
       await updateLocateCounts(profile, supabase)
-    }
-
-    // Check if overage charge is needed
-    if (canLocate.isOverage) {
-      await chargeOverage(profile, address)
+      
+      // Check if overage charge is needed
+      if (canLocate.isOverage) {
+        await chargeOverage(profile, address)
+      }
     }
 
     return NextResponse.json(result)
@@ -95,9 +98,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function checkLocatePermission(profile: any) {
-  // Admin users have unlimited access
-  if (profile.is_admin === true) {
+async function checkLocatePermission(profile: any, isAdminByEmail: boolean = false) {
+  // Admin users have unlimited access (check both email and database flag)
+  if (isAdminByEmail || profile.is_admin === true) {
     return { allowed: true, isOverage: false, isAdmin: true }
   }
   
