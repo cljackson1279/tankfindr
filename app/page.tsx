@@ -62,7 +62,7 @@ export default function HomePage() {
           </Link>
         </div>
         <p className="text-emerald-600 font-semibold">
-          🎉 5 free locates OR 7 days free - No credit card required for trial
+          🎉 5 free locates OR 7 days free
         </p>
       </section>
 
