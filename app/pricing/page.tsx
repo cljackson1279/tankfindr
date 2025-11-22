@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Check, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 const tiers = [
   {
@@ -61,12 +62,34 @@ const tiers = [
 
 export default function PricingPage() {
   const [loading, setLoading] = useState<string | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  const checkAuth = async () => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    setIsAuthenticated(!!user)
+  }
 
   const handleSubscribe = async (tierId: string) => {
     setLoading(tierId)
 
     try {
+      // Check if user is authenticated
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        // Redirect to sign up with return URL
+        router.push(`/auth/sign-up?redirect=/pricing&tier=${tierId}`)
+        return
+      }
+
+      // Create checkout session
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -132,21 +155,21 @@ export default function PricingPage() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   {tier.name}
                 </h3>
-                <div className="flex items-baseline justify-center gap-1">
+                <div className="flex items-baseline justify-center mb-2">
                   <span className="text-5xl font-bold text-gray-900">
                     ${tier.price}
                   </span>
-                  <span className="text-gray-600">/month</span>
+                  <span className="text-gray-600 ml-2">/month</span>
                 </div>
-                <p className="text-gray-600 mt-2">
+                <p className="text-sm text-gray-600">
                   {tier.locates} locates included
                 </p>
               </div>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-4 mb-8">
                 {tier.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <li key={index} className="flex items-start">
+                    <Check className="h-5 w-5 text-emerald-600 mr-3 flex-shrink-0 mt-0.5" />
                     <span className="text-gray-700">{feature}</span>
                   </li>
                 ))}
@@ -160,7 +183,7 @@ export default function PricingPage() {
                 {loading === tier.id ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Processing...
+                    Loading...
                   </>
                 ) : (
                   `Start ${tier.name} Plan`
@@ -172,43 +195,39 @@ export default function PricingPage() {
 
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          <h2 className="text-3xl font-bold text-center mb-8">
             Frequently Asked Questions
           </h2>
+          
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-gray-900 mb-2">
-                How does the free trial work?
-              </h3>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="font-bold text-lg mb-2">How does the trial work?</h3>
               <p className="text-gray-700">
-                You get 5 free locates OR 7 days free, whichever comes first. You'll need to enter your credit card at signup, but you won't be charged until you use all 5 free locates or the 7-day period ends.
+                You get 5 free tank locates OR 7 days of access - whichever comes first. 
+                Credit card required at signup, but you won't be charged until your trial ends.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-gray-900 mb-2">
-                What happens if I exceed my monthly limit?
-              </h3>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="font-bold text-lg mb-2">What happens if I exceed my monthly locates?</h3>
               <p className="text-gray-700">
-                You'll be charged the overage rate for each additional locate. Starter: $8, Pro: $6, Enterprise: $4 per locate.
+                You'll be charged per additional locate: $8 for Starter, $6 for Pro, or $4 for Enterprise. 
+                You can upgrade anytime to get more included locates and lower overage rates.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-gray-900 mb-2">
-                Can I cancel anytime?
-              </h3>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="font-bold text-lg mb-2">Can I cancel anytime?</h3>
               <p className="text-gray-700">
-                Yes! You can cancel your subscription at any time. You'll continue to have access until the end of your billing period.
+                Yes! Cancel anytime from your account settings. You'll keep access until the end of your billing period.
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h3 className="font-bold text-gray-900 mb-2">
-                How accurate is the AI location?
-              </h3>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="font-bold text-lg mb-2">How accurate is the AI?</h3>
               <p className="text-gray-700">
-                Our AI has 85% accuracy on average. Each result includes a confidence score (Green/Yellow/Red) to help you assess reliability.
+                Our AI analyzes high-resolution satellite imagery and provides a confidence score for each locate. 
+                High confidence (80%+) results are typically within 3-5 feet of the actual tank location.
               </p>
             </div>
           </div>

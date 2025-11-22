@@ -75,8 +75,10 @@ export async function POST(request: NextRequest) {
       metadata: { address, confidence: result.confidence }
     })
 
-    // Update locate counts
-    await updateLocateCounts(profile, supabase)
+    // Update locate counts (skip for admin)
+    if (!canLocate.isAdmin) {
+      await updateLocateCounts(profile, supabase)
+    }
 
     // Check if overage charge is needed
     if (canLocate.isOverage) {
@@ -94,6 +96,11 @@ export async function POST(request: NextRequest) {
 }
 
 async function checkLocatePermission(profile: any) {
+  // Admin users have unlimited access
+  if (profile.is_admin === true) {
+    return { allowed: true, isOverage: false, isAdmin: true }
+  }
+  
   const now = new Date()
   
   // Check if user is in trial

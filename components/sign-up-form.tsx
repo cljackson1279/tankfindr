@@ -44,11 +44,12 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: `${window.location.origin}/pricing`,
         },
       });
       if (error) throw error;
-      router.push("/auth/sign-up-success");
+      // After signup, redirect to pricing page
+      router.push("/pricing");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {

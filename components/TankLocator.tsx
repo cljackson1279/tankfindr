@@ -81,6 +81,20 @@ export default function TankLocator() {
   const getUsageInfo = () => {
     if (!profile) return null
 
+    // Admin users have unlimited access
+    if (profile.is_admin === true) {
+      return {
+        used: 0,
+        limit: 999999,
+        remaining: 999999,
+        isOverage: false,
+        isTrial: false,
+        isAdmin: true,
+        tierName: 'Admin',
+        hasSubscription: true
+      }
+    }
+
     if (profile.subscription_status === 'trialing') {
       const used = profile.trial_locates_used || 0
       const limit = 5
@@ -236,10 +250,10 @@ export default function TankLocator() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">
-                    {usage.isTrial ? 'Trial Locates' : `${usage.tierName} Plan Locates`}
+                    {usage.isAdmin ? '👑 Admin Access' : usage.isTrial ? 'Trial Locates' : `${usage.tierName} Plan Locates`}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {usage.used} / {usage.limit}
+                    {usage.isAdmin ? 'Unlimited' : `${usage.used} / ${usage.limit}`}
                     {usage.isOverage && (
                       <span className="text-lg text-orange-600 ml-2">
                         (+{usage.used - usage.limit} overage)
