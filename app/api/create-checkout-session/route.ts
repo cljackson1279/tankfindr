@@ -25,6 +25,10 @@ export async function POST(request: NextRequest) {
 
     const selectedTier = TIERS[tier]
 
+    // Get site URL from environment or request headers
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                    `${request.headers.get('x-forwarded-proto') || 'https'}://${request.headers.get('host')}`
+
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
@@ -48,8 +52,8 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
         tier: tier,
       },
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/protected?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing`,
+      success_url: `${siteUrl}/protected?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/pricing`,
     })
 
     return NextResponse.json({ sessionId: session.id, url: session.url })
