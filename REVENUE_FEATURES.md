@@ -1,45 +1,14 @@
-# 💰 TankFindr Revenue Features
+# 💰 TankFindr Revenue Feature
 
 ## Overview
 
-Two new high-margin revenue features have been added to TankFindr:
+TankFindr includes a high-margin revenue feature:
 
-1. **Pay-Per-Locate** - $15 per single locate (for non-subscribers)
-2. **Compliance Reports** - $25 per professional PDF report
-
----
-
-## 🎯 Feature 1: Pay-Per-Locate ($15)
-
-### What It Does
-- Allows users who've exhausted their 5 free trial locates to purchase additional locates without subscribing
-- One-time payment of $15 per locate
-- Perfect for contractors who only need 2-3 locates per month
-
-### User Flow
-1. User signs up and gets 5 free trial locates
-2. After using all 5, they try to locate another tank
-3. System shows modal: "You've used all 5 free trial locates"
-4. Options presented:
-   - **Pay $15 for One Locate** (redirects to Stripe)
-   - **View Subscription Plans** (goes to pricing page)
-   - **Cancel**
-5. After payment, user can perform the locate
-
-### Revenue Model
-- **Price**: $15 per locate
-- **Cost**: ~$0.10 (SkyFi API)
-- **Margin**: $14.90 (99.3%)
-- **Target**: Users who need 1-3 locates/month (won't subscribe)
-
-### Files Created
-- `app/api/locate/pay-per/route.ts` - Stripe checkout session
-- Updated `app/api/webhooks/stripe/route.ts` - Handle payment completion
-- Updated `components/TankLocator.tsx` - UI and payment flow
+**Compliance Reports** - $25 per professional PDF report
 
 ---
 
-## 📄 Feature 2: Compliance Reports ($25)
+## 📄 Compliance Reports ($25)
 
 ### What It Does
 - Generates professional PDF reports with:
@@ -89,7 +58,7 @@ Two new high-margin revenue features have been added to TankFindr:
 ### New Table: `reports`
 ```sql
 CREATE TABLE reports (
-  id UUID PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES profiles(id),
   tank_id UUID REFERENCES tanks(id),
   report_url TEXT NOT NULL,
@@ -106,13 +75,6 @@ ALTER TABLE profiles ADD COLUMN
   technician_name TEXT,
   license_number TEXT,
   company_name TEXT;
-```
-
-### Updated Table: `usage`
-Track payment type:
-```sql
-ALTER TABLE usage ADD COLUMN
-  payment_type TEXT DEFAULT 'subscription';
 ```
 
 **Run this SQL in Supabase:**
@@ -135,11 +97,10 @@ npm install @react-pdf/renderer
 1. Go to Supabase SQL Editor
 2. Open `supabase-schema-revenue.sql`
 3. Run the entire script
-4. Verify tables created: `reports`, updated `profiles`, updated `usage`
+4. Verify tables created: `reports`, updated `profiles`
 
 ### 3. Configure Stripe Webhooks
-Your webhook handler already supports these events:
-- `checkout.session.completed` with `type: 'pay_per_locate'`
+Your webhook handler supports this event:
 - `checkout.session.completed` with `type: 'compliance_report'`
 
 No additional webhook configuration needed!
@@ -148,15 +109,6 @@ No additional webhook configuration needed!
 ```bash
 npm run dev
 ```
-
-**Test Pay-Per-Locate:**
-1. Sign up new account
-2. Use 5 free trial locates
-3. Try 6th locate → see pay-per modal
-4. Click "Pay $15" → Stripe checkout
-5. Use test card: `4242 4242 4242 4242`
-6. Complete payment → redirected back
-7. Perform locate successfully
 
 **Test Compliance Report:**
 1. Perform a tank locate
@@ -181,27 +133,19 @@ npm run dev
 
 ### Scenario 1: 100 Users/Month
 - **Subscriptions**: 60 users × $99 = $5,940
-- **Pay-Per-Locate**: 20 users × 2 locates × $15 = $600
 - **Compliance Reports**: 40 reports × $25 = $1,000
-- **Total Monthly Revenue**: $7,540
-- **Annual Run Rate**: $90,480
+- **Total Monthly Revenue**: $6,940
+- **Annual Run Rate**: $83,280
 
 ### Scenario 2: 500 Users/Month
 - **Subscriptions**: 300 users × $150 avg = $45,000
-- **Pay-Per-Locate**: 100 users × 2 locates × $15 = $3,000
 - **Compliance Reports**: 200 reports × $25 = $5,000
-- **Total Monthly Revenue**: $53,000
-- **Annual Run Rate**: $636,000
+- **Total Monthly Revenue**: $50,000
+- **Annual Run Rate**: $600,000
 
 ---
 
 ## 🎯 Marketing Angles
-
-### Pay-Per-Locate
-- "No subscription required - pay only when you need it"
-- "Perfect for occasional users"
-- "$15 per locate vs $99/month subscription"
-- "Try before you subscribe"
 
 ### Compliance Reports
 - "County-approved documentation in seconds"
@@ -214,21 +158,15 @@ npm run dev
 
 ## 📊 Analytics to Track
 
-### Pay-Per-Locate Metrics
-- Conversion rate: Trial users → Pay-per buyers
-- Average locates per pay-per user
-- Pay-per → Subscription conversion rate
-
 ### Compliance Report Metrics
 - Attach rate: Locates → Reports purchased
 - Repeat purchase rate
 - Average reports per user per month
 
 ### Key Questions
-1. What % of trial users buy pay-per vs subscribe?
-2. Do pay-per users eventually subscribe?
-3. What % of locates result in report purchases?
-4. Do report buyers have higher LTV?
+1. What % of locates result in report purchases?
+2. Do report buyers have higher LTV?
+3. Which counties require reports most?
 
 ---
 
@@ -275,16 +213,6 @@ npm run dev
 
 ## 📝 User-Facing Copy
 
-### Pay-Per-Locate Modal
-```
-🎯 You've used all 5 free trial locates
-
-Continue with a one-time payment of $15 per locate,
-or subscribe for unlimited access.
-
-[Pay $15 for One Locate]  [View Subscription Plans]  [Cancel]
-```
-
 ### Compliance Report Button
 ```
 📄 Download Compliance Report ($25)
@@ -314,14 +242,6 @@ Company Name: [Smith Septic Services]
 
 ## ✅ Testing Checklist
 
-### Pay-Per-Locate
-- [ ] Trial user sees modal after 5 locates
-- [ ] Stripe checkout opens with $15 amount
-- [ ] Payment success redirects to /protected
-- [ ] User can perform locate after payment
-- [ ] Usage tracking records pay_per type
-- [ ] Webhook creates usage record
-
 ### Compliance Reports
 - [ ] Button appears after locate completes
 - [ ] Stripe checkout opens with $25 amount
@@ -341,9 +261,8 @@ Company Name: [Smith Septic Services]
 
 ## 🎉 Launch Ready!
 
-Both features are production-ready and fully integrated. Just run the database migration and deploy!
+The compliance report feature is production-ready and fully integrated. Just run the database migration and deploy!
 
-**Estimated Development Time**: 6 hours
-**Actual Time**: 4 hours (thanks to code snippets!)
+**Estimated Development Time**: 4 hours
 
-**Revenue Potential**: $1,000-5,000/month from these features alone.
+**Revenue Potential**: $1,000-5,000/month from this feature alone.

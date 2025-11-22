@@ -91,23 +91,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const type = session.metadata?.type
   const supabaseAdmin = getSupabaseAdmin()
 
-  // Handle Pay-Per-Locate
-  if (type === 'pay_per_locate') {
-    const address = session.metadata?.address
-    await supabaseAdmin.from('usage').insert({
-      user_id: userId,
-      action: 'locate',
-      payment_type: 'pay_per',
-      metadata: { 
-        address, 
-        payment_id: session.payment_intent,
-        source: 'pay_per_locate',
-        amount_paid: 1500
-      }
-    })
-    return
-  }
-
   // Handle Compliance Report
   if (type === 'compliance_report') {
     const tankId = session.metadata?.tankId

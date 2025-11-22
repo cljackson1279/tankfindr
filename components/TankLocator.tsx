@@ -3,14 +3,13 @@
 import { useState, useEffect, useRef } from 'react'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { AlertCircle, CheckCircle, Navigation, Loader2, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react'
+import { AlertCircle, CheckCircle, Navigation, Loader2, TrendingUp, AlertTriangle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import ComplianceReportButton from './ComplianceReportButton'
-import { loadStripe } from '@stripe/stripe-js'
 
 interface TankResult {
   lat: number
@@ -33,8 +32,6 @@ export default function TankLocator() {
   const [error, setError] = useState('')
   const [profile, setProfile] = useState<any>(null)
   const [showOverageWarning, setShowOverageWarning] = useState(false)
-  const [showPayPerOption, setShowPayPerOption] = useState(false)
-  const [reportPurchased, setReportPurchased] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markerRef = useRef<mapboxgl.Marker | null>(null)
@@ -44,13 +41,10 @@ export default function TankLocator() {
   useEffect(() => {
     fetchProfile()
     
-    // Check if returning from successful payment
+    // Check if returning from successful report purchase
     const urlParams = new URLSearchParams(window.location.search)
-    if (urlParams.get('payment') === 'success') {
-      fetchProfile() // Refresh to show updated usage
-    }
     if (urlParams.get('report') === 'success') {
-      setReportPurchased(true)
+      // Could show a success message here
     }
   }, [])
 
@@ -127,29 +121,6 @@ export default function TankLocator() {
     return null
   }
 
-  const handlePayPerLocate = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-
-      const response = await fetch('/api/locate/pay-per', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, address })
-      })
-
-      const { sessionId } = await response.json()
-      
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-      if (stripe) {
-        window.location.href = `https://checkout.stripe.com/c/pay/${sessionId}`
-      }
-    } catch (error) {
-      console.error('Pay-per-locate error:', error)
-      setError('Failed to process payment. Please try again.')
-    }
-  }
-
   const handleLocate = async (confirmOverage = false) => {
     if (!address.trim()) {
       setError('Please enter an address')
@@ -158,9 +129,12 @@ export default function TankLocator() {
 
     const usage = getUsageInfo()
     
-    // If trial user hits limit and no subscription, show pay-per option
-    if (usage && usage.isTrial && usage.used >= usage.limit && !usage.hasSubscription) {
-      setShowPayPerOption(true)
+    // If trial user hits limit, redirect to pricing
+    if (usage && usage.isTrial && usage.used >= usage.limit) {
+      setError('You\'ve used all 5 free trial locates. Please subscribe to continue.')
+      setTimeout(() => {
+        window.location.href = '/pricing'
+      }, 2000)
       return
     }
     
@@ -173,7 +147,6 @@ export default function TankLocator() {
     setLoading(true)
     setError('')
     setShowOverageWarning(false)
-    setShowPayPerOption(false)
 
     try {
       const response = await fetch('/api/locate', {
@@ -301,45 +274,6 @@ export default function TankLocator() {
             </Card>
           )}
         </div>
-
-        {/* Pay-Per-Locate Option */}
-        {showPayPerOption && (
-          <Card className="mb-6 p-6 bg-blue-50 border-blue-200">
-            <div className="flex items-start gap-4">
-              <DollarSign className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  You've used all 5 free trial locates
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Continue with a one-time payment of <strong>$15</strong> per locate, or subscribe for unlimited access.
-                </p>
-                
-                <div className="flex gap-3">
-                  <Button
-                    onClick={handlePayPerLocate}
-                    variant="default"
-                    className="gap-2"
-                  >
-                    <DollarSign className="w-4 h-4" />
-                    Pay $15 for One Locate
-                  </Button>
-                  <Link href="/pricing">
-                    <Button variant="outline">
-                      View Subscription Plans
-                    </Button>
-                  </Link>
-                  <Button
-                    onClick={() => setShowPayPerOption(false)}
-                    variant="ghost"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
-        )}
 
         {/* Overage Warning Modal */}
         {showOverageWarning && usage && (

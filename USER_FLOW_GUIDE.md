@@ -18,7 +18,7 @@ New users get **whichever comes first:**
 **Scenario A: Uses all 5 locates in 3 days**
 - Day 1: User signs up, uses 3 locates
 - Day 2: User uses 2 more locates (total: 5)
-- **Trial ends immediately** → User must subscribe or pay-per-locate
+- **Trial ends immediately** → User must subscribe to continue
 
 **Scenario B: Uses 3 locates in 7 days**
 - Day 1: User signs up, uses 1 locate
@@ -78,7 +78,7 @@ profiles table:
 
 **User sees:**
 - 3 pricing tiers (Starter $99, Pro $249, Enterprise $599)
-- All buttons now bright green ✅ (just fixed!)
+- All buttons bright green for readability
 - FAQ about trial
 
 **User actions:**
@@ -134,7 +134,7 @@ usage table (new row):
 
 ---
 
-### Step 5A: Locate #5 (Last Free Locate)
+### Step 5: Locate #5 (Last Free Locate)
 **User sees:**
 - Usage counter: "Trial Locates: 5 / 5"
 - Warning badge: "⚠️ Last free locate"
@@ -142,58 +142,23 @@ usage table (new row):
 
 **What happens next:**
 - User has used all 5 free locates
-- Trial can still continue if within 7 days
-- **Next locate attempt triggers pay-per option**
+- **Next locate attempt requires subscription**
 
 ---
 
-### Step 5B: Locate #6 (Trial Limit Reached)
+### Step 6: Trial Limit Reached
 **User sees:**
-- 🚫 **Pay-Per-Locate Modal appears**
+- Error message: "You've used all 5 free trial locates. Please subscribe to continue."
+- Automatically redirected to `/pricing` after 2 seconds
 
-**Modal content:**
-```
-🎯 You've used all 5 free trial locates
-
-Continue with a one-time payment of $15 per locate,
-or subscribe for unlimited access.
-
-[Pay $15 for One Locate]  [View Subscription Plans]  [Cancel]
-```
-
-**User options:**
-
-**Option A: Pay $15**
-- Clicks "Pay $15 for One Locate"
-- Redirects to Stripe checkout
-- Pays $15
-- Returns to `/protected?payment=success`
-- Can perform the locate
-- Usage counter shows: "Trial Locates: 5 / 5 (+1 paid)"
-
-**Database:**
-```sql
-usage table:
-- payment_type = 'pay_per_locate'
-- stripe_payment_id = 'pi_xxx'
-```
-
-**Option B: Subscribe**
-- Clicks "View Subscription Plans"
-- Goes to `/pricing`
-- Selects a tier
-- Stripe converts trial to paid subscription
-- Returns with full monthly allowance
-
-**Option C: Cancel**
-- Clicks "Cancel"
-- Modal closes
-- User can't perform locate
-- Can try again later (same modal appears)
+**User must:**
+- Select a subscription tier
+- Complete Stripe checkout
+- Return to Tank Locator with full monthly allowance
 
 ---
 
-### Step 6: Trial Expires by Time (7 Days)
+### Step 7: Trial Expires by Time (7 Days)
 **What happens:**
 - 7 days pass since signup
 - Stripe webhook fires: `customer.subscription.updated`
@@ -215,6 +180,52 @@ profiles:
 
 ---
 
+### Step 8: Active Subscription - Monthly Usage
+
+**User sees:**
+- Usage counter: "[Tier] Plan Locates: X / Y"
+- Warning when 3 locates remain
+- Overage warning when limit reached
+
+**When monthly limit is reached:**
+- Modal appears: "You've reached your monthly limit"
+- Options:
+  - Continue & pay overage ($8/$6/$4 per locate)
+  - Upgrade to next tier
+  - Cancel
+
+**Overage charges:**
+- Automatically billed per locate
+- Shown on next invoice
+- User can upgrade anytime to reduce overage rate
+
+---
+
+### Step 9: Compliance Reports (Optional)
+
+**After any successful locate:**
+
+**User sees:**
+- "Download Compliance Report ($25)" button
+- Description of what's included
+
+**User clicks button:**
+1. Redirects to Stripe checkout
+2. Pays $25 (one-time)
+3. Returns to Tank Locator
+4. "Download Your Report" button appears
+5. Clicks to download professional PDF
+
+**Report includes:**
+- Satellite imagery
+- GPS coordinates
+- Confidence score
+- Estimated depth
+- Technician certification (if profile filled out)
+- Legal disclaimer
+
+---
+
 ## 💰 Payment Scenarios
 
 ### Scenario 1: User Subscribes During Trial
@@ -227,156 +238,62 @@ profiles:
 6. Charged $0 (trial continues)
 7. After 7 days OR 5 locates, charged full amount
 
-### Scenario 2: User Uses Pay-Per-Locate
+### Scenario 2: User Hits Trial Limit
 **Flow:**
 1. Signs up → Gets trial
 2. Uses all 5 free locates in 2 days
-3. Tries 6th locate → Pay-per modal
-4. Pays $15 for one locate
-5. Performs locate
-6. Tries 7th locate → Pay-per modal again
-7. Can keep paying $15 per locate OR subscribe
-
-**Revenue:**
-- User pays $15 × N locates
-- Eventually might subscribe (higher LTV)
+3. Tries 6th locate → Error message
+4. Redirected to `/pricing`
+5. Selects tier and subscribes
+6. Returns with full monthly allowance
 
 ### Scenario 3: Trial Expires, User Doesn't Subscribe
-**Current behavior:**
+**Flow:**
 1. 7 days pass
 2. User hasn't subscribed
 3. Stripe cancels subscription
 4. User loses access to Tank Locator
-
-**Question for you:** Should this user see the pay-per option instead?
-
----
-
-## 🤔 Current Limitation
-
-### When Pay-Per DOESN'T Appear:
-- ❌ After 7-day trial expires (if user didn't use all 5 locates)
-- ❌ User with cancelled subscription
-
-### When Pay-Per DOES Appear:
-- ✅ After using all 5 trial locates (within 7 days)
-- ✅ User with active subscription who hits monthly limit
+5. Must go to `/pricing` to resubscribe
 
 ---
 
-## 💡 Recommended Change
+## 📊 Revenue Model
 
-### Option A: Current (Conservative)
-**Pay-per only after 5 locates used**
+### Subscription Revenue
+- **Starter**: $99/mo (10 locates, $8 overage)
+- **Pro**: $249/mo (40 locates, $6 overage)
+- **Enterprise**: $599/mo (150 locates, $4 overage)
 
-**Pros:**
-- Encourages subscription
-- Simpler logic
+### Compliance Report Revenue
+- **$25 per report** (99.6% margin)
+- Optional add-on for any locate
+- High-value for contractors needing documentation
 
-**Cons:**
-- Loses revenue from users who won't subscribe
-- Users who used 3 locates in 7 days have no option
-
----
-
-### Option B: Flexible (More Revenue)
-**Pay-per available in ALL these cases:**
-
-1. ✅ Used all 5 trial locates (current)
-2. ✅ Trial expired by time (NEW)
-3. ✅ Subscription cancelled (NEW)
-4. ✅ Monthly limit reached (current)
-
-**Pros:**
-- More revenue opportunities
-- Better user experience (always have an option)
-- Captures "occasional users"
-
-**Cons:**
-- Slightly more complex logic
-- Might reduce subscription conversions
+### Overage Revenue
+- Charged per locate beyond monthly limit
+- Automatically billed
+- Encourages upgrades to higher tiers
 
 ---
 
-## 🎯 User Flow with Option B (Recommended)
+## 🎯 Subscription Strategy
 
-### After Trial Expires (7 days):
-**User tries to locate:**
+### Why No Pay-Per-Locate?
+**Focus on subscriptions:**
+- Predictable recurring revenue
+- Higher customer lifetime value
+- Encourages commitment
+- Simpler pricing model
 
-**Modal appears:**
-```
-⏰ Your 7-day trial has ended
+**Trial is generous:**
+- 5 free locates OR 7 days
+- No credit card charge during trial
+- Easy to try before buying
 
-You can:
-• Pay $15 for one locate
-• Subscribe for unlimited monthly access
-
-[Pay $15 for One Locate]  [View Subscription Plans]
-```
-
-**Benefits:**
-- User isn't blocked
-- Still has options
-- You capture revenue either way
-
----
-
-## 📊 Revenue Comparison
-
-### Current (Option A):
-- User uses 3 locates in 7 days
-- Trial expires
-- User leaves (no subscription)
-- **Revenue: $0**
-
-### Recommended (Option B):
-- User uses 3 locates in 7 days
-- Trial expires
-- User needs 2 more locates this month
-- Pays $15 × 2 = $30
-- **Revenue: $30**
-
----
-
-## 🔧 Implementation
-
-### To Enable Option B:
-I need to update the `handleLocate` function in `TankLocator.tsx`:
-
-**Current logic:**
-```typescript
-if (usage.isTrial && usage.used >= usage.limit && !usage.hasSubscription) {
-  setShowPayPerOption(true)
-  return
-}
-```
-
-**New logic:**
-```typescript
-// Show pay-per if:
-// 1. Trial user hit 5 locate limit, OR
-// 2. Trial expired and no subscription, OR
-// 3. Subscription cancelled
-if (
-  (usage.isTrial && usage.used >= usage.limit) ||
-  (usage.trialExpired && !usage.hasSubscription) ||
-  (usage.subscriptionCancelled)
-) {
-  setShowPayPerOption(true)
-  return
-}
-```
-
----
-
-## ✅ Decision Needed
-
-**Which option do you prefer?**
-
-**A) Current:** Pay-per only after 5 locates used
-**B) Recommended:** Pay-per available after trial expires too
-
-Let me know and I'll implement it!
+**Compliance reports provide flexibility:**
+- Users can monetize without overage
+- High-margin add-on revenue
+- Solves real contractor need
 
 ---
 
@@ -385,32 +302,35 @@ Let me know and I'll implement it!
 ### Current User Flow:
 1. Sign up → Trial starts (5 locates OR 7 days)
 2. Use locates → Counter updates
-3. Hit limit → Pay-per option OR subscribe
-4. Trial expires → Must subscribe
+3. Hit limit → Must subscribe
+4. Trial expires → Charged full amount
 5. Subscription active → Monthly allowance
 6. Exceed allowance → Overage charges
+7. Optional: Purchase compliance reports ($25 each)
 
 ### Key Points:
 - ✅ Credit card required at signup
 - ✅ $0 charged during trial
 - ✅ Trial ends when EITHER limit is hit
-- ✅ Pay-per available after 5 locates used
-- ❌ Pay-per NOT available after 7 days expire (unless you want this changed)
+- ✅ Must subscribe to continue after trial
+- ✅ Compliance reports available anytime ($25)
+- ✅ Overage charges for subscribers who exceed limits
 
 ---
 
 ## 🎨 UI/UX Notes
 
 ### Pricing Page:
-- ✅ All buttons now bright green (readable)
+- ✅ All buttons bright green (readable)
 - ✅ Clear trial messaging
 - ✅ FAQ explains trial rules
 
 ### Tank Locator:
 - ✅ Usage counter always visible
 - ✅ Warning when 3 locates remain
-- ✅ Pay-per modal with clear options
+- ✅ Clear error when trial ends
 - ✅ Overage warning for subscribers
+- ✅ Compliance report button after each locate
 
 ### Profile Page:
 - ✅ Technician info for reports
@@ -418,4 +338,25 @@ Let me know and I'll implement it!
 
 ---
 
-**Questions? Let me know which option you prefer and I'll push the updates!**
+## 🚀 Conversion Strategy
+
+### Trial to Paid:
+- Generous trial (5 locates)
+- Clear value demonstration
+- Easy checkout process
+- No surprise charges
+
+### Upsells:
+- Compliance reports ($25)
+- Tier upgrades (save on overages)
+- Professional certification features
+
+### Retention:
+- Monthly value delivery
+- Usage tracking
+- Upgrade prompts when beneficial
+- Professional documentation option
+
+---
+
+**This flow maximizes subscription conversions while providing high-margin add-on revenue through compliance reports!**
