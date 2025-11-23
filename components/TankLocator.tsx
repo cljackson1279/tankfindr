@@ -163,19 +163,60 @@ export default function TankLocator() {
     setShowOverageWarning(false)
 
     try {
-      const response = await fetch('/api/locate', {
+      // First, geocode the address to get coordinates
+      const geocodeResponse = await fetch('/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ address })
       })
 
-      const data = await response.json()
+      const geocodeData = await geocodeResponse.json()
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to locate tank')
+      if (!geocodeResponse.ok) {
+        throw new Error(geocodeData.error || 'Failed to geocode address')
       }
 
-      setResult({ ...data, tankId: data.tankId })
+      // Then, search for septic tank using the coordinates
+      const septicResponse = await fetch('/api/locate-septic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          lat: geocodeData.lat, 
+          lng: geocodeData.lng,
+          address 
+        })
+      })
+
+      const septicData = await septicResponse.json()
+
+      if (!septicResponse.ok) {
+        throw new Error(septicData.error || 'Failed to locate tank')
+      }
+
+      if (!septicData.found) {
+        // No county data available - show message
+        setError(septicData.message || 'No septic data available for this location yet.')
+        setLoading(false)
+        return
+      }
+
+      // Track the locate in the database (for usage counting)
+      await fetch('/api/locate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address })
+      })
+
+      // Convert confidence from 0-1 to 0-100 for display
+      const confidencePercent = Math.round(septicData.confidence * 100)
+
+      setResult({ 
+        lat: septicData.tank_location.lat,
+        lng: septicData.tank_location.lng,
+        confidence: confidencePercent,
+        depth: 0, // Not provided by county data
+        tankId: septicData.metadata?.parcel_id || undefined
+      })
 
       // Update map
       if (mapRef.current) {
