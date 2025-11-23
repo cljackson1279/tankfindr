@@ -221,7 +221,7 @@ export default function TankLocator() {
       // Update map
       if (mapRef.current) {
         mapRef.current.flyTo({
-          center: [data.lng, data.lat],
+          center: [septicData.tank_location.lng, septicData.tank_location.lat],
           zoom: 18,
           duration: 2000
         })
@@ -233,7 +233,7 @@ export default function TankLocator() {
 
         // Add new marker
         markerRef.current = new mapboxgl.Marker({ color: '#10B981' })
-          .setLngLat([data.lng, data.lat])
+          .setLngLat([septicData.tank_location.lng, septicData.tank_location.lat])
           .addTo(mapRef.current)
       }
 
