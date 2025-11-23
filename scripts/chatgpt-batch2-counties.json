@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Florida (Statewide)",
+    "state": "FL",
+    "url": "https://ca.dep.state.fl.us/arcgis/rest/services/OpenData/SEPTIC_SYSTEMS/MapServer/0",
+    "notes": "All 67 Florida counties - Known/Likely septic classification"
+  },
+  {
+    "name": "Miami-Dade County (DOH)",
+    "state": "FL",
+    "url": "https://gisweb.miamidade.gov/arcgis/rest/services/Wasd/DOHSepticSystem_1_v1/MapServer/0",
+    "notes": "OSTDS point locations with system type, flow, dates"
+  },
+  {
+    "name": "Fairfax County (Septic Tanks)",
+    "state": "VA",
+    "url": "https://www.fairfaxcounty.gov/gisint1/rest/services/PLUS/EnvHealthMap/MapServer/0",
+    "notes": "Actual septic tank points (separate from permits)"
+  },
+  {
+    "name": "Fairfax County (Drain Fields)",
+    "state": "VA",
+    "url": "https://www.fairfaxcounty.gov/gisint1/rest/services/PLUS/EnvHealthMap/MapServer/2",
+    "notes": "Drain field polygons"
+  },
+  {
+    "name": "Allen County",
+    "state": "OH",
+    "url": "https://gis.allencountyohio.com/arcgis/rest/services/AGOL/AGOL_HealthDepartment/FeatureServer/0",
+    "notes": "Septic system points"
+  },
+  {
+    "name": "Rhode Island (Statewide)",
+    "state": "RI",
+    "url": "https://gisstage.dot.ri.gov/editting/rest/services/SCP/OWTS/FeatureServer/0",
+    "notes": "OWTS points with address fields"
+  },
+  {
+    "name": "Santa Cruz County",
+    "state": "CA",
+    "url": "https://sccgis.santacruzcountyca.gov/server/rest/services/gisweb/MapServer/298",
+    "notes": "Septic constraint polygons (risk overlay)"
+  },
+  {
+    "name": "Wicomico County",
+    "state": "MD",
+    "url": "https://gisapps.wicomicocounty.org/server/rest/services/WicomicoSewerUpdate2023/MapServer/23",
+    "notes": "Failing septic system areas (polygons)"
+  },
+  {
+    "name": "Los Angeles County",
+    "state": "CA",
+    "url": "https://services5.arcgis.com/7nsPwEMP38bSkCjy/arcgis/rest/services/OWTS_NOWTS/FeatureServer/0",
+    "notes": "OWTS & NOWTS - conventional and non-conventional systems"
+  }
+]

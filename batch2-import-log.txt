@@ -1,0 +1,15 @@
+nohup: ignoring input
+
+🚀 Starting Batch 2 Import
+📊 Total sources: 5
+📈 Total expected records: 2,047,716
+
+
+======================================================================
+🚀 Importing Florida (Statewide), FL
+📊 Expected records: 1,939,334
+📝 All 67 Florida counties
+======================================================================
+
+📥 Fetching batch 1 (offset 0)...
+   Retrieved 1000 records
