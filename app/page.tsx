@@ -188,15 +188,39 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              TF
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                TF
+              </div>
+              <span className="text-xl font-bold">TankFindr</span>
             </div>
-            <span className="text-xl font-bold">TankFindr</span>
           </div>
-          <p className="text-gray-400">
-            © 2024 TankFindr. All rights reserved.
+          
+          <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+            <Link href="/coverage" className="text-gray-400 hover:text-white transition-colors">
+              Coverage
+            </Link>
+            <Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">
+              Pricing
+            </Link>
+            <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
+              FAQ
+            </Link>
+            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+              Terms & Conditions
+            </Link>
+            <a href="mailto:support@tankfindr.com" className="text-gray-400 hover:text-white transition-colors">
+              Contact
+            </a>
+          </div>
+          
+          <p className="text-gray-400 text-center text-sm">
+            © 2025 TankFindr. All rights reserved.
           </p>
         </div>
       </footer>

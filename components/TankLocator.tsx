@@ -32,9 +32,12 @@ export default function TankLocator() {
   const [error, setError] = useState('')
   const [profile, setProfile] = useState<any>(null)
   const [showOverageWarning, setShowOverageWarning] = useState(false)
+  const [suggestions, setSuggestions] = useState<any[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<mapboxgl.Map | null>(null)
   const markerRef = useRef<mapboxgl.Marker | null>(null)
+  const suggestionsRef = useRef<HTMLDivElement>(null)
 
   const supabase = createClient()
 
@@ -77,6 +80,49 @@ export default function TankLocator() {
       setProfile(data)
     }
   }
+
+  // Handle address autocomplete
+  const handleAddressChange = async (value: string) => {
+    setAddress(value)
+    
+    if (value.length < 3) {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(value)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&country=US&types=address&limit=5`
+      )
+      const data = await response.json()
+      
+      if (data.features) {
+        setSuggestions(data.features)
+        setShowSuggestions(true)
+      }
+    } catch (error) {
+      console.error('Autocomplete error:', error)
+    }
+  }
+
+  const selectSuggestion = (suggestion: any) => {
+    setAddress(suggestion.place_name)
+    setSuggestions([])
+    setShowSuggestions(false)
+  }
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const getUsageInfo = () => {
     if (!profile) return null
@@ -392,18 +438,42 @@ export default function TankLocator() {
               <h2 className="text-xl font-bold mb-4">Locate Septic Tank</h2>
               
               <div className="space-y-4">
-                <div>
+                <div className="relative">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Property Address
                   </label>
                   <Input
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    placeholder="123 Main St, City, State ZIP"
+                    onChange={(e) => handleAddressChange(e.target.value)}
+                    placeholder="Start typing an address..."
                     className="input-field"
-                    onKeyPress={(e) => e.key === 'Enter' && handleLocate()}
+                    onKeyPress={(e) => e.key === 'Enter' && !showSuggestions && handleLocate()}
+                    autoComplete="off"
                   />
+                  
+                  {/* Address Suggestions Dropdown */}
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div 
+                      ref={suggestionsRef}
+                      className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                    >
+                      {suggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => selectSuggestion(suggestion)}
+                          className="w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors border-b border-gray-100 last:border-0"
+                        >
+                          <div className="font-medium text-gray-900">
+                            {suggestion.text}
+                          </div>
+                          <div className="text-sm text-gray-600">
+                            {suggestion.place_name}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <Button
