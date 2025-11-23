@@ -65,7 +65,8 @@ function getIdentifier(request: NextRequest): string {
 
   // Fall back to IP address
   const forwardedFor = request.headers.get('x-forwarded-for');
-  const ip = forwardedFor ? forwardedFor.split(',')[0] : request.ip || 'unknown';
+  const realIp = request.headers.get('x-real-ip');
+  const ip = forwardedFor ? forwardedFor.split(',')[0] : realIp || 'unknown';
   return `ip:${ip}`;
 }
 
