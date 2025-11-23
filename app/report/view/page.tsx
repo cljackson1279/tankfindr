@@ -1,0 +1,307 @@
+'use client'
+
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Calendar, Hash } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+// Dynamically import map to avoid SSR issues
+const MapComponent = dynamic(() => import('@/components/MapComponent'), {
+  ssr: false,
+  loading: () => <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>
+})
+
+function ReportViewContent() {
+  const searchParams = useSearchParams()
+  const [loading, setLoading] = useState(true)
+  const [report, setReport] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    loadReport()
+  }, [])
+
+  const loadReport = async () => {
+    try {
+      const sessionId = searchParams?.get('session_id')
+      const address = searchParams?.get('address')
+      const lat = parseFloat(searchParams?.get('lat') || '')
+      const lng = parseFloat(searchParams?.get('lng') || '')
+
+      if (!sessionId || !address || isNaN(lat) || isNaN(lng)) {
+        throw new Error('Invalid report parameters')
+      }
+
+      // Verify payment and generate report
+      const response = await fetch('/api/generate-report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, address, lat, lng }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate report')
+      }
+
+      setReport(data)
+    } catch (err: any) {
+      setError(err.message || 'Failed to load report')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDownload = () => {
+    // TODO: Generate PDF
+    alert('PDF download coming soon! For now, use Print to PDF from your browser.')
+    window.print()
+  }
+
+  const getRiskColor = (risk?: string) => {
+    switch (risk) {
+      case 'high': return 'text-red-600 bg-red-50 border-red-200'
+      case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200'
+      case 'low': return 'text-emerald-600 bg-emerald-50 border-emerald-200'
+      default: return 'text-gray-600 bg-gray-50 border-gray-200'
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-emerald-600 mx-auto mb-4" />
+          <p className="text-gray-600">Generating your report...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <Card className="p-8 max-w-md text-center">
+          <AlertTriangle className="w-12 h-12 text-red-600 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Error</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <Link href="/report">
+            <Button>Try Again</Button>
+          </Link>
+        </Card>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8 print:mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2 print:text-2xl">
+            Property Septic Status & Location Report
+          </h1>
+          <p className="text-gray-600">{report.address}</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Generated: {new Date().toLocaleDateString()}
+          </p>
+        </div>
+
+        {/* Download Button */}
+        <div className="mb-6 print:hidden">
+          <Button
+            onClick={handleDownload}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            Download as PDF
+          </Button>
+        </div>
+
+        {/* Classification */}
+        <Card className="p-6 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Septic Status</h2>
+          <div className="flex items-center gap-4 mb-4">
+            <div className={`flex-1 p-4 rounded-lg border ${
+              report.classification === 'septic' ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-200'
+            }`}>
+              <p className="text-sm text-gray-600 mb-1">Classification</p>
+              <p className="text-xl font-bold capitalize">
+                {report.classification.replace('_', ' ')}
+              </p>
+            </div>
+            <div className={`flex-1 p-4 rounded-lg border ${
+              report.confidence === 'high' ? 'bg-emerald-50 border-emerald-200' : 
+              report.confidence === 'medium' ? 'bg-amber-50 border-amber-200' : 
+              'bg-gray-50 border-gray-200'
+            }`}>
+              <p className="text-sm text-gray-600 mb-1">Confidence</p>
+              <p className="text-xl font-bold capitalize">{report.confidence}</p>
+            </div>
+          </div>
+          <p className="text-gray-700">
+            {report.classification === 'septic' && 
+              'This property has a septic system based on county records.'}
+            {report.classification === 'likely_septic' && 
+              'This property likely has a septic system, but exact data is limited.'}
+            {report.classification === 'sewer' && 
+              'This property appears to be connected to sewer.'}
+          </p>
+        </Card>
+
+        {/* Tank Location */}
+        {report.tankPoint && (
+          <Card className="p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Tank Location</h2>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Latitude</p>
+                <p className="font-mono text-lg">{report.tankPoint.lat.toFixed(6)}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Longitude</p>
+                <p className="font-mono text-lg">{report.tankPoint.lng.toFixed(6)}</p>
+              </div>
+            </div>
+            {report.distance && (
+              <p className="text-sm text-gray-600 mb-4">
+                Distance from address: {report.distance.toFixed(1)} meters
+              </p>
+            )}
+            <div className="print:hidden">
+              <MapComponent
+                lat={report.tankPoint.lat}
+                lng={report.tankPoint.lng}
+                searchLat={report.lat}
+                searchLng={report.lng}
+              />
+            </div>
+          </Card>
+        )}
+
+        {/* System Information */}
+        {report.systemInfo && (
+          <Card className="p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">System Information</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {report.systemInfo.type && (
+                <div className="flex items-start gap-3">
+                  <FileText className="w-5 h-5 text-gray-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">System Type</p>
+                    <p className="font-semibold">{report.systemInfo.type}</p>
+                  </div>
+                </div>
+              )}
+              {report.systemInfo.permitNumber && (
+                <div className="flex items-start gap-3">
+                  <Hash className="w-5 h-5 text-gray-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">Permit Number</p>
+                    <p className="font-semibold">{report.systemInfo.permitNumber}</p>
+                  </div>
+                </div>
+              )}
+              {report.systemInfo.permitDate && (
+                <div className="flex items-start gap-3">
+                  <Calendar className="w-5 h-5 text-gray-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">Permit Date</p>
+                    <p className="font-semibold">
+                      {new Date(report.systemInfo.permitDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {report.systemInfo.ageEstimate && (
+                <div className="flex items-start gap-3">
+                  <Calendar className="w-5 h-5 text-gray-600 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-600">Age Estimate</p>
+                    <p className="font-semibold">{report.systemInfo.ageEstimate}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
+
+        {/* Risk Assessment */}
+        {report.riskLevel && (
+          <Card className={`p-6 mb-6 ${getRiskColor(report.riskLevel)}`}>
+            <h2 className="text-2xl font-bold mb-4">Risk Assessment</h2>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 mt-0.5" />
+              <div>
+                <p className="font-bold text-lg capitalize mb-2">{report.riskLevel} Risk</p>
+                <p>
+                  {report.riskLevel === 'high' && 
+                    'This system is over 25 years old and may need replacement soon. Consider a professional inspection.'}
+                  {report.riskLevel === 'medium' && 
+                    'This system is 15-25 years old. Regular maintenance is recommended.'}
+                  {report.riskLevel === 'low' && 
+                    'This system is relatively new (under 15 years). Continue regular maintenance.'}
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {/* Data Sources */}
+        {report.sources && report.sources.length > 0 && (
+          <Card className="p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Data Sources</h2>
+            <ul className="space-y-2">
+              {report.sources.map((source: any, index: number) => (
+                <li key={index} className="flex items-start gap-2">
+                  <CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="font-semibold">{source.name}</p>
+                    <p className="text-sm text-gray-600">
+                      {source.county && `${source.county}, `}{source.state} • {source.quality} quality
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
+
+        {/* Disclaimer */}
+        <Card className="p-6 bg-gray-50">
+          <h3 className="font-bold text-gray-900 mb-2">Disclaimer</h3>
+          <p className="text-sm text-gray-600">
+            This report is based on publicly available county records and should be used for informational 
+            purposes only. Tank locations are estimates based on permit records and may not reflect current 
+            conditions. Always verify with a professional inspection before excavation. TankFindr is not 
+            responsible for any damages resulting from the use of this information.
+          </p>
+        </Card>
+
+        {/* CTA */}
+        <div className="mt-8 text-center print:hidden">
+          <p className="text-gray-700 mb-4">
+            Need reports for multiple properties?
+          </p>
+          <Link href="/pricing">
+            <Button variant="outline">
+              View TankFindr Pro Plans
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function ReportViewPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>}>
+      <ReportViewContent />
+    </Suspense>
+  )
+}

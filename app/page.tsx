@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Check, MapPin, Zap, Shield } from 'lucide-react'
+import SewerOrSepticWidget from '@/components/SewerOrSepticWidget'
 
 export default function HomePage() {
 
@@ -38,9 +39,9 @@ export default function HomePage() {
           <span className="text-emerald-600">5 Minutes</span>
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          Stop wasting 3+ hours searching for buried septic tanks. Our AI-powered
-          satellite imagery analysis delivers accurate locations with confidence
-          scoring in minutes.
+          Stop wasting hours searching for buried septic tanks. Get GPS-accurate
+          locations from real county records in seconds. 2M+ tanks mapped across
+          Florida, California, Virginia, and 9 more states.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <Link href="/auth/sign-up">
@@ -62,8 +63,13 @@ export default function HomePage() {
           </Link>
         </div>
         <p className="text-emerald-600 font-semibold">
-          🎉 5 free locates OR 7 days free
+          🎉 Try it free - Check any address below
         </p>
+      </section>
+
+      {/* Sewer or Septic Widget */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <SewerOrSepticWidget />
       </section>
 
       {/* Features Section */}
@@ -90,11 +96,11 @@ export default function HomePage() {
               <Shield className="w-6 h-6 text-emerald-600" />
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-3">
-              85% Accuracy
+              Real County Data
             </h3>
             <p className="text-gray-600">
-              AI-powered analysis with confidence scoring. Green/Yellow/Red
-              indicators help you assess reliability before you dig.
+              GPS coordinates from official county GIS databases. Not AI guesses -
+              real permit records with 90%+ accuracy within 5-15 meters.
             </p>
           </div>
 

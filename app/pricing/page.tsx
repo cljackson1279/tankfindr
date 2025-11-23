@@ -12,50 +12,52 @@ const tiers = [
     id: 'starter',
     name: 'Starter',
     price: 99,
-    locates: 10,
-    overage: 8,
+    locates: 300,
+    description: 'For small septic companies (1 truck)',
     features: [
-      '10 tank locates per month',
-      'AI-powered satellite analysis',
+      '300 lookups per month',
+      'Real county septic records',
+      'GPS-accurate tank locations',
       'Confidence scoring system',
       'Google Maps integration',
-      'Offline cache (last 50 searches)',
-      '$8 per additional locate'
+      'Basic tank locator',
+      '"Likely location" estimates'
     ]
   },
   {
     id: 'pro',
     name: 'Pro',
     price: 249,
-    locates: 40,
-    overage: 6,
+    locates: 1500,
     popular: true,
+    description: 'For companies with multiple trucks',
     features: [
-      '40 tank locates per month',
-      'AI-powered satellite analysis',
-      'Confidence scoring system',
-      'Google Maps integration',
-      'Offline cache (last 50 searches)',
-      'Priority support',
-      '$6 per additional locate'
+      '1,500 lookups per month',
+      'Real county septic records',
+      'GPS-accurate tank locations',
+      'Up to 5 users',
+      'PDF tank location reports',
+      'Job history tracking',
+      'Confidence scoring',
+      'Priority support'
     ]
   },
   {
     id: 'enterprise',
     name: 'Enterprise',
     price: 599,
-    locates: 150,
-    overage: 4,
+    locates: 'Unlimited',
+    description: 'For regional multi-county operators',
     features: [
-      '150 tank locates per month',
-      'AI-powered satellite analysis',
-      'Confidence scoring system',
-      'Google Maps integration',
-      'Offline cache (last 50 searches)',
-      'Priority support',
-      'Dedicated account manager',
-      'Custom integrations',
-      '$4 per additional locate'
+      'Unlimited lookups',
+      'Real county septic records',
+      'GPS-accurate tank locations',
+      'Unlimited technicians',
+      'Multi-county coverage',
+      'API access (future)',
+      'White label reports',
+      'On-site field support',
+      'Dedicated account manager'
     ]
   }
 ]
@@ -122,14 +124,23 @@ export default function PricingPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Choose Your Plan
+            TankFindr Pro for Septic Companies
           </h1>
           <p className="text-xl text-gray-600 mb-2">
-            Find septic tanks in 5 minutes with AI-powered satellite imagery
+            Real county septic records • GPS-accurate locations • 2M+ tanks mapped
           </p>
           <p className="text-lg text-emerald-600 font-semibold">
-            🎉 Start with 5 free locates OR 7 days free trial - whichever comes first!
+            🎉 Try 1-2 free lookups before subscribing!
           </p>
+        </div>
+
+        {/* Coverage Badge */}
+        <div className="text-center mb-8">
+          <div className="inline-block bg-blue-50 border border-blue-200 rounded-lg px-6 py-3">
+            <p className="text-blue-900 font-semibold">
+              📍 Now covering: Florida (all 67 counties), California, Virginia, New Mexico, North Carolina, and 7 more states
+            </p>
+          </div>
         </div>
 
         {/* Pricing Cards */}
@@ -155,6 +166,9 @@ export default function PricingPage() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   {tier.name}
                 </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {tier.description}
+                </p>
                 <div className="flex items-baseline justify-center mb-2">
                   <span className="text-5xl font-bold text-gray-900">
                     ${tier.price}
@@ -162,7 +176,9 @@ export default function PricingPage() {
                   <span className="text-gray-600 ml-2">/month</span>
                 </div>
                 <p className="text-sm text-gray-600">
-                  {tier.locates} locates included
+                  {typeof tier.locates === 'number' 
+                    ? `${tier.locates} lookups/month` 
+                    : tier.locates}
                 </p>
               </div>
 
@@ -193,6 +209,36 @@ export default function PricingPage() {
           ))}
         </div>
 
+        {/* Value Proposition */}
+        <div className="bg-white rounded-lg shadow-sm p-8 mb-12">
+          <h2 className="text-2xl font-bold text-center mb-6">
+            Why Septic Companies Choose TankFindr
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-4xl mb-3">⚡</div>
+              <h3 className="font-bold mb-2">Save Time</h3>
+              <p className="text-gray-600">
+                Find tanks in seconds, not hours. No more digging blind or calling county offices.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-3">💰</div>
+              <h3 className="font-bold mb-2">Reduce Costs</h3>
+              <p className="text-gray-600">
+                Less time digging = more jobs per day. ROI in the first week for most companies.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl mb-3">🎯</div>
+              <h3 className="font-bold mb-2">Real Data</h3>
+              <p className="text-gray-600">
+                GPS coordinates from actual county records, not AI guesses. 90%+ accuracy.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* FAQ Section */}
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8">
@@ -201,18 +247,18 @@ export default function PricingPage() {
           
           <div className="space-y-6">
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-bold text-lg mb-2">How does the trial work?</h3>
+              <h3 className="font-bold text-lg mb-2">How does this work with real county data?</h3>
               <p className="text-gray-700">
-                You get 5 free tank locates OR 7 days of access - whichever comes first. 
-                Credit card required at signup, but you won't be charged until your trial ends.
+                We've integrated official county GIS databases with 2M+ septic tank records. When you search an address, 
+                we query these databases and return the exact GPS coordinates from county permit records.
               </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-bold text-lg mb-2">What happens if I exceed my monthly locates?</h3>
+              <h3 className="font-bold text-lg mb-2">What if my county isn't covered?</h3>
               <p className="text-gray-700">
-                You'll be charged per additional locate: $8 for Starter, $6 for Pro, or $4 for Enterprise. 
-                You can upgrade anytime to get more included locates and lower overage rates.
+                We're adding new counties every week! Request your county and we'll prioritize it. 
+                Currently covering Florida (all 67 counties), California, Virginia, and 9 more states.
               </p>
             </div>
 
@@ -224,10 +270,18 @@ export default function PricingPage() {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="font-bold text-lg mb-2">How accurate is the AI?</h3>
+              <h3 className="font-bold text-lg mb-2">How accurate are the locations?</h3>
               <p className="text-gray-700">
-                Our AI analyzes high-resolution satellite imagery and provides a confidence score for each locate. 
-                High confidence (80%+) results are typically within 3-5 feet of the actual tank location.
+                High confidence locations (from county tank surveys) are accurate to within 5-15 meters. 
+                Medium confidence (parcel-based) are within 30-50 meters. We show confidence level for every result.
+              </p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="font-bold text-lg mb-2">What about unlimited lookups on Enterprise?</h3>
+              <p className="text-gray-700">
+                Enterprise includes unlimited lookups because we monitor usage and work directly with you. 
+                Perfect for large companies doing 200+ lookups per day across multiple counties.
               </p>
             </div>
           </div>

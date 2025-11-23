@@ -240,3 +240,338 @@ nohup: ignoring input
 
 📥 Fetching batch 14 (offset 13000)...
    Retrieved 1000 records
+   ❌ Error: TypeError: fetch failed
+   ✅ Batch complete: 13999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 15 (offset 14000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 14999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 16 (offset 15000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 15999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 17 (offset 16000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 16999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 18 (offset 17000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 17999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 19 (offset 18000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 18999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 20 (offset 19000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 19999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 21 (offset 20000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 20999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 22 (offset 21000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 21999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 23 (offset 22000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 22999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 24 (offset 23000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 23999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 25 (offset 24000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 24999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 26 (offset 25000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 25999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 27 (offset 26000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 26999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 28 (offset 27000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 27999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 29 (offset 28000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 28999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 30 (offset 29000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 29999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 31 (offset 30000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 30999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 32 (offset 31000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 31999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 33 (offset 32000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 32999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 34 (offset 33000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 33999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 35 (offset 34000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 34999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 36 (offset 35000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 35999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 37 (offset 36000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 36999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 38 (offset 37000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 37999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 39 (offset 38000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 38999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 40 (offset 39000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 39999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 41 (offset 40000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 40999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 42 (offset 41000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 41999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 43 (offset 42000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 42999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 44 (offset 43000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 43999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 45 (offset 44000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 44999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 46 (offset 45000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 45999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 47 (offset 46000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 46999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 48 (offset 47000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 47999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 49 (offset 48000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 48999 imported, 0 skipped, 1 errors
+
+📥 Fetching batch 50 (offset 49000)...
+   Retrieved 1000 records
+   ❌ Error: TypeError: fetch failed
+   ✅ Batch complete: 49998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 51 (offset 50000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 50998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 52 (offset 51000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 51998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 53 (offset 52000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 52998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 54 (offset 53000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 53998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 55 (offset 54000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 54998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 56 (offset 55000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 55998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 57 (offset 56000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 56998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 58 (offset 57000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 57998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 59 (offset 58000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 58998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 60 (offset 59000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 59998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 61 (offset 60000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 60998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 62 (offset 61000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 61998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 63 (offset 62000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 62998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 64 (offset 63000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 63998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 65 (offset 64000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 64998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 66 (offset 65000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 65998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 67 (offset 66000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 66998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 68 (offset 67000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 67998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 69 (offset 68000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 68998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 70 (offset 69000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 69998 imported, 0 skipped, 2 errors
+
+📥 Fetching batch 71 (offset 70000)...
+   Retrieved 1000 records
+   ❌ Error: TypeError: fetch failed
+   ✅ Batch complete: 70997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 72 (offset 71000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 71997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 73 (offset 72000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 72997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 74 (offset 73000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 73997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 75 (offset 74000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 74997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 76 (offset 75000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 75997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 77 (offset 76000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 76997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 78 (offset 77000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 77997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 79 (offset 78000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 78997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 80 (offset 79000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 79997 imported, 0 skipped, 3 errors
+
+📥 Fetching batch 81 (offset 80000)...
+   Retrieved 835 records
+   ✅ Batch complete: 80832 imported, 0 skipped, 3 errors
+
+✅ Miami-Dade County (DOH) import complete!
+   📊 Total imported: 80,832
+   ⚠️  Total skipped: 0
+   ❌ Total errors: 3
+   📍 Records in database: 76,663
+
+======================================================================
+🚀 Importing Fairfax County (Septic Tanks), VA
+📊 Expected records: 21,618
+📝 Actual septic tank points
+======================================================================
+
+📥 Fetching batch 1 (offset 0)...
+   Retrieved 1000 records
+   ✅ Batch complete: 1000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 2 (offset 1000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 2000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 3 (offset 2000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 3000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 4 (offset 3000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 4000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 5 (offset 4000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 5000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 6 (offset 5000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 6000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 7 (offset 6000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 7000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 8 (offset 7000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 8000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 9 (offset 8000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 9000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 10 (offset 9000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 10000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 11 (offset 10000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 11000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 12 (offset 11000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 12000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 13 (offset 12000)...
+   Retrieved 1000 records
