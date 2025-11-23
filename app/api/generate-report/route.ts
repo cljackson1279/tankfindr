@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { getSepticContextForLocation } from '@/lib/septicLookup';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-11-20.acacia',
+  apiVersion: '2025-11-17.clover',
 });
 
 const supabase = createClient(
