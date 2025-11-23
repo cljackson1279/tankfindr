@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Wake County",
+    "state": "NC",
+    "url": "https://services.arcgis.com/9081a506a49f44fda8615a51fd0449a1/arcgis/rest/services/Septic_and_Well_Points/FeatureServer/0"
+  },
+  {
+    "name": "Rock County",
+    "state": "WI",
+    "url": "https://services2.arcgis.com/ZV8Mb62AujRGBZyj/arcgis/rest/services/Private_Onsite_Wastewater_Treatment_Systems_Parcels/FeatureServer/2"
+  },
+  {
+    "name": "Pottawattamie County",
+    "state": "IA",
+    "url": "https://gis.pottcounty-ia.gov/arcgis/rest/services/Hosted/Septic_Tanks_view/FeatureServer/0"
+  },
+  {
+    "name": "Greene County",
+    "state": "OH",
+    "url": "https://gis.greenecountyohio.gov/webgis2/rest/services/Stormwater/SepticTanks/MapServer/0"
+  },
+  {
+    "name": "Flathead County",
+    "state": "MT",
+    "url": "https://maps.flatheadcounty.gov/server/rest/services/Hosted/Septic_Zones/FeatureServer/0"
+  },
+  {
+    "name": "James City County",
+    "state": "VA",
+    "url": "https://property.jamescitycountyva.gov/arcgis/rest/services/JCC/GIS_Data/FeatureServer/42"
+  },
+  {
+    "name": "Minnehaha County",
+    "state": "SD",
+    "url": "https://gis.minnehahacounty.org/minnemap/rest/services/Planning/SepticPermitsAndInspections/FeatureServer/0"
+  },
+  {
+    "name": "Linn County",
+    "state": "IA",
+    "url": "https://gis.linncountyiowa.gov/arcgis/rest/services/Hosted/SepticPermits/FeatureServer/0"
+  },
+  {
+    "name": "Westchester County",
+    "state": "NY",
+    "url": "https://services1.arcgis.com/nLWNPpbKV0CfkPQS/arcgis/rest/services/Septic_Pump_Out_2023/FeatureServer/0"
+  },
+  {
+    "name": "Sarasota County",
+    "state": "FL",
+    "url": "https://services3.arcgis.com/icrWMv7eBkctFu1f/ArcGIS/rest/services/Sarasota_County_Likely_or_Known_Septic_Areas2/FeatureServer/0"
+  },
+  {
+    "name": "Weber County",
+    "state": "UT",
+    "url": "https://maps.webercountyutah.gov/arcgis/rest/services/heallth/health_department_viewer/FeatureServer/1"
+  },
+  {
+    "name": "New Mexico (Statewide)",
+    "state": "NM",
+    "url": "https://mercator.env.nm.gov/server/rest/services/ehb/onsite_wastewater_compliance/FeatureServer/0"
+  },
+  {
+    "name": "Central Utah (Multi-county)",
+    "state": "UT",
+    "url": "https://services6.arcgis.com/yVGfJlcJzFU5V5RT/arcgis/rest/services/Central_Utah_Public_Health_Department_Septic_Tanks_Public_View/FeatureServer/0"
+  },
+  {
+    "name": "Florida DEP (Statewide)",
+    "state": "FL",
+    "url": "https://services7.arcgis.com/5MoZ4rGFfgp2h955/ArcGIS/rest/services/OSTDS_Database_v1_202403/FeatureServer/0"
+  },
+  {
+    "name": "Los Angeles County",
+    "state": "CA",
+    "url": "https://services5.arcgis.com/7nsPwEMP38bSkCjy/arcgis/rest/services/OWTS_NOWTS/FeatureServer/0"
+  }
+]

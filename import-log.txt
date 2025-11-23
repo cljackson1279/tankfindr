@@ -1,0 +1,37 @@
+
+🚀 Starting Batch Import of Verified Counties
+📊 Total counties: 4
+📈 Total expected records: 113,589
+
+
+======================================================================
+🚀 Importing Miami-Dade County, FL
+📊 Expected records: 80835
+======================================================================
+
+📥 Fetching batch 1 (offset 0)...
+   Retrieved 1000 records
+   ✅ Batch complete: 1000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 2 (offset 1000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 2000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 3 (offset 2000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 3000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 4 (offset 3000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 4000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 5 (offset 4000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 5000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 6 (offset 5000)...
+   Retrieved 1000 records
+   ✅ Batch complete: 6000 imported, 0 skipped, 0 errors
+
+📥 Fetching batch 7 (offset 6000)...
+   Retrieved 1000 records

@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Clackamas County",
+    "state": "OR",
+    "url": "https://webmaps.clackamas.us/arcgis/rest/services/Septic/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND webmaps.clackamas.us",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "St. Louis County",
+    "state": "MN",
+    "url": "https://gis.stlouiscountymn.gov/arcgis/rest/services/Individual_Sewage_Treatment_Systems/MapServer/0",
+    "error": "Request failed with status code 404",
+    "errorCode": "ERR_BAD_REQUEST"
+  },
+  {
+    "name": "Kitsap County",
+    "state": "WA",
+    "url": "https://gis.kitsapgov.com/arcgis/rest/services/Health/Septic_Systems/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND gis.kitsapgov.com",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Snohomish County",
+    "state": "WA",
+    "url": "https://gis.snoco.org/arcgis/rest/services/Health/OWTS/MapServer/0",
+    "error": "Request failed with status code 404",
+    "errorCode": "ERR_BAD_REQUEST"
+  },
+  {
+    "name": "Thurston County",
+    "state": "WA",
+    "url": "https://gis.thurstoncountywa.gov/arcgis/rest/services/Health/OSS/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND gis.thurstoncountywa.gov",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Brevard County",
+    "state": "FL",
+    "url": "https://gis.brevardcounty.us/arcgis/rest/services/Environment/Septic_Systems/MapServer/0",
+    "error": "Hostname/IP does not match certificate's altnames: Host: gis.brevardcounty.us. is not in the cert's altnames: DNS:*.brevardfl.gov, DNS:brevardfl.gov",
+    "errorCode": "ERR_TLS_CERT_ALTNAME_INVALID"
+  },
+  {
+    "name": "Martin County",
+    "state": "FL",
+    "url": "https://mc-gis.martincounty.fl.gov/arcgis/rest/services/Environment/Septic_Systems/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND mc-gis.martincounty.fl.gov",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Weld County",
+    "state": "CO",
+    "url": "https://gisapp.weldgov.com/arcgis/rest/services/Sewage/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND gisapp.weldgov.com",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "El Paso County",
+    "state": "CO",
+    "url": "https://maps.elpasoco.com/arcgis/rest/services/Environmental/Septic_Permits/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND maps.elpasoco.com",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Kootenai County",
+    "state": "ID",
+    "url": "https://kcgis.maps.arcgis.com/arcgis/rest/services/Septic_Systems/FeatureServer/0",
+    "error": "Request failed with status code 404",
+    "errorCode": "ERR_BAD_REQUEST"
+  },
+  {
+    "name": "Ramsey County",
+    "state": "MN",
+    "url": "https://gis.ramseycounty.us/arcgis/rest/services/Health/Septic_Systems/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND gis.ramseycounty.us",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Lane County",
+    "state": "OR",
+    "url": "https://gis.lanecountyor.gov/arcgis/rest/services/Health/Septic_Systems/MapServer/0",
+    "error": "getaddrinfo ENOTFOUND gis.lanecountyor.gov",
+    "errorCode": "ENOTFOUND"
+  },
+  {
+    "name": "Coconino County",
+    "state": "AZ",
+    "url": "https://coconino.maps.arcgis.com/arcgis/rest/services/Septic_Systems/FeatureServer/0",
+    "error": "Request failed with status code 404",
+    "errorCode": "ERR_BAD_REQUEST"
+  },
+  {
+    "name": "Yavapai County",
+    "state": "AZ",
+    "url": "https://yavapai.maps.arcgis.com/arcgis/rest/services/Septic_Systems/FeatureServer/0",
+    "error": "Request failed with status code 404",
+    "errorCode": "ERR_BAD_REQUEST"
+  }
+]
