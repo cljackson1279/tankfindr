@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Chatham County",
+    "state": "NC",
+    "url": "https://gisservices.chathamcountync.gov/opendataagol/rest/services/EnvironmentalHealth/Chatham_ApprovedSepticAreas/MapServer/0",
+    "notes": "Approved septic areas - polygons with sub-meter GPS"
+  },
+  {
+    "name": "Pitt County",
+    "state": "NC",
+    "url": "https://gis.pittcountync.gov/gis/rest/services/EPLAN/New_EPLAN/MapServer/69",
+    "notes": "Environmental Health Septic Districts - polygons"
+  },
+  {
+    "name": "Garrett County",
+    "state": "MD",
+    "url": "https://gis.garrettcounty.org/server/rest/services/Hosted/Septic_Application_Parcels_Public_View/FeatureServer/0",
+    "notes": "Septic application parcels - polygons"
+  },
+  {
+    "name": "Chittenden Area",
+    "state": "VT",
+    "url": "https://services1.arcgis.com/HAt3zp2GOzn12Lxk/ArcGIS/rest/services/OWTS_and_Wetland_Permit_Map/FeatureServer/0",
+    "notes": "OWTS Permits - 38,775 features"
+  },
+  {
+    "name": "Sacramento County",
+    "state": "CA",
+    "url": "https://mapservices.gis.saccounty.net/arcgis/rest/services/EMD/MapServer/7",
+    "notes": "EMD Septic Sites - utility-linked accounts"
+  },
+  {
+    "name": "Linn County",
+    "state": "IA",
+    "url": "https://gis.linncountyiowa.gov/ags/rest/services/Planning/mapBSAViewer/MapServer/7",
+    "notes": "Septic polygons with NumberOfLids, InstallationYear"
+  }
+]
