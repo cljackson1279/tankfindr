@@ -51,7 +51,8 @@ function ReportViewContent() {
           lat,
           lng,
           tankLocation: { lat, lng },
-          confidence: 'High',
+          classification: 'septic',
+          confidence: 'high',
           distance: 12,
           systemType: 'Conventional Septic System',
           permitDate: '2015-06-15',
@@ -167,7 +168,7 @@ function ReportViewContent() {
             }`}>
               <p className="text-sm text-gray-600 mb-1">Classification</p>
               <p className="text-xl font-bold capitalize">
-                {report.classification.replace('_', ' ')}
+                {report.classification?.replace('_', ' ') || 'Unknown'}
               </p>
             </div>
             <div className={`flex-1 p-4 rounded-lg border ${
