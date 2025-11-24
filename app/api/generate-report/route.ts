@@ -14,7 +14,7 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
-    const { sessionId, address, lat, lng, adminEmail } = await request.json();
+    const { sessionId, address, lat, lng, adminEmail, upsells: adminUpsells } = await request.json();
 
     if (!sessionId || !address || !lat || !lng) {
       return NextResponse.json(
@@ -78,9 +78,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if this is a paid session with upsells
+    // Check if this is a paid session with upsells or admin bypass with upsells
     let upsells: string[] = [];
-    if (!isAdminBypass) {
+    if (isAdminBypass) {
+      // Admin bypass - use upsells passed directly
+      upsells = adminUpsells || [];
+    } else {
+      // Paid session - get upsells from Stripe metadata
       const session = await stripe.checkout.sessions.retrieve(sessionId);
       if (session.metadata?.upsells) {
         try {

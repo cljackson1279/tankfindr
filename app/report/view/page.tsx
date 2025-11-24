@@ -44,16 +44,28 @@ function ReportViewContent() {
           throw new Error('Invalid report parameters')
         }
 
+        // Parse upsells from URL
+        const upsellsParam = searchParams?.get('upsells')
+        let upsells: string[] = []
+        if (upsellsParam) {
+          try {
+            upsells = JSON.parse(decodeURIComponent(upsellsParam))
+          } catch (e) {
+            console.error('Failed to parse upsells:', e)
+          }
+        }
+
         console.log('ADMIN_REPORT_GENERATION', {
           userEmail: user.email,
           address,
           lat,
           lng,
           dataSource: 'supabase',
-          bypassedPayment: true
+          bypassedPayment: true,
+          upsells
         })
 
-        // Call the same report generation endpoint but with admin flag
+        // Call the same report generation endpoint but with admin flag and upsells
         const response = await fetch('/api/generate-report', {
           method: 'POST',
           headers: {
@@ -65,7 +77,8 @@ function ReportViewContent() {
             address,
             lat,
             lng,
-            adminEmail: user.email
+            adminEmail: user.email,
+            upsells
           }),
         })
 
