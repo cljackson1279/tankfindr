@@ -120,7 +120,7 @@ export default function ProDashboard() {
 
     try {
       // Check if user can perform lookup
-      const permission = await canPerformLookup(user.id)
+      const permission = await canPerformLookup(user.id, user.email)
 
       if (!permission.allowed) {
         setError(permission.reason || 'Cannot perform lookup')
@@ -128,11 +128,29 @@ export default function ProDashboard() {
         return
       }
 
-      // Perform lookup
-      const response = await fetch('/api/pro/lookup', {
+      // First geocode the address
+      const geocodeResponse = await fetch('/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ address }),
+      })
+
+      const geocodeData = await geocodeResponse.json()
+
+      if (!geocodeResponse.ok || !geocodeData.lat || !geocodeData.lng) {
+        throw new Error('Failed to geocode address')
+      }
+
+      // Perform lookup with geocoded coordinates
+      const response = await fetch('/api/pro/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          address,
+          lat: geocodeData.lat,
+          lng: geocodeData.lng,
+        }),
       })
 
       const data = await response.json()
@@ -142,7 +160,10 @@ export default function ProDashboard() {
       }
 
       // Show result
-      alert(`Found tank at: ${data.result.lat}, ${data.result.lng}\nConfidence: ${data.result.confidence}%`)
+      const tankInfo = data.tankPoint
+        ? `Tank found ${data.distance ? Math.round(data.distance) + 'm away' : 'nearby'}\nConfidence: ${data.confidence}%`
+        : `Classification: ${data.classification}\nConfidence: ${data.confidence}%`
+      alert(tankInfo)
 
       // Reload job history
       await loadDashboardData(user.id)

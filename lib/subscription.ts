@@ -89,11 +89,27 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
 /**
  * Check if user can perform a lookup
  */
-export async function canPerformLookup(userId: string): Promise<{
+export async function canPerformLookup(userId: string, userEmail?: string): Promise<{
   allowed: boolean;
   reason?: string;
   subscription?: SubscriptionStatus;
 }> {
+  // Admin bypass
+  if (userEmail === 'cljackson79@gmail.com') {
+    return {
+      allowed: true,
+      subscription: {
+        isActive: true,
+        tier: 'enterprise',
+        lookupsUsed: 0,
+        lookupsLimit: -1,
+        isUnlimited: true,
+        billingPeriodStart: null,
+        billingPeriodEnd: null,
+      },
+    };
+  }
+
   const subscription = await checkSubscription(userId);
 
   if (!subscription.isActive) {
