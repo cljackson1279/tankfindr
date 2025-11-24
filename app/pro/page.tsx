@@ -120,7 +120,9 @@ export default function ProDashboard() {
 
     try {
       // Check if user can perform lookup
+      console.log('Checking permission for user:', user.id, user.email)
       const permission = await canPerformLookup(user.id, user.email)
+      console.log('Permission result:', permission)
 
       if (!permission.allowed) {
         setError(permission.reason || 'Cannot perform lookup')

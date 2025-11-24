@@ -91,7 +91,11 @@ function ReportPageContent() {
 
     try {
       // Geocode address
-      const geocodeResponse = await fetch(`/api/geocode?address=${encodeURIComponent(address)}`)
+      const geocodeResponse = await fetch('/api/geocode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address }),
+      })
       const geocodeData = await geocodeResponse.json()
 
       if (!geocodeResponse.ok || !geocodeData.lat || !geocodeData.lng) {

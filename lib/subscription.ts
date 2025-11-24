@@ -95,7 +95,9 @@ export async function canPerformLookup(userId: string, userEmail?: string): Prom
   subscription?: SubscriptionStatus;
 }> {
   // Admin bypass
+  console.log('canPerformLookup called with:', userId, userEmail)
   if (userEmail === 'cljackson79@gmail.com') {
+    console.log('Admin bypass activated!')
     return {
       allowed: true,
       subscription: {
