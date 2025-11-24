@@ -9,8 +9,8 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 
-// Get Mapbox token at module level to avoid runtime issues
-const MAPBOX_TOKEN = typeof window !== 'undefined' ? (window as any).__NEXT_DATA__?.props?.pageProps?.env?.NEXT_PUBLIC_MAPBOX_TOKEN : process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+// Mapbox token - will be configured in Vercel environment variables
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || ''
 
 function ReportPageContent() {
   const searchParams = useSearchParams()
