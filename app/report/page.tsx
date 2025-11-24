@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Lock, Shield, Droplet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -16,6 +16,24 @@ function ReportPageContent() {
   const [preview, setPreview] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
+  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
+
+  const UPSELLS = [
+    {
+      id: 'environmental',
+      name: 'Environmental Risk Add-On',
+      price: 9,
+      description: 'Flood zones, wetlands, soil type, and environmental hazards',
+      icon: Shield,
+    },
+    {
+      id: 'well',
+      name: 'Well & Groundwater Risk Add-On',
+      price: 29,
+      description: 'Well locations, water table depth, contamination risk, and aquifer data',
+      icon: Droplet,
+    },
+  ]
 
   useEffect(() => {
     if (searchParams?.get('address')) {
@@ -68,6 +86,23 @@ function ReportPageContent() {
     }
   }
 
+  const toggleUpsell = (upsellId: string) => {
+    setSelectedUpsells((prev) =>
+      prev.includes(upsellId)
+        ? prev.filter((id) => id !== upsellId)
+        : [...prev, upsellId]
+    )
+  }
+
+  const calculateTotal = () => {
+    const basePrice = 19
+    const upsellTotal = selectedUpsells.reduce((sum, id) => {
+      const upsell = UPSELLS.find((u) => u.id === id)
+      return sum + (upsell?.price || 0)
+    }, 0)
+    return basePrice + upsellTotal
+  }
+
   const handlePurchase = async () => {
     if (!preview) return
 
@@ -81,190 +116,241 @@ function ReportPageContent() {
           address: preview.address,
           lat: preview.lat,
           lng: preview.lng,
+          upsells: selectedUpsells,
         }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create checkout session')
+        throw new Error(data.error || 'Failed to create checkout')
       }
 
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        throw new Error('No checkout URL returned')
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to start checkout')
+      // Redirect to Stripe Checkout
+      window.location.href = data.url
+    } catch (error: any) {
+      console.error('Purchase error:', error)
+      alert(error.message || 'Failed to start checkout. Please try again.')
       setCheckoutLoading(false)
     }
   }
 
-  const getRiskColor = (risk?: string) => {
-    switch (risk) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200'
-      case 'medium': return 'text-amber-600 bg-amber-50 border-amber-200'
-      case 'low': return 'text-emerald-600 bg-emerald-50 border-emerald-200'
-      default: return 'text-gray-600 bg-gray-50 border-gray-200'
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Property Septic Status & Location Report
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+      {/* Header */}
+      <header className="border-b bg-white">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-bold text-green-600">
+            TankFindr
+          </Link>
+          <Link href="/">
+            <Button variant="ghost">Back to Home</Button>
+          </Link>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        {/* Search Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">
+            Property Septic Report
           </h1>
-          <p className="text-xl text-gray-600">
-            Get detailed septic system information for any property - $19
+          <p className="text-xl text-gray-600 mb-8">
+            Get instant septic tank location, system details, and property wastewater status
           </p>
+
+          <Card className="p-6">
+            <div className="flex gap-4">
+              <Input
+                placeholder="Enter property address..."
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleCheck()}
+                className="flex-1 text-lg"
+                disabled={loading}
+              />
+              <Button onClick={handleCheck} disabled={loading} size="lg">
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Checking...
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="w-5 h-5 mr-2" />
+                    Check Address
+                  </>
+                )}
+              </Button>
+            </div>
+            {error && (
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-red-800">{error}</p>
+              </div>
+            )}
+          </Card>
         </div>
 
-        {/* Address Search */}
-        <Card className="p-6 mb-8">
-          <div className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Enter property address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleCheck()}
-              className="flex-1"
-              disabled={loading}
-            />
-            <Button
-              onClick={handleCheck}
-              disabled={loading || !address.trim()}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-8"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Checking...
-                </>
-              ) : (
-                'Check Address'
-              )}
-            </Button>
+        {/* Preview Section */}
+        {preview && (
+          <div className="space-y-6">
+            {/* Basic Info Preview */}
+            <Card className="p-6">
+              <h2 className="text-2xl font-bold mb-4">Property Preview</h2>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600">Address</p>
+                  <p className="text-lg font-medium">{preview.address}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">Wastewater System</p>
+                  <p className="text-lg font-bold">
+                    {preview.classification === 'septic' ? (
+                      <span className="text-orange-600">🟠 Septic System</span>
+                    ) : preview.classification === 'sewer' ? (
+                      <span className="text-blue-600">🔵 Public Sewer</span>
+                    ) : (
+                      <span className="text-gray-600">⚪ Unknown</span>
+                    )}
+                  </p>
+                </div>
+                {preview.isCovered && (
+                  <div>
+                    <p className="text-sm text-gray-600">Data Available</p>
+                    <p className="text-lg font-medium text-green-600 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      County records available for this property
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            {/* Blurred Map Preview */}
+            <Card className="p-6 relative">
+              <div className="absolute inset-0 bg-white/80 backdrop-blur-md z-10 flex items-center justify-center rounded-lg">
+                <div className="text-center p-8">
+                  <Lock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-2xl font-bold mb-2">Unlock Full Report</h3>
+                  <p className="text-gray-600 mb-4">
+                    See exact GPS coordinates, interactive map, system details, and more
+                  </p>
+                </div>
+              </div>
+              <div className="blur-sm">
+                <div className="bg-gray-200 h-96 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-16 h-16 text-gray-400" />
+                </div>
+              </div>
+            </Card>
+
+            {/* Upsells */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Add More Insights (Optional)</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                {UPSELLS.map((upsell) => {
+                  const Icon = upsell.icon
+                  const isSelected = selectedUpsells.includes(upsell.id)
+                  return (
+                    <Card
+                      key={upsell.id}
+                      className={`p-4 cursor-pointer transition-all ${
+                        isSelected ? 'border-2 border-green-600 bg-green-50' : 'hover:border-gray-400'
+                      }`}
+                      onClick={() => toggleUpsell(upsell.id)}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`p-2 rounded-lg ${isSelected ? 'bg-green-600' : 'bg-gray-200'}`}>
+                          <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-gray-600'}`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <h4 className="font-bold">{upsell.name}</h4>
+                            <span className="font-bold text-green-600">+${upsell.price}</span>
+                          </div>
+                          <p className="text-sm text-gray-600">{upsell.description}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Purchase CTA */}
+            <Card className="p-8 bg-gradient-to-r from-green-600 to-blue-600 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold mb-2">Get Your Full Report</h3>
+                  <p className="text-green-100 mb-4">
+                    Instant access • No account required • Downloadable PDF
+                  </p>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      Exact GPS coordinates
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      Interactive satellite map
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      System type & permit info
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
+                      Age estimate & risk assessment
+                    </li>
+                  </ul>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm mb-2">Total</p>
+                  <p className="text-5xl font-bold mb-4">${calculateTotal()}</p>
+                  <Button
+                    size="lg"
+                    onClick={handlePurchase}
+                    disabled={checkoutLoading}
+                    className="bg-white text-green-600 hover:bg-gray-100"
+                  >
+                    {checkoutLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Loading...
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="w-5 h-5 mr-2" />
+                        Unlock Report
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </Card>
           </div>
-        </Card>
-
-        {/* Error */}
-        {error && (
-          <Card className="p-6 mb-8 bg-red-50 border-red-200">
-            <p className="text-red-800">{error}</p>
-          </Card>
         )}
 
-        {/* Preview */}
-        {preview && preview.isCovered && (
-          <Card className="p-8 mb-8">
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
-                <CheckCircle className="w-8 h-8 text-emerald-600" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                We Found Septic Data for This Property!
-              </h2>
-              <p className="text-gray-600">{preview.address}</p>
-            </div>
-
-            {/* Preview Info */}
-            <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Classification</h3>
-                <p className="text-lg capitalize">
-                  {preview.classification.replace('_', ' ')}
-                </p>
-              </div>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">Confidence</h3>
-                <p className="text-lg capitalize">{preview.confidence}</p>
-              </div>
-            </div>
-
-            {/* What You'll Get */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-              <h3 className="font-bold text-lg text-gray-900 mb-4">
-                Your Full Report Includes:
-              </h3>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <MapPin className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Exact GPS coordinates of septic tank location</span>
-                </li>
-                <li className="flex items-start">
-                  <FileText className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>System type, permit number, and installation date</span>
-                </li>
-                <li className="flex items-start">
-                  <AlertTriangle className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Age estimate and risk assessment</span>
-                </li>
-                <li className="flex items-start">
-                  <Download className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>Downloadable PDF report</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Purchase Button */}
-            <Button
-              onClick={handlePurchase}
-              disabled={checkoutLoading}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-lg py-6"
-            >
-              {checkoutLoading ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Loading Checkout...
-                </>
-              ) : (
-                <>
-                  Get Full Report - $19
-                </>
-              )}
-            </Button>
-
-            <p className="text-center text-sm text-gray-600 mt-4">
-              One-time payment • Instant access • No subscription required
-            </p>
-          </Card>
-        )}
-
-        {/* Not Covered */}
-        {preview && !preview.isCovered && (
-          <Card className="p-8 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-              <AlertTriangle className="w-8 h-8 text-gray-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Area Not Yet Covered
-            </h2>
-            <p className="text-gray-600 mb-6">
-              We don't have data for this county yet, but we're adding new areas every week!
-            </p>
-            <Link href="/coverage">
-              <Button variant="outline">
-                See Coverage Areas
-              </Button>
-            </Link>
-          </Card>
-        )}
-
-        {/* For Septic Companies */}
-        <div className="text-center mt-8 p-6 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-700 mb-3">
-            <strong>Septic company?</strong> Get unlimited lookups with TankFindr Pro
+        {/* Trust Signals */}
+        <div className="mt-12 text-center">
+          <p className="text-sm text-gray-600 mb-4">
+            Trusted by homeowners, realtors, and home inspectors
           </p>
-          <Link href="/pricing">
-            <Button variant="outline">
-              View Pro Plans
-            </Button>
-          </Link>
+          <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>Government Data</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>Instant Access</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              <span>Secure Payment</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

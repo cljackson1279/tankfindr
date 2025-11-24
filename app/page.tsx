@@ -1,227 +1,327 @@
-import Link from 'next/link'
+'use client'
+
+import { useState } from 'react'
+import { MapPin, Building2, Home, TrendingUp, Zap, Shield, CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Check, MapPin, Zap, Shield } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import Link from 'next/link'
 import SewerOrSepticWidget from '@/components/SewerOrSepticWidget'
 
+const COVERAGE_STATES = [
+  {
+    name: 'Florida',
+    counties: ['Miami-Dade', 'Sarasota', 'Peace River Basin', 'All 67 Counties'],
+    records: '1.9M+',
+  },
+  {
+    name: 'New Mexico',
+    counties: ['Statewide Coverage'],
+    records: '60K+',
+  },
+  {
+    name: 'California',
+    counties: ['Sonoma', 'Sacramento'],
+    records: '5K+',
+  },
+  {
+    name: 'Virginia',
+    counties: ['Fairfax County'],
+    records: '22K+',
+  },
+]
+
 export default function HomePage() {
+  const [activePath, setActivePath] = useState<'pro' | 'consumer' | null>(null)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-green-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-              TF
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">TankFindr</h1>
-              <p className="text-xs text-gray-500">AI Septic Tank Locator</p>
-            </div>
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            TankFindr
           </div>
-          <div className="flex gap-3">
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="/coverage" className="text-gray-600 hover:text-gray-900">
+              Coverage
+            </Link>
+            <Link href="/pricing-pro" className="text-gray-600 hover:text-gray-900">
+              Pro Pricing
+            </Link>
+            <Link href="/faq" className="text-gray-600 hover:text-gray-900">
+              FAQ
+            </Link>
             <Link href="/auth/login">
-              <Button variant="outline">Login</Button>
+              <Button variant="ghost">Sign In</Button>
             </Link>
-            <Link href="/auth/sign-up">
-              <Button className="bg-emerald-600 hover:bg-emerald-700">
-                Sign Up Free
-              </Button>
-            </Link>
-          </div>
+          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-          Find Septic Tanks in{' '}
-          <span className="text-emerald-600">5 Minutes</span>
+      <section className="container mx-auto px-4 py-16 text-center">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          Locate Septic Tanks Instantly<br />
+          <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+            Accurate Data for 12+ States
+          </span>
         </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-          Stop wasting hours searching for buried septic tanks. Get GPS-accurate
-          locations from real county records in seconds. 2M+ tanks mapped across
-          Florida, California, Virginia, and 9 more states.
+        <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto">
+          TankFindr helps septic companies, realtors, homeowners, and homebuyers identify septic tank locations, 
+          septic vs sewer status, system age, risk, and permit history — powered by county records and geospatial intelligence.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link href="/auth/sign-up">
-            <Button
-              size="lg"
-              className="bg-emerald-600 hover:bg-emerald-700 text-lg px-8 py-6"
-            >
-              Start Free Trial
-            </Button>
-          </Link>
-          <Link href="/pricing">
-            <Button
-              size="lg"
-              variant="outline"
-              className="text-lg px-8 py-6"
-            >
-              View Pricing
-            </Button>
-          </Link>
-        </div>
-        <p className="text-emerald-600 font-semibold">
-          🎉 Try it free - Check any address below
-        </p>
-      </section>
-
-      {/* Sewer or Septic Widget */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <SewerOrSepticWidget />
-      </section>
-
-      {/* Features Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-          Why TankFindr?
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-            <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-emerald-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
-              Lightning Fast
-            </h3>
-            <p className="text-gray-600">
-              Get results in 5 minutes instead of spending 3+ hours manually
-              searching. Save time and increase your daily job capacity.
-            </p>
+        <div className="flex items-center justify-center gap-8 text-sm text-gray-600 mb-12">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span>2.3M+ Tanks Mapped</span>
           </div>
-
-          <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-            <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-              <Shield className="w-6 h-6 text-emerald-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
-              Real County Data
-            </h3>
-            <p className="text-gray-600">
-              GPS coordinates from official county GIS databases. Not AI guesses -
-              real permit records with 90%+ accuracy within 5-15 meters.
-            </p>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span>12 States Covered</span>
           </div>
-
-          <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-            <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-4">
-              <MapPin className="w-6 h-6 text-emerald-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
-              Field-Ready
-            </h3>
-            <p className="text-gray-600">
-              One-tap Google Maps navigation. Offline cache for last 50
-              searches. Glove-friendly UI designed for field work.
-            </p>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span>Government Data</span>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="bg-gray-50 py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            How It Works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                1
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Enter Address
-              </h3>
-              <p className="text-gray-600">
-                Simply type in the property address where you need to locate a
-                septic tank.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                2
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                AI Analysis
-              </h3>
-              <p className="text-gray-600">
-                Our AI analyzes satellite imagery to identify the most likely
-                tank location.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
-                3
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Navigate & Dig
-              </h3>
-              <p className="text-gray-600">
-                Get GPS coordinates with confidence score. One-tap navigation to
-                the exact location.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <h2 className="text-4xl font-bold text-gray-900 mb-6">
-          Ready to Save 3 Hours Per Job?
-        </h2>
-        <p className="text-xl text-gray-600 mb-8">
-          Join septic professionals who are already using TankFindr
-        </p>
-        <Link href="/auth/sign-up">
-          <Button
-            size="lg"
-            className="bg-emerald-600 hover:bg-emerald-700 text-lg px-8 py-6"
+      {/* Choose Your Path */}
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-center mb-12">Choose Your Path</h2>
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Pro Path */}
+          <Card
+            className={`p-8 cursor-pointer transition-all hover:shadow-xl ${
+              activePath === 'pro' ? 'border-2 border-blue-600 shadow-xl' : ''
+            }`}
+            onMouseEnter={() => setActivePath('pro')}
+            onMouseLeave={() => setActivePath(null)}
           >
-            Start Free Trial Now
-          </Button>
-        </Link>
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building2 className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">For Septic Companies</h3>
+              <p className="text-gray-600">Subscription Plans</p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <p className="text-center text-gray-700">
+                Locate septic tanks faster. Improve job efficiency. Reduce digging time. Increase revenue per technician.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2">
+                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm">300-1,500+ lookups per month</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm">Job history & analytics</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  <span className="text-sm">Multi-user team access</span>
+                </li>
+              </ul>
+            </div>
+
+            <Link href="/pricing-pro">
+              <Button className="w-full" size="lg">
+                Start Pro Subscription
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <p className="text-center text-sm text-gray-600 mt-4">
+              From $99/month • 30-day money-back guarantee
+            </p>
+          </Card>
+
+          {/* Consumer Path */}
+          <Card
+            className={`p-8 cursor-pointer transition-all hover:shadow-xl ${
+              activePath === 'consumer' ? 'border-2 border-green-600 shadow-xl' : ''
+            }`}
+            onMouseEnter={() => setActivePath('consumer')}
+            onMouseLeave={() => setActivePath(null)}
+          >
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Home className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">For Homeowners & Realtors</h3>
+              <p className="text-gray-600">One-Time Reports</p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <p className="text-center text-gray-700">
+                Is this home on septic? Where is the tank? Unlock the full septic property report instantly.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-sm">Exact GPS tank location</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-sm">Septic vs sewer status</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <span className="text-sm">System age & risk assessment</span>
+                </li>
+              </ul>
+            </div>
+
+            <Link href="/report">
+              <Button className="w-full bg-green-600 hover:bg-green-700" size="lg">
+                Get Property Report ($19)
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <p className="text-center text-sm text-gray-600 mt-4">
+              No account required • Instant access • Downloadable
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      {/* Free Widget */}
+      <section className="container mx-auto px-4 py-16 bg-gradient-to-r from-blue-50 to-green-50 rounded-3xl my-16">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-4">
+            Free Quick Check: Sewer or Septic?
+          </h2>
+          <p className="text-center text-gray-600 mb-8">
+            Enter any address to instantly check if it's on septic or sewer — no signup required
+          </p>
+          <SewerOrSepticWidget />
+        </div>
+      </section>
+
+      {/* Coverage Section (SEO Optimized) */}
+      <section className="container mx-auto px-4 py-16">
+        <h2 className="text-3xl font-bold text-center mb-4">
+          Septic Tank Locator Coverage
+        </h2>
+        <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+          TankFindr provides GPS-accurate septic tank locations, permit data, and septic/sewer status 
+          from government records across multiple states and growing.
+        </p>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {COVERAGE_STATES.map((state) => (
+            <Card key={state.name} className="p-6">
+              <h3 className="text-xl font-bold mb-2">{state.name}</h3>
+              <p className="text-3xl font-bold text-blue-600 mb-3">{state.records}</p>
+              <p className="text-sm text-gray-600 mb-4">septic systems mapped</p>
+              <ul className="space-y-1">
+                {state.counties.map((county) => (
+                  <li key={county} className="text-sm text-gray-700 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                    {county}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link href="/coverage">
+            <Button variant="outline" size="lg">
+              View Full Coverage Map
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+
+      {/* SEO Content Blocks */}
+      <section className="container mx-auto px-4 py-16 bg-gray-50 rounded-3xl">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div>
+            <h2 className="text-2xl font-bold mb-4">
+              Septic Tank Locator – Florida (Miami-Dade, Sarasota, Peace River Basin)
+            </h2>
+            <p className="text-gray-700">
+              TankFindr provides comprehensive septic tank location data for all 67 counties in Florida, 
+              including Miami-Dade, Broward, Palm Beach, Sarasota, and more. Access 1.9+ million septic 
+              system records with GPS coordinates, permit history, and system classification.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold mb-4">
+              Septic Lookup & Septic/Sewer Status – New Mexico (Statewide)
+            </h2>
+            <p className="text-gray-700">
+              Complete statewide coverage for New Mexico with 60,000+ septic system records. Instantly 
+              determine if a property is on septic or sewer, locate tanks, and access permit information 
+              from state and county environmental departments.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold mb-4">
+              Septic Permit + Tank Location – California (Sonoma & Sacramento)
+            </h2>
+            <p className="text-gray-700">
+              Access septic tank locations and permit data for Sonoma County and Sacramento County in 
+              California. Our database includes GPS-accurate coordinates, system types, and historical 
+              permit information from county environmental health departments.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold mb-4">
+              Septic System Data – Fairfax County, Virginia
+            </h2>
+            <p className="text-gray-700">
+              Comprehensive septic tank location data for Fairfax County, Virginia, with 22,000+ mapped 
+              systems. Includes exact GPS coordinates, drain field locations, and permit records from 
+              the Fairfax County Health Department.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                TF
-              </div>
-              <span className="text-xl font-bold">TankFindr</span>
+      <footer className="border-t bg-white mt-16">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li><Link href="/coverage" className="text-gray-600 hover:text-gray-900">Coverage</Link></li>
+                <li><Link href="/pricing-pro" className="text-gray-600 hover:text-gray-900">Pro Pricing</Link></li>
+                <li><Link href="/report" className="text-gray-600 hover:text-gray-900">Property Reports</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Company</h3>
+              <ul className="space-y-2">
+                <li><Link href="/faq" className="text-gray-600 hover:text-gray-900">FAQ</Link></li>
+                <li><Link href="/privacy" className="text-gray-600 hover:text-gray-900">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="text-gray-600 hover:text-gray-900">Terms & Conditions</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Support</h3>
+              <ul className="space-y-2">
+                <li><a href="mailto:support@tankfindr.com" className="text-gray-600 hover:text-gray-900">Contact Us</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">TankFindr</h3>
+              <p className="text-gray-600 text-sm">
+                GPS-accurate septic tank locations powered by government records and geospatial intelligence.
+              </p>
             </div>
           </div>
-          
-          <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm">
-            <Link href="/coverage" className="text-gray-400 hover:text-white transition-colors">
-              Coverage
-            </Link>
-            <Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">
-              Pricing
-            </Link>
-            <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
-              FAQ
-            </Link>
-            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
-              Terms & Conditions
-            </Link>
-            <a href="mailto:support@tankfindr.com" className="text-gray-400 hover:text-white transition-colors">
-              Contact
-            </a>
-          </div>
-          
-          <p className="text-gray-400 text-center text-sm">
+          <div className="border-t pt-8 text-center text-gray-600 text-sm">
             © 2025 TankFindr. All rights reserved.
-          </p>
+          </div>
         </div>
       </footer>
     </div>

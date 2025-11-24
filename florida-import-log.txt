@@ -1,0 +1,2794 @@
+nohup: ignoring input
+🚀 Resuming Florida Statewide Import...
+
+📊 Current Florida records in database: 0
+📋 Remaining to import: 1,939,334 records
+📦 Batches to process: 1940
+⏱️  Estimated time: 65 minutes
+
+
+📥 Fetching batch 1/1940 (offset: 0)...
+✅ Batch 1/1940: 1000 records imported
+
+📥 Fetching batch 2/1940 (offset: 1000)...
+✅ Batch 2/1940: 1000 records imported
+
+📥 Fetching batch 3/1940 (offset: 2000)...
+✅ Batch 3/1940: 1000 records imported
+
+📥 Fetching batch 4/1940 (offset: 3000)...
+✅ Batch 4/1940: 1000 records imported
+
+📥 Fetching batch 5/1940 (offset: 4000)...
+✅ Batch 5/1940: 1000 records imported
+
+📥 Fetching batch 6/1940 (offset: 5000)...
+✅ Batch 6/1940: 1000 records imported
+
+📥 Fetching batch 7/1940 (offset: 6000)...
+✅ Batch 7/1940: 1000 records imported
+
+📥 Fetching batch 8/1940 (offset: 7000)...
+✅ Batch 8/1940: 1000 records imported
+
+📥 Fetching batch 9/1940 (offset: 8000)...
+✅ Batch 9/1940: 1000 records imported
+
+📥 Fetching batch 10/1940 (offset: 9000)...
+✅ Batch 10/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 10,000 / 1,939,334
+   Rate: 324 records/sec
+   ETA: 99 minutes
+
+
+📥 Fetching batch 11/1940 (offset: 10000)...
+✅ Batch 11/1940: 1000 records imported
+
+📥 Fetching batch 12/1940 (offset: 11000)...
+✅ Batch 12/1940: 1000 records imported
+
+📥 Fetching batch 13/1940 (offset: 12000)...
+✅ Batch 13/1940: 1000 records imported
+
+📥 Fetching batch 14/1940 (offset: 13000)...
+✅ Batch 14/1940: 1000 records imported
+
+📥 Fetching batch 15/1940 (offset: 14000)...
+✅ Batch 15/1940: 1000 records imported
+
+📥 Fetching batch 16/1940 (offset: 15000)...
+✅ Batch 16/1940: 1000 records imported
+
+📥 Fetching batch 17/1940 (offset: 16000)...
+✅ Batch 17/1940: 1000 records imported
+
+📥 Fetching batch 18/1940 (offset: 17000)...
+✅ Batch 18/1940: 1000 records imported
+
+📥 Fetching batch 19/1940 (offset: 18000)...
+✅ Batch 19/1940: 1000 records imported
+
+📥 Fetching batch 20/1940 (offset: 19000)...
+✅ Batch 20/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 20,000 / 1,939,334
+   Rate: 278 records/sec
+   ETA: 115 minutes
+
+
+📥 Fetching batch 21/1940 (offset: 20000)...
+✅ Batch 21/1940: 1000 records imported
+
+📥 Fetching batch 22/1940 (offset: 21000)...
+✅ Batch 22/1940: 1000 records imported
+
+📥 Fetching batch 23/1940 (offset: 22000)...
+✅ Batch 23/1940: 1000 records imported
+
+📥 Fetching batch 24/1940 (offset: 23000)...
+✅ Batch 24/1940: 1000 records imported
+
+📥 Fetching batch 25/1940 (offset: 24000)...
+✅ Batch 25/1940: 1000 records imported
+
+📥 Fetching batch 26/1940 (offset: 25000)...
+✅ Batch 26/1940: 1000 records imported
+
+📥 Fetching batch 27/1940 (offset: 26000)...
+✅ Batch 27/1940: 1000 records imported
+
+📥 Fetching batch 28/1940 (offset: 27000)...
+✅ Batch 28/1940: 1000 records imported
+
+📥 Fetching batch 29/1940 (offset: 28000)...
+✅ Batch 29/1940: 1000 records imported
+
+📥 Fetching batch 30/1940 (offset: 29000)...
+✅ Batch 30/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 30,000 / 1,939,334
+   Rate: 258 records/sec
+   ETA: 123 minutes
+
+
+📥 Fetching batch 31/1940 (offset: 30000)...
+✅ Batch 31/1940: 1000 records imported
+
+📥 Fetching batch 32/1940 (offset: 31000)...
+✅ Batch 32/1940: 1000 records imported
+
+📥 Fetching batch 33/1940 (offset: 32000)...
+✅ Batch 33/1940: 1000 records imported
+
+📥 Fetching batch 34/1940 (offset: 33000)...
+✅ Batch 34/1940: 1000 records imported
+
+📥 Fetching batch 35/1940 (offset: 34000)...
+✅ Batch 35/1940: 1000 records imported
+
+📥 Fetching batch 36/1940 (offset: 35000)...
+✅ Batch 36/1940: 1000 records imported
+
+📥 Fetching batch 37/1940 (offset: 36000)...
+✅ Batch 37/1940: 1000 records imported
+
+📥 Fetching batch 38/1940 (offset: 37000)...
+✅ Batch 38/1940: 1000 records imported
+
+📥 Fetching batch 39/1940 (offset: 38000)...
+✅ Batch 39/1940: 1000 records imported
+
+📥 Fetching batch 40/1940 (offset: 39000)...
+✅ Batch 40/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 40,000 / 1,939,334
+   Rate: 272 records/sec
+   ETA: 116 minutes
+
+
+📥 Fetching batch 41/1940 (offset: 40000)...
+✅ Batch 41/1940: 1000 records imported
+
+📥 Fetching batch 42/1940 (offset: 41000)...
+✅ Batch 42/1940: 1000 records imported
+
+📥 Fetching batch 43/1940 (offset: 42000)...
+✅ Batch 43/1940: 1000 records imported
+
+📥 Fetching batch 44/1940 (offset: 43000)...
+✅ Batch 44/1940: 1000 records imported
+
+📥 Fetching batch 45/1940 (offset: 44000)...
+✅ Batch 45/1940: 1000 records imported
+
+📥 Fetching batch 46/1940 (offset: 45000)...
+✅ Batch 46/1940: 1000 records imported
+
+📥 Fetching batch 47/1940 (offset: 46000)...
+✅ Batch 47/1940: 1000 records imported
+
+📥 Fetching batch 48/1940 (offset: 47000)...
+✅ Batch 48/1940: 1000 records imported
+
+📥 Fetching batch 49/1940 (offset: 48000)...
+✅ Batch 49/1940: 1000 records imported
+
+📥 Fetching batch 50/1940 (offset: 49000)...
+✅ Batch 50/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 50,000 / 1,939,334
+   Rate: 279 records/sec
+   ETA: 113 minutes
+
+
+📥 Fetching batch 51/1940 (offset: 50000)...
+✅ Batch 51/1940: 1000 records imported
+
+📥 Fetching batch 52/1940 (offset: 51000)...
+✅ Batch 52/1940: 1000 records imported
+
+📥 Fetching batch 53/1940 (offset: 52000)...
+✅ Batch 53/1940: 1000 records imported
+
+📥 Fetching batch 54/1940 (offset: 53000)...
+✅ Batch 54/1940: 1000 records imported
+
+📥 Fetching batch 55/1940 (offset: 54000)...
+✅ Batch 55/1940: 1000 records imported
+
+📥 Fetching batch 56/1940 (offset: 55000)...
+✅ Batch 56/1940: 1000 records imported
+
+📥 Fetching batch 57/1940 (offset: 56000)...
+✅ Batch 57/1940: 1000 records imported
+
+📥 Fetching batch 58/1940 (offset: 57000)...
+✅ Batch 58/1940: 1000 records imported
+
+📥 Fetching batch 59/1940 (offset: 58000)...
+✅ Batch 59/1940: 1000 records imported
+
+📥 Fetching batch 60/1940 (offset: 59000)...
+✅ Batch 60/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 60,000 / 1,939,334
+   Rate: 285 records/sec
+   ETA: 110 minutes
+
+
+📥 Fetching batch 61/1940 (offset: 60000)...
+✅ Batch 61/1940: 1000 records imported
+
+📥 Fetching batch 62/1940 (offset: 61000)...
+✅ Batch 62/1940: 1000 records imported
+
+📥 Fetching batch 63/1940 (offset: 62000)...
+✅ Batch 63/1940: 1000 records imported
+
+📥 Fetching batch 64/1940 (offset: 63000)...
+✅ Batch 64/1940: 1000 records imported
+
+📥 Fetching batch 65/1940 (offset: 64000)...
+✅ Batch 65/1940: 1000 records imported
+
+📥 Fetching batch 66/1940 (offset: 65000)...
+✅ Batch 66/1940: 1000 records imported
+
+📥 Fetching batch 67/1940 (offset: 66000)...
+✅ Batch 67/1940: 1000 records imported
+
+📥 Fetching batch 68/1940 (offset: 67000)...
+✅ Batch 68/1940: 1000 records imported
+
+📥 Fetching batch 69/1940 (offset: 68000)...
+✅ Batch 69/1940: 1000 records imported
+
+📥 Fetching batch 70/1940 (offset: 69000)...
+✅ Batch 70/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 70,000 / 1,939,334
+   Rate: 289 records/sec
+   ETA: 108 minutes
+
+
+📥 Fetching batch 71/1940 (offset: 70000)...
+✅ Batch 71/1940: 1000 records imported
+
+📥 Fetching batch 72/1940 (offset: 71000)...
+✅ Batch 72/1940: 1000 records imported
+
+📥 Fetching batch 73/1940 (offset: 72000)...
+✅ Batch 73/1940: 1000 records imported
+
+📥 Fetching batch 74/1940 (offset: 73000)...
+✅ Batch 74/1940: 1000 records imported
+
+📥 Fetching batch 75/1940 (offset: 74000)...
+✅ Batch 75/1940: 1000 records imported
+
+📥 Fetching batch 76/1940 (offset: 75000)...
+✅ Batch 76/1940: 1000 records imported
+
+📥 Fetching batch 77/1940 (offset: 76000)...
+✅ Batch 77/1940: 1000 records imported
+
+📥 Fetching batch 78/1940 (offset: 77000)...
+✅ Batch 78/1940: 1000 records imported
+
+📥 Fetching batch 79/1940 (offset: 78000)...
+✅ Batch 79/1940: 1000 records imported
+
+📥 Fetching batch 80/1940 (offset: 79000)...
+✅ Batch 80/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 80,000 / 1,939,334
+   Rate: 283 records/sec
+   ETA: 109 minutes
+
+
+📥 Fetching batch 81/1940 (offset: 80000)...
+✅ Batch 81/1940: 1000 records imported
+
+📥 Fetching batch 82/1940 (offset: 81000)...
+✅ Batch 82/1940: 1000 records imported
+
+📥 Fetching batch 83/1940 (offset: 82000)...
+✅ Batch 83/1940: 1000 records imported
+
+📥 Fetching batch 84/1940 (offset: 83000)...
+✅ Batch 84/1940: 1000 records imported
+
+📥 Fetching batch 85/1940 (offset: 84000)...
+✅ Batch 85/1940: 1000 records imported
+
+📥 Fetching batch 86/1940 (offset: 85000)...
+✅ Batch 86/1940: 1000 records imported
+
+📥 Fetching batch 87/1940 (offset: 86000)...
+✅ Batch 87/1940: 1000 records imported
+
+📥 Fetching batch 88/1940 (offset: 87000)...
+✅ Batch 88/1940: 1000 records imported
+
+📥 Fetching batch 89/1940 (offset: 88000)...
+✅ Batch 89/1940: 1000 records imported
+
+📥 Fetching batch 90/1940 (offset: 89000)...
+✅ Batch 90/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 90,000 / 1,939,334
+   Rate: 286 records/sec
+   ETA: 108 minutes
+
+
+📥 Fetching batch 91/1940 (offset: 90000)...
+✅ Batch 91/1940: 1000 records imported
+
+📥 Fetching batch 92/1940 (offset: 91000)...
+✅ Batch 92/1940: 1000 records imported
+
+📥 Fetching batch 93/1940 (offset: 92000)...
+✅ Batch 93/1940: 1000 records imported
+
+📥 Fetching batch 94/1940 (offset: 93000)...
+✅ Batch 94/1940: 1000 records imported
+
+📥 Fetching batch 95/1940 (offset: 94000)...
+✅ Batch 95/1940: 1000 records imported
+
+📥 Fetching batch 96/1940 (offset: 95000)...
+✅ Batch 96/1940: 1000 records imported
+
+📥 Fetching batch 97/1940 (offset: 96000)...
+✅ Batch 97/1940: 1000 records imported
+
+📥 Fetching batch 98/1940 (offset: 97000)...
+✅ Batch 98/1940: 1000 records imported
+
+📥 Fetching batch 99/1940 (offset: 98000)...
+✅ Batch 99/1940: 1000 records imported
+
+📥 Fetching batch 100/1940 (offset: 99000)...
+✅ Batch 100/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 100,000 / 1,939,334
+   Rate: 288 records/sec
+   ETA: 106 minutes
+
+
+📥 Fetching batch 101/1940 (offset: 100000)...
+✅ Batch 101/1940: 1000 records imported
+
+📥 Fetching batch 102/1940 (offset: 101000)...
+✅ Batch 102/1940: 1000 records imported
+
+📥 Fetching batch 103/1940 (offset: 102000)...
+✅ Batch 103/1940: 1000 records imported
+
+📥 Fetching batch 104/1940 (offset: 103000)...
+✅ Batch 104/1940: 1000 records imported
+
+📥 Fetching batch 105/1940 (offset: 104000)...
+✅ Batch 105/1940: 1000 records imported
+
+📥 Fetching batch 106/1940 (offset: 105000)...
+✅ Batch 106/1940: 1000 records imported
+
+📥 Fetching batch 107/1940 (offset: 106000)...
+✅ Batch 107/1940: 1000 records imported
+
+📥 Fetching batch 108/1940 (offset: 107000)...
+✅ Batch 108/1940: 1000 records imported
+
+📥 Fetching batch 109/1940 (offset: 108000)...
+✅ Batch 109/1940: 1000 records imported
+
+📥 Fetching batch 110/1940 (offset: 109000)...
+✅ Batch 110/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 110,000 / 1,939,334
+   Rate: 289 records/sec
+   ETA: 105 minutes
+
+
+📥 Fetching batch 111/1940 (offset: 110000)...
+✅ Batch 111/1940: 1000 records imported
+
+📥 Fetching batch 112/1940 (offset: 111000)...
+✅ Batch 112/1940: 1000 records imported
+
+📥 Fetching batch 113/1940 (offset: 112000)...
+✅ Batch 113/1940: 1000 records imported
+
+📥 Fetching batch 114/1940 (offset: 113000)...
+✅ Batch 114/1940: 1000 records imported
+
+📥 Fetching batch 115/1940 (offset: 114000)...
+✅ Batch 115/1940: 1000 records imported
+
+📥 Fetching batch 116/1940 (offset: 115000)...
+✅ Batch 116/1940: 1000 records imported
+
+📥 Fetching batch 117/1940 (offset: 116000)...
+✅ Batch 117/1940: 1000 records imported
+
+📥 Fetching batch 118/1940 (offset: 117000)...
+✅ Batch 118/1940: 1000 records imported
+
+📥 Fetching batch 119/1940 (offset: 118000)...
+✅ Batch 119/1940: 1000 records imported
+
+📥 Fetching batch 120/1940 (offset: 119000)...
+✅ Batch 120/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 120,000 / 1,939,334
+   Rate: 291 records/sec
+   ETA: 104 minutes
+
+
+📥 Fetching batch 121/1940 (offset: 120000)...
+✅ Batch 121/1940: 1000 records imported
+
+📥 Fetching batch 122/1940 (offset: 121000)...
+✅ Batch 122/1940: 1000 records imported
+
+📥 Fetching batch 123/1940 (offset: 122000)...
+✅ Batch 123/1940: 1000 records imported
+
+📥 Fetching batch 124/1940 (offset: 123000)...
+✅ Batch 124/1940: 1000 records imported
+
+📥 Fetching batch 125/1940 (offset: 124000)...
+✅ Batch 125/1940: 1000 records imported
+
+📥 Fetching batch 126/1940 (offset: 125000)...
+✅ Batch 126/1940: 1000 records imported
+
+📥 Fetching batch 127/1940 (offset: 126000)...
+✅ Batch 127/1940: 1000 records imported
+
+📥 Fetching batch 128/1940 (offset: 127000)...
+✅ Batch 128/1940: 1000 records imported
+
+📥 Fetching batch 129/1940 (offset: 128000)...
+✅ Batch 129/1940: 1000 records imported
+
+📥 Fetching batch 130/1940 (offset: 129000)...
+✅ Batch 130/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 130,000 / 1,939,334
+   Rate: 292 records/sec
+   ETA: 103 minutes
+
+
+📥 Fetching batch 131/1940 (offset: 130000)...
+✅ Batch 131/1940: 1000 records imported
+
+📥 Fetching batch 132/1940 (offset: 131000)...
+✅ Batch 132/1940: 1000 records imported
+
+📥 Fetching batch 133/1940 (offset: 132000)...
+✅ Batch 133/1940: 1000 records imported
+
+📥 Fetching batch 134/1940 (offset: 133000)...
+✅ Batch 134/1940: 1000 records imported
+
+📥 Fetching batch 135/1940 (offset: 134000)...
+✅ Batch 135/1940: 1000 records imported
+
+📥 Fetching batch 136/1940 (offset: 135000)...
+✅ Batch 136/1940: 1000 records imported
+
+📥 Fetching batch 137/1940 (offset: 136000)...
+✅ Batch 137/1940: 1000 records imported
+
+📥 Fetching batch 138/1940 (offset: 137000)...
+✅ Batch 138/1940: 1000 records imported
+
+📥 Fetching batch 139/1940 (offset: 138000)...
+✅ Batch 139/1940: 1000 records imported
+
+📥 Fetching batch 140/1940 (offset: 139000)...
+✅ Batch 140/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 140,000 / 1,939,334
+   Rate: 293 records/sec
+   ETA: 102 minutes
+
+
+📥 Fetching batch 141/1940 (offset: 140000)...
+✅ Batch 141/1940: 1000 records imported
+
+📥 Fetching batch 142/1940 (offset: 141000)...
+✅ Batch 142/1940: 1000 records imported
+
+📥 Fetching batch 143/1940 (offset: 142000)...
+✅ Batch 143/1940: 1000 records imported
+
+📥 Fetching batch 144/1940 (offset: 143000)...
+✅ Batch 144/1940: 1000 records imported
+
+📥 Fetching batch 145/1940 (offset: 144000)...
+✅ Batch 145/1940: 1000 records imported
+
+📥 Fetching batch 146/1940 (offset: 145000)...
+✅ Batch 146/1940: 1000 records imported
+
+📥 Fetching batch 147/1940 (offset: 146000)...
+✅ Batch 147/1940: 1000 records imported
+
+📥 Fetching batch 148/1940 (offset: 147000)...
+✅ Batch 148/1940: 1000 records imported
+
+📥 Fetching batch 149/1940 (offset: 148000)...
+✅ Batch 149/1940: 1000 records imported
+
+📥 Fetching batch 150/1940 (offset: 149000)...
+✅ Batch 150/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 150,000 / 1,939,334
+   Rate: 294 records/sec
+   ETA: 102 minutes
+
+
+📥 Fetching batch 151/1940 (offset: 150000)...
+✅ Batch 151/1940: 1000 records imported
+
+📥 Fetching batch 152/1940 (offset: 151000)...
+✅ Batch 152/1940: 1000 records imported
+
+📥 Fetching batch 153/1940 (offset: 152000)...
+✅ Batch 153/1940: 1000 records imported
+
+📥 Fetching batch 154/1940 (offset: 153000)...
+✅ Batch 154/1940: 1000 records imported
+
+📥 Fetching batch 155/1940 (offset: 154000)...
+✅ Batch 155/1940: 1000 records imported
+
+📥 Fetching batch 156/1940 (offset: 155000)...
+✅ Batch 156/1940: 1000 records imported
+
+📥 Fetching batch 157/1940 (offset: 156000)...
+✅ Batch 157/1940: 1000 records imported
+
+📥 Fetching batch 158/1940 (offset: 157000)...
+✅ Batch 158/1940: 1000 records imported
+
+📥 Fetching batch 159/1940 (offset: 158000)...
+✅ Batch 159/1940: 1000 records imported
+
+📥 Fetching batch 160/1940 (offset: 159000)...
+✅ Batch 160/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 160,000 / 1,939,334
+   Rate: 294 records/sec
+   ETA: 101 minutes
+
+
+📥 Fetching batch 161/1940 (offset: 160000)...
+✅ Batch 161/1940: 1000 records imported
+
+📥 Fetching batch 162/1940 (offset: 161000)...
+✅ Batch 162/1940: 1000 records imported
+
+📥 Fetching batch 163/1940 (offset: 162000)...
+✅ Batch 163/1940: 1000 records imported
+
+📥 Fetching batch 164/1940 (offset: 163000)...
+✅ Batch 164/1940: 1000 records imported
+
+📥 Fetching batch 165/1940 (offset: 164000)...
+✅ Batch 165/1940: 1000 records imported
+
+📥 Fetching batch 166/1940 (offset: 165000)...
+✅ Batch 166/1940: 1000 records imported
+
+📥 Fetching batch 167/1940 (offset: 166000)...
+✅ Batch 167/1940: 1000 records imported
+
+📥 Fetching batch 168/1940 (offset: 167000)...
+✅ Batch 168/1940: 1000 records imported
+
+📥 Fetching batch 169/1940 (offset: 168000)...
+✅ Batch 169/1940: 1000 records imported
+
+📥 Fetching batch 170/1940 (offset: 169000)...
+✅ Batch 170/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 170,000 / 1,939,334
+   Rate: 295 records/sec
+   ETA: 100 minutes
+
+
+📥 Fetching batch 171/1940 (offset: 170000)...
+✅ Batch 171/1940: 1000 records imported
+
+📥 Fetching batch 172/1940 (offset: 171000)...
+✅ Batch 172/1940: 1000 records imported
+
+📥 Fetching batch 173/1940 (offset: 172000)...
+✅ Batch 173/1940: 1000 records imported
+
+📥 Fetching batch 174/1940 (offset: 173000)...
+✅ Batch 174/1940: 1000 records imported
+
+📥 Fetching batch 175/1940 (offset: 174000)...
+✅ Batch 175/1940: 1000 records imported
+
+📥 Fetching batch 176/1940 (offset: 175000)...
+✅ Batch 176/1940: 1000 records imported
+
+📥 Fetching batch 177/1940 (offset: 176000)...
+✅ Batch 177/1940: 1000 records imported
+
+📥 Fetching batch 178/1940 (offset: 177000)...
+✅ Batch 178/1940: 1000 records imported
+
+📥 Fetching batch 179/1940 (offset: 178000)...
+✅ Batch 179/1940: 1000 records imported
+
+📥 Fetching batch 180/1940 (offset: 179000)...
+✅ Batch 180/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 180,000 / 1,939,334
+   Rate: 294 records/sec
+   ETA: 100 minutes
+
+
+📥 Fetching batch 181/1940 (offset: 180000)...
+✅ Batch 181/1940: 1000 records imported
+
+📥 Fetching batch 182/1940 (offset: 181000)...
+✅ Batch 182/1940: 1000 records imported
+
+📥 Fetching batch 183/1940 (offset: 182000)...
+✅ Batch 183/1940: 1000 records imported
+
+📥 Fetching batch 184/1940 (offset: 183000)...
+✅ Batch 184/1940: 1000 records imported
+
+📥 Fetching batch 185/1940 (offset: 184000)...
+✅ Batch 185/1940: 1000 records imported
+
+📥 Fetching batch 186/1940 (offset: 185000)...
+✅ Batch 186/1940: 1000 records imported
+
+📥 Fetching batch 187/1940 (offset: 186000)...
+✅ Batch 187/1940: 1000 records imported
+
+📥 Fetching batch 188/1940 (offset: 187000)...
+✅ Batch 188/1940: 1000 records imported
+
+📥 Fetching batch 189/1940 (offset: 188000)...
+✅ Batch 189/1940: 1000 records imported
+
+📥 Fetching batch 190/1940 (offset: 189000)...
+✅ Batch 190/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 190,000 / 1,939,334
+   Rate: 295 records/sec
+   ETA: 99 minutes
+
+
+📥 Fetching batch 191/1940 (offset: 190000)...
+✅ Batch 191/1940: 1000 records imported
+
+📥 Fetching batch 192/1940 (offset: 191000)...
+✅ Batch 192/1940: 1000 records imported
+
+📥 Fetching batch 193/1940 (offset: 192000)...
+✅ Batch 193/1940: 1000 records imported
+
+📥 Fetching batch 194/1940 (offset: 193000)...
+✅ Batch 194/1940: 1000 records imported
+
+📥 Fetching batch 195/1940 (offset: 194000)...
+✅ Batch 195/1940: 1000 records imported
+
+📥 Fetching batch 196/1940 (offset: 195000)...
+✅ Batch 196/1940: 1000 records imported
+
+📥 Fetching batch 197/1940 (offset: 196000)...
+✅ Batch 197/1940: 1000 records imported
+
+📥 Fetching batch 198/1940 (offset: 197000)...
+✅ Batch 198/1940: 1000 records imported
+
+📥 Fetching batch 199/1940 (offset: 198000)...
+✅ Batch 199/1940: 1000 records imported
+
+📥 Fetching batch 200/1940 (offset: 199000)...
+✅ Batch 200/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 200,000 / 1,939,334
+   Rate: 295 records/sec
+   ETA: 98 minutes
+
+
+📥 Fetching batch 201/1940 (offset: 200000)...
+✅ Batch 201/1940: 1000 records imported
+
+📥 Fetching batch 202/1940 (offset: 201000)...
+✅ Batch 202/1940: 1000 records imported
+
+📥 Fetching batch 203/1940 (offset: 202000)...
+✅ Batch 203/1940: 1000 records imported
+
+📥 Fetching batch 204/1940 (offset: 203000)...
+✅ Batch 204/1940: 1000 records imported
+
+📥 Fetching batch 205/1940 (offset: 204000)...
+✅ Batch 205/1940: 1000 records imported
+
+📥 Fetching batch 206/1940 (offset: 205000)...
+✅ Batch 206/1940: 1000 records imported
+
+📥 Fetching batch 207/1940 (offset: 206000)...
+✅ Batch 207/1940: 1000 records imported
+
+📥 Fetching batch 208/1940 (offset: 207000)...
+✅ Batch 208/1940: 1000 records imported
+
+📥 Fetching batch 209/1940 (offset: 208000)...
+✅ Batch 209/1940: 1000 records imported
+
+📥 Fetching batch 210/1940 (offset: 209000)...
+✅ Batch 210/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 210,000 / 1,939,334
+   Rate: 295 records/sec
+   ETA: 98 minutes
+
+
+📥 Fetching batch 211/1940 (offset: 210000)...
+✅ Batch 211/1940: 1000 records imported
+
+📥 Fetching batch 212/1940 (offset: 211000)...
+✅ Batch 212/1940: 1000 records imported
+
+📥 Fetching batch 213/1940 (offset: 212000)...
+✅ Batch 213/1940: 1000 records imported
+
+📥 Fetching batch 214/1940 (offset: 213000)...
+❌ Error in batch 214: fetch failed
+
+📥 Fetching batch 215/1940 (offset: 214000)...
+✅ Batch 215/1940: 1000 records imported
+
+📥 Fetching batch 216/1940 (offset: 215000)...
+✅ Batch 216/1940: 1000 records imported
+
+📥 Fetching batch 217/1940 (offset: 216000)...
+✅ Batch 217/1940: 1000 records imported
+
+📥 Fetching batch 218/1940 (offset: 217000)...
+✅ Batch 218/1940: 1000 records imported
+
+📥 Fetching batch 219/1940 (offset: 218000)...
+✅ Batch 219/1940: 1000 records imported
+
+📥 Fetching batch 220/1940 (offset: 219000)...
+✅ Batch 220/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 219,000 / 1,939,334
+   Rate: 55 records/sec
+   ETA: 525 minutes
+
+
+📥 Fetching batch 221/1940 (offset: 220000)...
+✅ Batch 221/1940: 1000 records imported
+
+📥 Fetching batch 222/1940 (offset: 221000)...
+✅ Batch 222/1940: 1000 records imported
+
+📥 Fetching batch 223/1940 (offset: 222000)...
+✅ Batch 223/1940: 1000 records imported
+
+📥 Fetching batch 224/1940 (offset: 223000)...
+✅ Batch 224/1940: 1000 records imported
+
+📥 Fetching batch 225/1940 (offset: 224000)...
+✅ Batch 225/1940: 1000 records imported
+
+📥 Fetching batch 226/1940 (offset: 225000)...
+✅ Batch 226/1940: 1000 records imported
+
+📥 Fetching batch 227/1940 (offset: 226000)...
+✅ Batch 227/1940: 1000 records imported
+
+📥 Fetching batch 228/1940 (offset: 227000)...
+✅ Batch 228/1940: 1000 records imported
+
+📥 Fetching batch 229/1940 (offset: 228000)...
+✅ Batch 229/1940: 1000 records imported
+
+📥 Fetching batch 230/1940 (offset: 229000)...
+✅ Batch 230/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 229,000 / 1,939,334
+   Rate: 57 records/sec
+   ETA: 504 minutes
+
+
+📥 Fetching batch 231/1940 (offset: 230000)...
+✅ Batch 231/1940: 1000 records imported
+
+📥 Fetching batch 232/1940 (offset: 231000)...
+✅ Batch 232/1940: 1000 records imported
+
+📥 Fetching batch 233/1940 (offset: 232000)...
+✅ Batch 233/1940: 1000 records imported
+
+📥 Fetching batch 234/1940 (offset: 233000)...
+✅ Batch 234/1940: 1000 records imported
+
+📥 Fetching batch 235/1940 (offset: 234000)...
+✅ Batch 235/1940: 1000 records imported
+
+📥 Fetching batch 236/1940 (offset: 235000)...
+✅ Batch 236/1940: 1000 records imported
+
+📥 Fetching batch 237/1940 (offset: 236000)...
+✅ Batch 237/1940: 1000 records imported
+
+📥 Fetching batch 238/1940 (offset: 237000)...
+✅ Batch 238/1940: 1000 records imported
+
+📥 Fetching batch 239/1940 (offset: 238000)...
+✅ Batch 239/1940: 1000 records imported
+
+📥 Fetching batch 240/1940 (offset: 239000)...
+✅ Batch 240/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 239,000 / 1,939,334
+   Rate: 59 records/sec
+   ETA: 484 minutes
+
+
+📥 Fetching batch 241/1940 (offset: 240000)...
+✅ Batch 241/1940: 1000 records imported
+
+📥 Fetching batch 242/1940 (offset: 241000)...
+✅ Batch 242/1940: 1000 records imported
+
+📥 Fetching batch 243/1940 (offset: 242000)...
+✅ Batch 243/1940: 1000 records imported
+
+📥 Fetching batch 244/1940 (offset: 243000)...
+✅ Batch 244/1940: 1000 records imported
+
+📥 Fetching batch 245/1940 (offset: 244000)...
+✅ Batch 245/1940: 1000 records imported
+
+📥 Fetching batch 246/1940 (offset: 245000)...
+✅ Batch 246/1940: 1000 records imported
+
+📥 Fetching batch 247/1940 (offset: 246000)...
+✅ Batch 247/1940: 1000 records imported
+
+📥 Fetching batch 248/1940 (offset: 247000)...
+✅ Batch 248/1940: 1000 records imported
+
+📥 Fetching batch 249/1940 (offset: 248000)...
+✅ Batch 249/1940: 1000 records imported
+
+📥 Fetching batch 250/1940 (offset: 249000)...
+✅ Batch 250/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 249,000 / 1,939,334
+   Rate: 61 records/sec
+   ETA: 465 minutes
+
+
+📥 Fetching batch 251/1940 (offset: 250000)...
+✅ Batch 251/1940: 1000 records imported
+
+📥 Fetching batch 252/1940 (offset: 251000)...
+✅ Batch 252/1940: 1000 records imported
+
+📥 Fetching batch 253/1940 (offset: 252000)...
+✅ Batch 253/1940: 1000 records imported
+
+📥 Fetching batch 254/1940 (offset: 253000)...
+✅ Batch 254/1940: 1000 records imported
+
+📥 Fetching batch 255/1940 (offset: 254000)...
+✅ Batch 255/1940: 1000 records imported
+
+📥 Fetching batch 256/1940 (offset: 255000)...
+✅ Batch 256/1940: 1000 records imported
+
+📥 Fetching batch 257/1940 (offset: 256000)...
+✅ Batch 257/1940: 1000 records imported
+
+📥 Fetching batch 258/1940 (offset: 257000)...
+✅ Batch 258/1940: 1000 records imported
+
+📥 Fetching batch 259/1940 (offset: 258000)...
+✅ Batch 259/1940: 1000 records imported
+
+📥 Fetching batch 260/1940 (offset: 259000)...
+✅ Batch 260/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 259,000 / 1,939,334
+   Rate: 62 records/sec
+   ETA: 448 minutes
+
+
+📥 Fetching batch 261/1940 (offset: 260000)...
+✅ Batch 261/1940: 1000 records imported
+
+📥 Fetching batch 262/1940 (offset: 261000)...
+✅ Batch 262/1940: 1000 records imported
+
+📥 Fetching batch 263/1940 (offset: 262000)...
+✅ Batch 263/1940: 1000 records imported
+
+📥 Fetching batch 264/1940 (offset: 263000)...
+✅ Batch 264/1940: 1000 records imported
+
+📥 Fetching batch 265/1940 (offset: 264000)...
+✅ Batch 265/1940: 1000 records imported
+
+📥 Fetching batch 266/1940 (offset: 265000)...
+✅ Batch 266/1940: 1000 records imported
+
+📥 Fetching batch 267/1940 (offset: 266000)...
+✅ Batch 267/1940: 1000 records imported
+
+📥 Fetching batch 268/1940 (offset: 267000)...
+✅ Batch 268/1940: 1000 records imported
+
+📥 Fetching batch 269/1940 (offset: 268000)...
+✅ Batch 269/1940: 1000 records imported
+
+📥 Fetching batch 270/1940 (offset: 269000)...
+✅ Batch 270/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 269,000 / 1,939,334
+   Rate: 64 records/sec
+   ETA: 432 minutes
+
+
+📥 Fetching batch 271/1940 (offset: 270000)...
+✅ Batch 271/1940: 1000 records imported
+
+📥 Fetching batch 272/1940 (offset: 271000)...
+✅ Batch 272/1940: 1000 records imported
+
+📥 Fetching batch 273/1940 (offset: 272000)...
+✅ Batch 273/1940: 1000 records imported
+
+📥 Fetching batch 274/1940 (offset: 273000)...
+✅ Batch 274/1940: 1000 records imported
+
+📥 Fetching batch 275/1940 (offset: 274000)...
+✅ Batch 275/1940: 1000 records imported
+
+📥 Fetching batch 276/1940 (offset: 275000)...
+✅ Batch 276/1940: 1000 records imported
+
+📥 Fetching batch 277/1940 (offset: 276000)...
+✅ Batch 277/1940: 1000 records imported
+
+📥 Fetching batch 278/1940 (offset: 277000)...
+✅ Batch 278/1940: 1000 records imported
+
+📥 Fetching batch 279/1940 (offset: 278000)...
+✅ Batch 279/1940: 1000 records imported
+
+📥 Fetching batch 280/1940 (offset: 279000)...
+✅ Batch 280/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 279,000 / 1,939,334
+   Rate: 66 records/sec
+   ETA: 418 minutes
+
+
+📥 Fetching batch 281/1940 (offset: 280000)...
+✅ Batch 281/1940: 1000 records imported
+
+📥 Fetching batch 282/1940 (offset: 281000)...
+✅ Batch 282/1940: 1000 records imported
+
+📥 Fetching batch 283/1940 (offset: 282000)...
+✅ Batch 283/1940: 1000 records imported
+
+📥 Fetching batch 284/1940 (offset: 283000)...
+✅ Batch 284/1940: 1000 records imported
+
+📥 Fetching batch 285/1940 (offset: 284000)...
+✅ Batch 285/1940: 1000 records imported
+
+📥 Fetching batch 286/1940 (offset: 285000)...
+✅ Batch 286/1940: 1000 records imported
+
+📥 Fetching batch 287/1940 (offset: 286000)...
+✅ Batch 287/1940: 1000 records imported
+
+📥 Fetching batch 288/1940 (offset: 287000)...
+✅ Batch 288/1940: 1000 records imported
+
+📥 Fetching batch 289/1940 (offset: 288000)...
+✅ Batch 289/1940: 1000 records imported
+
+📥 Fetching batch 290/1940 (offset: 289000)...
+✅ Batch 290/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 289,000 / 1,939,334
+   Rate: 68 records/sec
+   ETA: 404 minutes
+
+
+📥 Fetching batch 291/1940 (offset: 290000)...
+✅ Batch 291/1940: 1000 records imported
+
+📥 Fetching batch 292/1940 (offset: 291000)...
+✅ Batch 292/1940: 1000 records imported
+
+📥 Fetching batch 293/1940 (offset: 292000)...
+✅ Batch 293/1940: 1000 records imported
+
+📥 Fetching batch 294/1940 (offset: 293000)...
+✅ Batch 294/1940: 1000 records imported
+
+📥 Fetching batch 295/1940 (offset: 294000)...
+✅ Batch 295/1940: 1000 records imported
+
+📥 Fetching batch 296/1940 (offset: 295000)...
+✅ Batch 296/1940: 1000 records imported
+
+📥 Fetching batch 297/1940 (offset: 296000)...
+✅ Batch 297/1940: 1000 records imported
+
+📥 Fetching batch 298/1940 (offset: 297000)...
+✅ Batch 298/1940: 1000 records imported
+
+📥 Fetching batch 299/1940 (offset: 298000)...
+✅ Batch 299/1940: 1000 records imported
+
+📥 Fetching batch 300/1940 (offset: 299000)...
+✅ Batch 300/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 299,000 / 1,939,334
+   Rate: 70 records/sec
+   ETA: 392 minutes
+
+
+📥 Fetching batch 301/1940 (offset: 300000)...
+✅ Batch 301/1940: 1000 records imported
+
+📥 Fetching batch 302/1940 (offset: 301000)...
+✅ Batch 302/1940: 1000 records imported
+
+📥 Fetching batch 303/1940 (offset: 302000)...
+✅ Batch 303/1940: 1000 records imported
+
+📥 Fetching batch 304/1940 (offset: 303000)...
+✅ Batch 304/1940: 1000 records imported
+
+📥 Fetching batch 305/1940 (offset: 304000)...
+✅ Batch 305/1940: 1000 records imported
+
+📥 Fetching batch 306/1940 (offset: 305000)...
+✅ Batch 306/1940: 1000 records imported
+
+📥 Fetching batch 307/1940 (offset: 306000)...
+✅ Batch 307/1940: 1000 records imported
+
+📥 Fetching batch 308/1940 (offset: 307000)...
+✅ Batch 308/1940: 1000 records imported
+
+📥 Fetching batch 309/1940 (offset: 308000)...
+✅ Batch 309/1940: 1000 records imported
+
+📥 Fetching batch 310/1940 (offset: 309000)...
+✅ Batch 310/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 309,000 / 1,939,334
+   Rate: 72 records/sec
+   ETA: 380 minutes
+
+
+📥 Fetching batch 311/1940 (offset: 310000)...
+✅ Batch 311/1940: 1000 records imported
+
+📥 Fetching batch 312/1940 (offset: 311000)...
+✅ Batch 312/1940: 1000 records imported
+
+📥 Fetching batch 313/1940 (offset: 312000)...
+✅ Batch 313/1940: 1000 records imported
+
+📥 Fetching batch 314/1940 (offset: 313000)...
+✅ Batch 314/1940: 1000 records imported
+
+📥 Fetching batch 315/1940 (offset: 314000)...
+✅ Batch 315/1940: 1000 records imported
+
+📥 Fetching batch 316/1940 (offset: 315000)...
+✅ Batch 316/1940: 1000 records imported
+
+📥 Fetching batch 317/1940 (offset: 316000)...
+✅ Batch 317/1940: 1000 records imported
+
+📥 Fetching batch 318/1940 (offset: 317000)...
+✅ Batch 318/1940: 1000 records imported
+
+📥 Fetching batch 319/1940 (offset: 318000)...
+✅ Batch 319/1940: 1000 records imported
+
+📥 Fetching batch 320/1940 (offset: 319000)...
+✅ Batch 320/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 319,000 / 1,939,334
+   Rate: 73 records/sec
+   ETA: 368 minutes
+
+
+📥 Fetching batch 321/1940 (offset: 320000)...
+✅ Batch 321/1940: 1000 records imported
+
+📥 Fetching batch 322/1940 (offset: 321000)...
+✅ Batch 322/1940: 1000 records imported
+
+📥 Fetching batch 323/1940 (offset: 322000)...
+✅ Batch 323/1940: 1000 records imported
+
+📥 Fetching batch 324/1940 (offset: 323000)...
+✅ Batch 324/1940: 1000 records imported
+
+📥 Fetching batch 325/1940 (offset: 324000)...
+✅ Batch 325/1940: 1000 records imported
+
+📥 Fetching batch 326/1940 (offset: 325000)...
+✅ Batch 326/1940: 1000 records imported
+
+📥 Fetching batch 327/1940 (offset: 326000)...
+✅ Batch 327/1940: 1000 records imported
+
+📥 Fetching batch 328/1940 (offset: 327000)...
+✅ Batch 328/1940: 1000 records imported
+
+📥 Fetching batch 329/1940 (offset: 328000)...
+✅ Batch 329/1940: 1000 records imported
+
+📥 Fetching batch 330/1940 (offset: 329000)...
+✅ Batch 330/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 329,000 / 1,939,334
+   Rate: 75 records/sec
+   ETA: 358 minutes
+
+
+📥 Fetching batch 331/1940 (offset: 330000)...
+✅ Batch 331/1940: 1000 records imported
+
+📥 Fetching batch 332/1940 (offset: 331000)...
+✅ Batch 332/1940: 1000 records imported
+
+📥 Fetching batch 333/1940 (offset: 332000)...
+✅ Batch 333/1940: 1000 records imported
+
+📥 Fetching batch 334/1940 (offset: 333000)...
+✅ Batch 334/1940: 1000 records imported
+
+📥 Fetching batch 335/1940 (offset: 334000)...
+✅ Batch 335/1940: 1000 records imported
+
+📥 Fetching batch 336/1940 (offset: 335000)...
+✅ Batch 336/1940: 1000 records imported
+
+📥 Fetching batch 337/1940 (offset: 336000)...
+✅ Batch 337/1940: 1000 records imported
+
+📥 Fetching batch 338/1940 (offset: 337000)...
+✅ Batch 338/1940: 1000 records imported
+
+📥 Fetching batch 339/1940 (offset: 338000)...
+✅ Batch 339/1940: 1000 records imported
+
+📥 Fetching batch 340/1940 (offset: 339000)...
+✅ Batch 340/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 339,000 / 1,939,334
+   Rate: 77 records/sec
+   ETA: 348 minutes
+
+
+📥 Fetching batch 341/1940 (offset: 340000)...
+✅ Batch 341/1940: 1000 records imported
+
+📥 Fetching batch 342/1940 (offset: 341000)...
+✅ Batch 342/1940: 1000 records imported
+
+📥 Fetching batch 343/1940 (offset: 342000)...
+✅ Batch 343/1940: 1000 records imported
+
+📥 Fetching batch 344/1940 (offset: 343000)...
+✅ Batch 344/1940: 1000 records imported
+
+📥 Fetching batch 345/1940 (offset: 344000)...
+✅ Batch 345/1940: 1000 records imported
+
+📥 Fetching batch 346/1940 (offset: 345000)...
+✅ Batch 346/1940: 1000 records imported
+
+📥 Fetching batch 347/1940 (offset: 346000)...
+✅ Batch 347/1940: 1000 records imported
+
+📥 Fetching batch 348/1940 (offset: 347000)...
+✅ Batch 348/1940: 1000 records imported
+
+📥 Fetching batch 349/1940 (offset: 348000)...
+✅ Batch 349/1940: 1000 records imported
+
+📥 Fetching batch 350/1940 (offset: 349000)...
+✅ Batch 350/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 349,000 / 1,939,334
+   Rate: 78 records/sec
+   ETA: 339 minutes
+
+
+📥 Fetching batch 351/1940 (offset: 350000)...
+✅ Batch 351/1940: 1000 records imported
+
+📥 Fetching batch 352/1940 (offset: 351000)...
+✅ Batch 352/1940: 1000 records imported
+
+📥 Fetching batch 353/1940 (offset: 352000)...
+✅ Batch 353/1940: 1000 records imported
+
+📥 Fetching batch 354/1940 (offset: 353000)...
+✅ Batch 354/1940: 1000 records imported
+
+📥 Fetching batch 355/1940 (offset: 354000)...
+✅ Batch 355/1940: 1000 records imported
+
+📥 Fetching batch 356/1940 (offset: 355000)...
+✅ Batch 356/1940: 1000 records imported
+
+📥 Fetching batch 357/1940 (offset: 356000)...
+✅ Batch 357/1940: 1000 records imported
+
+📥 Fetching batch 358/1940 (offset: 357000)...
+✅ Batch 358/1940: 1000 records imported
+
+📥 Fetching batch 359/1940 (offset: 358000)...
+✅ Batch 359/1940: 1000 records imported
+
+📥 Fetching batch 360/1940 (offset: 359000)...
+✅ Batch 360/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 359,000 / 1,939,334
+   Rate: 80 records/sec
+   ETA: 330 minutes
+
+
+📥 Fetching batch 361/1940 (offset: 360000)...
+✅ Batch 361/1940: 1000 records imported
+
+📥 Fetching batch 362/1940 (offset: 361000)...
+✅ Batch 362/1940: 1000 records imported
+
+📥 Fetching batch 363/1940 (offset: 362000)...
+✅ Batch 363/1940: 1000 records imported
+
+📥 Fetching batch 364/1940 (offset: 363000)...
+✅ Batch 364/1940: 1000 records imported
+
+📥 Fetching batch 365/1940 (offset: 364000)...
+✅ Batch 365/1940: 1000 records imported
+
+📥 Fetching batch 366/1940 (offset: 365000)...
+✅ Batch 366/1940: 1000 records imported
+
+📥 Fetching batch 367/1940 (offset: 366000)...
+✅ Batch 367/1940: 1000 records imported
+
+📥 Fetching batch 368/1940 (offset: 367000)...
+✅ Batch 368/1940: 1000 records imported
+
+📥 Fetching batch 369/1940 (offset: 368000)...
+✅ Batch 369/1940: 1000 records imported
+
+📥 Fetching batch 370/1940 (offset: 369000)...
+✅ Batch 370/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 369,000 / 1,939,334
+   Rate: 81 records/sec
+   ETA: 321 minutes
+
+
+📥 Fetching batch 371/1940 (offset: 370000)...
+✅ Batch 371/1940: 1000 records imported
+
+📥 Fetching batch 372/1940 (offset: 371000)...
+✅ Batch 372/1940: 1000 records imported
+
+📥 Fetching batch 373/1940 (offset: 372000)...
+✅ Batch 373/1940: 1000 records imported
+
+📥 Fetching batch 374/1940 (offset: 373000)...
+✅ Batch 374/1940: 1000 records imported
+
+📥 Fetching batch 375/1940 (offset: 374000)...
+✅ Batch 375/1940: 1000 records imported
+
+📥 Fetching batch 376/1940 (offset: 375000)...
+✅ Batch 376/1940: 1000 records imported
+
+📥 Fetching batch 377/1940 (offset: 376000)...
+✅ Batch 377/1940: 1000 records imported
+
+📥 Fetching batch 378/1940 (offset: 377000)...
+✅ Batch 378/1940: 1000 records imported
+
+📥 Fetching batch 379/1940 (offset: 378000)...
+✅ Batch 379/1940: 1000 records imported
+
+📥 Fetching batch 380/1940 (offset: 379000)...
+✅ Batch 380/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 379,000 / 1,939,334
+   Rate: 83 records/sec
+   ETA: 313 minutes
+
+
+📥 Fetching batch 381/1940 (offset: 380000)...
+✅ Batch 381/1940: 1000 records imported
+
+📥 Fetching batch 382/1940 (offset: 381000)...
+✅ Batch 382/1940: 1000 records imported
+
+📥 Fetching batch 383/1940 (offset: 382000)...
+✅ Batch 383/1940: 1000 records imported
+
+📥 Fetching batch 384/1940 (offset: 383000)...
+✅ Batch 384/1940: 1000 records imported
+
+📥 Fetching batch 385/1940 (offset: 384000)...
+✅ Batch 385/1940: 1000 records imported
+
+📥 Fetching batch 386/1940 (offset: 385000)...
+✅ Batch 386/1940: 1000 records imported
+
+📥 Fetching batch 387/1940 (offset: 386000)...
+✅ Batch 387/1940: 1000 records imported
+
+📥 Fetching batch 388/1940 (offset: 387000)...
+✅ Batch 388/1940: 1000 records imported
+
+📥 Fetching batch 389/1940 (offset: 388000)...
+✅ Batch 389/1940: 1000 records imported
+
+📥 Fetching batch 390/1940 (offset: 389000)...
+✅ Batch 390/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 389,000 / 1,939,334
+   Rate: 85 records/sec
+   ETA: 305 minutes
+
+
+📥 Fetching batch 391/1940 (offset: 390000)...
+✅ Batch 391/1940: 1000 records imported
+
+📥 Fetching batch 392/1940 (offset: 391000)...
+✅ Batch 392/1940: 1000 records imported
+
+📥 Fetching batch 393/1940 (offset: 392000)...
+✅ Batch 393/1940: 1000 records imported
+
+📥 Fetching batch 394/1940 (offset: 393000)...
+✅ Batch 394/1940: 1000 records imported
+
+📥 Fetching batch 395/1940 (offset: 394000)...
+✅ Batch 395/1940: 1000 records imported
+
+📥 Fetching batch 396/1940 (offset: 395000)...
+✅ Batch 396/1940: 1000 records imported
+
+📥 Fetching batch 397/1940 (offset: 396000)...
+✅ Batch 397/1940: 1000 records imported
+
+📥 Fetching batch 398/1940 (offset: 397000)...
+✅ Batch 398/1940: 1000 records imported
+
+📥 Fetching batch 399/1940 (offset: 398000)...
+✅ Batch 399/1940: 1000 records imported
+
+📥 Fetching batch 400/1940 (offset: 399000)...
+✅ Batch 400/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 399,000 / 1,939,334
+   Rate: 86 records/sec
+   ETA: 298 minutes
+
+
+📥 Fetching batch 401/1940 (offset: 400000)...
+✅ Batch 401/1940: 1000 records imported
+
+📥 Fetching batch 402/1940 (offset: 401000)...
+✅ Batch 402/1940: 1000 records imported
+
+📥 Fetching batch 403/1940 (offset: 402000)...
+✅ Batch 403/1940: 1000 records imported
+
+📥 Fetching batch 404/1940 (offset: 403000)...
+✅ Batch 404/1940: 1000 records imported
+
+📥 Fetching batch 405/1940 (offset: 404000)...
+✅ Batch 405/1940: 1000 records imported
+
+📥 Fetching batch 406/1940 (offset: 405000)...
+✅ Batch 406/1940: 1000 records imported
+
+📥 Fetching batch 407/1940 (offset: 406000)...
+✅ Batch 407/1940: 1000 records imported
+
+📥 Fetching batch 408/1940 (offset: 407000)...
+✅ Batch 408/1940: 1000 records imported
+
+📥 Fetching batch 409/1940 (offset: 408000)...
+✅ Batch 409/1940: 1000 records imported
+
+📥 Fetching batch 410/1940 (offset: 409000)...
+✅ Batch 410/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 409,000 / 1,939,334
+   Rate: 88 records/sec
+   ETA: 291 minutes
+
+
+📥 Fetching batch 411/1940 (offset: 410000)...
+✅ Batch 411/1940: 1000 records imported
+
+📥 Fetching batch 412/1940 (offset: 411000)...
+✅ Batch 412/1940: 1000 records imported
+
+📥 Fetching batch 413/1940 (offset: 412000)...
+✅ Batch 413/1940: 1000 records imported
+
+📥 Fetching batch 414/1940 (offset: 413000)...
+✅ Batch 414/1940: 1000 records imported
+
+📥 Fetching batch 415/1940 (offset: 414000)...
+✅ Batch 415/1940: 1000 records imported
+
+📥 Fetching batch 416/1940 (offset: 415000)...
+❌ Error in batch 416: fetch failed
+
+📥 Fetching batch 417/1940 (offset: 416000)...
+✅ Batch 417/1940: 1000 records imported
+
+📥 Fetching batch 418/1940 (offset: 417000)...
+✅ Batch 418/1940: 1000 records imported
+
+📥 Fetching batch 419/1940 (offset: 418000)...
+✅ Batch 419/1940: 1000 records imported
+
+📥 Fetching batch 420/1940 (offset: 419000)...
+✅ Batch 420/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 418,000 / 1,939,334
+   Rate: 28 records/sec
+   ETA: 914 minutes
+
+
+📥 Fetching batch 421/1940 (offset: 420000)...
+✅ Batch 421/1940: 1000 records imported
+
+📥 Fetching batch 422/1940 (offset: 421000)...
+✅ Batch 422/1940: 1000 records imported
+
+📥 Fetching batch 423/1940 (offset: 422000)...
+✅ Batch 423/1940: 1000 records imported
+
+📥 Fetching batch 424/1940 (offset: 423000)...
+✅ Batch 424/1940: 1000 records imported
+
+📥 Fetching batch 425/1940 (offset: 424000)...
+✅ Batch 425/1940: 1000 records imported
+
+📥 Fetching batch 426/1940 (offset: 425000)...
+✅ Batch 426/1940: 1000 records imported
+
+📥 Fetching batch 427/1940 (offset: 426000)...
+✅ Batch 427/1940: 1000 records imported
+
+📥 Fetching batch 428/1940 (offset: 427000)...
+✅ Batch 428/1940: 1000 records imported
+
+📥 Fetching batch 429/1940 (offset: 428000)...
+✅ Batch 429/1940: 1000 records imported
+
+📥 Fetching batch 430/1940 (offset: 429000)...
+✅ Batch 430/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 428,000 / 1,939,334
+   Rate: 28 records/sec
+   ETA: 890 minutes
+
+
+📥 Fetching batch 431/1940 (offset: 430000)...
+✅ Batch 431/1940: 1000 records imported
+
+📥 Fetching batch 432/1940 (offset: 431000)...
+✅ Batch 432/1940: 1000 records imported
+
+📥 Fetching batch 433/1940 (offset: 432000)...
+✅ Batch 433/1940: 1000 records imported
+
+📥 Fetching batch 434/1940 (offset: 433000)...
+✅ Batch 434/1940: 1000 records imported
+
+📥 Fetching batch 435/1940 (offset: 434000)...
+✅ Batch 435/1940: 1000 records imported
+
+📥 Fetching batch 436/1940 (offset: 435000)...
+✅ Batch 436/1940: 1000 records imported
+
+📥 Fetching batch 437/1940 (offset: 436000)...
+✅ Batch 437/1940: 1000 records imported
+
+📥 Fetching batch 438/1940 (offset: 437000)...
+✅ Batch 438/1940: 1000 records imported
+
+📥 Fetching batch 439/1940 (offset: 438000)...
+✅ Batch 439/1940: 1000 records imported
+
+📥 Fetching batch 440/1940 (offset: 439000)...
+✅ Batch 440/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 438,000 / 1,939,334
+   Rate: 29 records/sec
+   ETA: 866 minutes
+
+
+📥 Fetching batch 441/1940 (offset: 440000)...
+✅ Batch 441/1940: 1000 records imported
+
+📥 Fetching batch 442/1940 (offset: 441000)...
+✅ Batch 442/1940: 1000 records imported
+
+📥 Fetching batch 443/1940 (offset: 442000)...
+✅ Batch 443/1940: 1000 records imported
+
+📥 Fetching batch 444/1940 (offset: 443000)...
+✅ Batch 444/1940: 1000 records imported
+
+📥 Fetching batch 445/1940 (offset: 444000)...
+✅ Batch 445/1940: 1000 records imported
+
+📥 Fetching batch 446/1940 (offset: 445000)...
+✅ Batch 446/1940: 1000 records imported
+
+📥 Fetching batch 447/1940 (offset: 446000)...
+✅ Batch 447/1940: 1000 records imported
+
+📥 Fetching batch 448/1940 (offset: 447000)...
+✅ Batch 448/1940: 1000 records imported
+
+📥 Fetching batch 449/1940 (offset: 448000)...
+✅ Batch 449/1940: 1000 records imported
+
+📥 Fetching batch 450/1940 (offset: 449000)...
+✅ Batch 450/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 448,000 / 1,939,334
+   Rate: 29 records/sec
+   ETA: 843 minutes
+
+
+📥 Fetching batch 451/1940 (offset: 450000)...
+✅ Batch 451/1940: 1000 records imported
+
+📥 Fetching batch 452/1940 (offset: 451000)...
+✅ Batch 452/1940: 1000 records imported
+
+📥 Fetching batch 453/1940 (offset: 452000)...
+✅ Batch 453/1940: 1000 records imported
+
+📥 Fetching batch 454/1940 (offset: 453000)...
+✅ Batch 454/1940: 1000 records imported
+
+📥 Fetching batch 455/1940 (offset: 454000)...
+✅ Batch 455/1940: 1000 records imported
+
+📥 Fetching batch 456/1940 (offset: 455000)...
+✅ Batch 456/1940: 1000 records imported
+
+📥 Fetching batch 457/1940 (offset: 456000)...
+✅ Batch 457/1940: 1000 records imported
+
+📥 Fetching batch 458/1940 (offset: 457000)...
+✅ Batch 458/1940: 1000 records imported
+
+📥 Fetching batch 459/1940 (offset: 458000)...
+✅ Batch 459/1940: 1000 records imported
+
+📥 Fetching batch 460/1940 (offset: 459000)...
+✅ Batch 460/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 458,000 / 1,939,334
+   Rate: 30 records/sec
+   ETA: 821 minutes
+
+
+📥 Fetching batch 461/1940 (offset: 460000)...
+✅ Batch 461/1940: 1000 records imported
+
+📥 Fetching batch 462/1940 (offset: 461000)...
+✅ Batch 462/1940: 1000 records imported
+
+📥 Fetching batch 463/1940 (offset: 462000)...
+✅ Batch 463/1940: 1000 records imported
+
+📥 Fetching batch 464/1940 (offset: 463000)...
+✅ Batch 464/1940: 1000 records imported
+
+📥 Fetching batch 465/1940 (offset: 464000)...
+✅ Batch 465/1940: 1000 records imported
+
+📥 Fetching batch 466/1940 (offset: 465000)...
+✅ Batch 466/1940: 1000 records imported
+
+📥 Fetching batch 467/1940 (offset: 466000)...
+✅ Batch 467/1940: 1000 records imported
+
+📥 Fetching batch 468/1940 (offset: 467000)...
+✅ Batch 468/1940: 1000 records imported
+
+📥 Fetching batch 469/1940 (offset: 468000)...
+✅ Batch 469/1940: 1000 records imported
+
+📥 Fetching batch 470/1940 (offset: 469000)...
+✅ Batch 470/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 468,000 / 1,939,334
+   Rate: 31 records/sec
+   ETA: 800 minutes
+
+
+📥 Fetching batch 471/1940 (offset: 470000)...
+✅ Batch 471/1940: 1000 records imported
+
+📥 Fetching batch 472/1940 (offset: 471000)...
+✅ Batch 472/1940: 1000 records imported
+
+📥 Fetching batch 473/1940 (offset: 472000)...
+✅ Batch 473/1940: 1000 records imported
+
+📥 Fetching batch 474/1940 (offset: 473000)...
+✅ Batch 474/1940: 1000 records imported
+
+📥 Fetching batch 475/1940 (offset: 474000)...
+✅ Batch 475/1940: 1000 records imported
+
+📥 Fetching batch 476/1940 (offset: 475000)...
+✅ Batch 476/1940: 1000 records imported
+
+📥 Fetching batch 477/1940 (offset: 476000)...
+✅ Batch 477/1940: 1000 records imported
+
+📥 Fetching batch 478/1940 (offset: 477000)...
+✅ Batch 478/1940: 1000 records imported
+
+📥 Fetching batch 479/1940 (offset: 478000)...
+✅ Batch 479/1940: 1000 records imported
+
+📥 Fetching batch 480/1940 (offset: 479000)...
+✅ Batch 480/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 478,000 / 1,939,334
+   Rate: 31 records/sec
+   ETA: 780 minutes
+
+
+📥 Fetching batch 481/1940 (offset: 480000)...
+✅ Batch 481/1940: 1000 records imported
+
+📥 Fetching batch 482/1940 (offset: 481000)...
+✅ Batch 482/1940: 1000 records imported
+
+📥 Fetching batch 483/1940 (offset: 482000)...
+✅ Batch 483/1940: 1000 records imported
+
+📥 Fetching batch 484/1940 (offset: 483000)...
+✅ Batch 484/1940: 1000 records imported
+
+📥 Fetching batch 485/1940 (offset: 484000)...
+✅ Batch 485/1940: 1000 records imported
+
+📥 Fetching batch 486/1940 (offset: 485000)...
+✅ Batch 486/1940: 1000 records imported
+
+📥 Fetching batch 487/1940 (offset: 486000)...
+✅ Batch 487/1940: 1000 records imported
+
+📥 Fetching batch 488/1940 (offset: 487000)...
+✅ Batch 488/1940: 1000 records imported
+
+📥 Fetching batch 489/1940 (offset: 488000)...
+✅ Batch 489/1940: 1000 records imported
+
+📥 Fetching batch 490/1940 (offset: 489000)...
+✅ Batch 490/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 488,000 / 1,939,334
+   Rate: 32 records/sec
+   ETA: 760 minutes
+
+
+📥 Fetching batch 491/1940 (offset: 490000)...
+✅ Batch 491/1940: 1000 records imported
+
+📥 Fetching batch 492/1940 (offset: 491000)...
+✅ Batch 492/1940: 1000 records imported
+
+📥 Fetching batch 493/1940 (offset: 492000)...
+✅ Batch 493/1940: 1000 records imported
+
+📥 Fetching batch 494/1940 (offset: 493000)...
+✅ Batch 494/1940: 1000 records imported
+
+📥 Fetching batch 495/1940 (offset: 494000)...
+✅ Batch 495/1940: 1000 records imported
+
+📥 Fetching batch 496/1940 (offset: 495000)...
+✅ Batch 496/1940: 1000 records imported
+
+📥 Fetching batch 497/1940 (offset: 496000)...
+✅ Batch 497/1940: 1000 records imported
+
+📥 Fetching batch 498/1940 (offset: 497000)...
+✅ Batch 498/1940: 1000 records imported
+
+📥 Fetching batch 499/1940 (offset: 498000)...
+✅ Batch 499/1940: 1000 records imported
+
+📥 Fetching batch 500/1940 (offset: 499000)...
+✅ Batch 500/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 498,000 / 1,939,334
+   Rate: 32 records/sec
+   ETA: 742 minutes
+
+
+📥 Fetching batch 501/1940 (offset: 500000)...
+✅ Batch 501/1940: 1000 records imported
+
+📥 Fetching batch 502/1940 (offset: 501000)...
+✅ Batch 502/1940: 1000 records imported
+
+📥 Fetching batch 503/1940 (offset: 502000)...
+✅ Batch 503/1940: 1000 records imported
+
+📥 Fetching batch 504/1940 (offset: 503000)...
+✅ Batch 504/1940: 1000 records imported
+
+📥 Fetching batch 505/1940 (offset: 504000)...
+✅ Batch 505/1940: 1000 records imported
+
+📥 Fetching batch 506/1940 (offset: 505000)...
+✅ Batch 506/1940: 1000 records imported
+
+📥 Fetching batch 507/1940 (offset: 506000)...
+✅ Batch 507/1940: 1000 records imported
+
+📥 Fetching batch 508/1940 (offset: 507000)...
+✅ Batch 508/1940: 1000 records imported
+
+📥 Fetching batch 509/1940 (offset: 508000)...
+✅ Batch 509/1940: 1000 records imported
+
+📥 Fetching batch 510/1940 (offset: 509000)...
+✅ Batch 510/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 508,000 / 1,939,334
+   Rate: 33 records/sec
+   ETA: 724 minutes
+
+
+📥 Fetching batch 511/1940 (offset: 510000)...
+✅ Batch 511/1940: 1000 records imported
+
+📥 Fetching batch 512/1940 (offset: 511000)...
+✅ Batch 512/1940: 1000 records imported
+
+📥 Fetching batch 513/1940 (offset: 512000)...
+✅ Batch 513/1940: 1000 records imported
+
+📥 Fetching batch 514/1940 (offset: 513000)...
+✅ Batch 514/1940: 1000 records imported
+
+📥 Fetching batch 515/1940 (offset: 514000)...
+✅ Batch 515/1940: 1000 records imported
+
+📥 Fetching batch 516/1940 (offset: 515000)...
+✅ Batch 516/1940: 1000 records imported
+
+📥 Fetching batch 517/1940 (offset: 516000)...
+✅ Batch 517/1940: 1000 records imported
+
+📥 Fetching batch 518/1940 (offset: 517000)...
+✅ Batch 518/1940: 1000 records imported
+
+📥 Fetching batch 519/1940 (offset: 518000)...
+✅ Batch 519/1940: 1000 records imported
+
+📥 Fetching batch 520/1940 (offset: 519000)...
+✅ Batch 520/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 518,000 / 1,939,334
+   Rate: 34 records/sec
+   ETA: 706 minutes
+
+
+📥 Fetching batch 521/1940 (offset: 520000)...
+✅ Batch 521/1940: 1000 records imported
+
+📥 Fetching batch 522/1940 (offset: 521000)...
+✅ Batch 522/1940: 1000 records imported
+
+📥 Fetching batch 523/1940 (offset: 522000)...
+✅ Batch 523/1940: 1000 records imported
+
+📥 Fetching batch 524/1940 (offset: 523000)...
+✅ Batch 524/1940: 1000 records imported
+
+📥 Fetching batch 525/1940 (offset: 524000)...
+✅ Batch 525/1940: 1000 records imported
+
+📥 Fetching batch 526/1940 (offset: 525000)...
+✅ Batch 526/1940: 1000 records imported
+
+📥 Fetching batch 527/1940 (offset: 526000)...
+✅ Batch 527/1940: 1000 records imported
+
+📥 Fetching batch 528/1940 (offset: 527000)...
+✅ Batch 528/1940: 1000 records imported
+
+📥 Fetching batch 529/1940 (offset: 528000)...
+✅ Batch 529/1940: 1000 records imported
+
+📥 Fetching batch 530/1940 (offset: 529000)...
+✅ Batch 530/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 528,000 / 1,939,334
+   Rate: 34 records/sec
+   ETA: 690 minutes
+
+
+📥 Fetching batch 531/1940 (offset: 530000)...
+✅ Batch 531/1940: 1000 records imported
+
+📥 Fetching batch 532/1940 (offset: 531000)...
+✅ Batch 532/1940: 1000 records imported
+
+📥 Fetching batch 533/1940 (offset: 532000)...
+✅ Batch 533/1940: 1000 records imported
+
+📥 Fetching batch 534/1940 (offset: 533000)...
+✅ Batch 534/1940: 1000 records imported
+
+📥 Fetching batch 535/1940 (offset: 534000)...
+✅ Batch 535/1940: 1000 records imported
+
+📥 Fetching batch 536/1940 (offset: 535000)...
+✅ Batch 536/1940: 1000 records imported
+
+📥 Fetching batch 537/1940 (offset: 536000)...
+✅ Batch 537/1940: 1000 records imported
+
+📥 Fetching batch 538/1940 (offset: 537000)...
+✅ Batch 538/1940: 1000 records imported
+
+📥 Fetching batch 539/1940 (offset: 538000)...
+✅ Batch 539/1940: 1000 records imported
+
+📥 Fetching batch 540/1940 (offset: 539000)...
+✅ Batch 540/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 538,000 / 1,939,334
+   Rate: 35 records/sec
+   ETA: 674 minutes
+
+
+📥 Fetching batch 541/1940 (offset: 540000)...
+✅ Batch 541/1940: 1000 records imported
+
+📥 Fetching batch 542/1940 (offset: 541000)...
+✅ Batch 542/1940: 1000 records imported
+
+📥 Fetching batch 543/1940 (offset: 542000)...
+✅ Batch 543/1940: 1000 records imported
+
+📥 Fetching batch 544/1940 (offset: 543000)...
+✅ Batch 544/1940: 1000 records imported
+
+📥 Fetching batch 545/1940 (offset: 544000)...
+✅ Batch 545/1940: 1000 records imported
+
+📥 Fetching batch 546/1940 (offset: 545000)...
+✅ Batch 546/1940: 1000 records imported
+
+📥 Fetching batch 547/1940 (offset: 546000)...
+✅ Batch 547/1940: 1000 records imported
+
+📥 Fetching batch 548/1940 (offset: 547000)...
+✅ Batch 548/1940: 1000 records imported
+
+📥 Fetching batch 549/1940 (offset: 548000)...
+✅ Batch 549/1940: 1000 records imported
+
+📥 Fetching batch 550/1940 (offset: 549000)...
+✅ Batch 550/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 548,000 / 1,939,334
+   Rate: 35 records/sec
+   ETA: 658 minutes
+
+
+📥 Fetching batch 551/1940 (offset: 550000)...
+✅ Batch 551/1940: 1000 records imported
+
+📥 Fetching batch 552/1940 (offset: 551000)...
+✅ Batch 552/1940: 1000 records imported
+
+📥 Fetching batch 553/1940 (offset: 552000)...
+✅ Batch 553/1940: 1000 records imported
+
+📥 Fetching batch 554/1940 (offset: 553000)...
+✅ Batch 554/1940: 1000 records imported
+
+📥 Fetching batch 555/1940 (offset: 554000)...
+✅ Batch 555/1940: 1000 records imported
+
+📥 Fetching batch 556/1940 (offset: 555000)...
+✅ Batch 556/1940: 1000 records imported
+
+📥 Fetching batch 557/1940 (offset: 556000)...
+✅ Batch 557/1940: 1000 records imported
+
+📥 Fetching batch 558/1940 (offset: 557000)...
+✅ Batch 558/1940: 1000 records imported
+
+📥 Fetching batch 559/1940 (offset: 558000)...
+✅ Batch 559/1940: 1000 records imported
+
+📥 Fetching batch 560/1940 (offset: 559000)...
+✅ Batch 560/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 558,000 / 1,939,334
+   Rate: 36 records/sec
+   ETA: 643 minutes
+
+
+📥 Fetching batch 561/1940 (offset: 560000)...
+✅ Batch 561/1940: 1000 records imported
+
+📥 Fetching batch 562/1940 (offset: 561000)...
+✅ Batch 562/1940: 1000 records imported
+
+📥 Fetching batch 563/1940 (offset: 562000)...
+✅ Batch 563/1940: 1000 records imported
+
+📥 Fetching batch 564/1940 (offset: 563000)...
+✅ Batch 564/1940: 1000 records imported
+
+📥 Fetching batch 565/1940 (offset: 564000)...
+✅ Batch 565/1940: 1000 records imported
+
+📥 Fetching batch 566/1940 (offset: 565000)...
+✅ Batch 566/1940: 1000 records imported
+
+📥 Fetching batch 567/1940 (offset: 566000)...
+✅ Batch 567/1940: 1000 records imported
+
+📥 Fetching batch 568/1940 (offset: 567000)...
+✅ Batch 568/1940: 1000 records imported
+
+📥 Fetching batch 569/1940 (offset: 568000)...
+✅ Batch 569/1940: 1000 records imported
+
+📥 Fetching batch 570/1940 (offset: 569000)...
+✅ Batch 570/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 568,000 / 1,939,334
+   Rate: 36 records/sec
+   ETA: 629 minutes
+
+
+📥 Fetching batch 571/1940 (offset: 570000)...
+✅ Batch 571/1940: 1000 records imported
+
+📥 Fetching batch 572/1940 (offset: 571000)...
+✅ Batch 572/1940: 1000 records imported
+
+📥 Fetching batch 573/1940 (offset: 572000)...
+✅ Batch 573/1940: 1000 records imported
+
+📥 Fetching batch 574/1940 (offset: 573000)...
+✅ Batch 574/1940: 1000 records imported
+
+📥 Fetching batch 575/1940 (offset: 574000)...
+✅ Batch 575/1940: 1000 records imported
+
+📥 Fetching batch 576/1940 (offset: 575000)...
+✅ Batch 576/1940: 1000 records imported
+
+📥 Fetching batch 577/1940 (offset: 576000)...
+✅ Batch 577/1940: 1000 records imported
+
+📥 Fetching batch 578/1940 (offset: 577000)...
+✅ Batch 578/1940: 1000 records imported
+
+📥 Fetching batch 579/1940 (offset: 578000)...
+✅ Batch 579/1940: 1000 records imported
+
+📥 Fetching batch 580/1940 (offset: 579000)...
+✅ Batch 580/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 578,000 / 1,939,334
+   Rate: 37 records/sec
+   ETA: 615 minutes
+
+
+📥 Fetching batch 581/1940 (offset: 580000)...
+✅ Batch 581/1940: 1000 records imported
+
+📥 Fetching batch 582/1940 (offset: 581000)...
+✅ Batch 582/1940: 1000 records imported
+
+📥 Fetching batch 583/1940 (offset: 582000)...
+✅ Batch 583/1940: 1000 records imported
+
+📥 Fetching batch 584/1940 (offset: 583000)...
+✅ Batch 584/1940: 1000 records imported
+
+📥 Fetching batch 585/1940 (offset: 584000)...
+✅ Batch 585/1940: 1000 records imported
+
+📥 Fetching batch 586/1940 (offset: 585000)...
+✅ Batch 586/1940: 1000 records imported
+
+📥 Fetching batch 587/1940 (offset: 586000)...
+✅ Batch 587/1940: 1000 records imported
+
+📥 Fetching batch 588/1940 (offset: 587000)...
+✅ Batch 588/1940: 1000 records imported
+
+📥 Fetching batch 589/1940 (offset: 588000)...
+✅ Batch 589/1940: 1000 records imported
+
+📥 Fetching batch 590/1940 (offset: 589000)...
+✅ Batch 590/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 588,000 / 1,939,334
+   Rate: 37 records/sec
+   ETA: 601 minutes
+
+
+📥 Fetching batch 591/1940 (offset: 590000)...
+✅ Batch 591/1940: 1000 records imported
+
+📥 Fetching batch 592/1940 (offset: 591000)...
+✅ Batch 592/1940: 1000 records imported
+
+📥 Fetching batch 593/1940 (offset: 592000)...
+✅ Batch 593/1940: 1000 records imported
+
+📥 Fetching batch 594/1940 (offset: 593000)...
+✅ Batch 594/1940: 1000 records imported
+
+📥 Fetching batch 595/1940 (offset: 594000)...
+✅ Batch 595/1940: 1000 records imported
+
+📥 Fetching batch 596/1940 (offset: 595000)...
+✅ Batch 596/1940: 1000 records imported
+
+📥 Fetching batch 597/1940 (offset: 596000)...
+✅ Batch 597/1940: 1000 records imported
+
+📥 Fetching batch 598/1940 (offset: 597000)...
+✅ Batch 598/1940: 1000 records imported
+
+📥 Fetching batch 599/1940 (offset: 598000)...
+✅ Batch 599/1940: 1000 records imported
+
+📥 Fetching batch 600/1940 (offset: 599000)...
+✅ Batch 600/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 598,000 / 1,939,334
+   Rate: 38 records/sec
+   ETA: 588 minutes
+
+
+📥 Fetching batch 601/1940 (offset: 600000)...
+✅ Batch 601/1940: 1000 records imported
+
+📥 Fetching batch 602/1940 (offset: 601000)...
+✅ Batch 602/1940: 1000 records imported
+
+📥 Fetching batch 603/1940 (offset: 602000)...
+✅ Batch 603/1940: 1000 records imported
+
+📥 Fetching batch 604/1940 (offset: 603000)...
+❌ Error in batch 604: fetch failed
+
+📥 Fetching batch 605/1940 (offset: 604000)...
+✅ Batch 605/1940: 1000 records imported
+
+📥 Fetching batch 606/1940 (offset: 605000)...
+✅ Batch 606/1940: 1000 records imported
+
+📥 Fetching batch 607/1940 (offset: 606000)...
+✅ Batch 607/1940: 1000 records imported
+
+📥 Fetching batch 608/1940 (offset: 607000)...
+✅ Batch 608/1940: 1000 records imported
+
+📥 Fetching batch 609/1940 (offset: 608000)...
+✅ Batch 609/1940: 1000 records imported
+
+📥 Fetching batch 610/1940 (offset: 609000)...
+✅ Batch 610/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 607,000 / 1,939,334
+   Rate: 34 records/sec
+   ETA: 646 minutes
+
+
+📥 Fetching batch 611/1940 (offset: 610000)...
+✅ Batch 611/1940: 1000 records imported
+
+📥 Fetching batch 612/1940 (offset: 611000)...
+✅ Batch 612/1940: 1000 records imported
+
+📥 Fetching batch 613/1940 (offset: 612000)...
+✅ Batch 613/1940: 1000 records imported
+
+📥 Fetching batch 614/1940 (offset: 613000)...
+✅ Batch 614/1940: 1000 records imported
+
+📥 Fetching batch 615/1940 (offset: 614000)...
+✅ Batch 615/1940: 1000 records imported
+
+📥 Fetching batch 616/1940 (offset: 615000)...
+✅ Batch 616/1940: 1000 records imported
+
+📥 Fetching batch 617/1940 (offset: 616000)...
+✅ Batch 617/1940: 1000 records imported
+
+📥 Fetching batch 618/1940 (offset: 617000)...
+✅ Batch 618/1940: 1000 records imported
+
+📥 Fetching batch 619/1940 (offset: 618000)...
+✅ Batch 619/1940: 1000 records imported
+
+📥 Fetching batch 620/1940 (offset: 619000)...
+✅ Batch 620/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 617,000 / 1,939,334
+   Rate: 35 records/sec
+   ETA: 632 minutes
+
+
+📥 Fetching batch 621/1940 (offset: 620000)...
+✅ Batch 621/1940: 1000 records imported
+
+📥 Fetching batch 622/1940 (offset: 621000)...
+✅ Batch 622/1940: 1000 records imported
+
+📥 Fetching batch 623/1940 (offset: 622000)...
+✅ Batch 623/1940: 1000 records imported
+
+📥 Fetching batch 624/1940 (offset: 623000)...
+✅ Batch 624/1940: 1000 records imported
+
+📥 Fetching batch 625/1940 (offset: 624000)...
+✅ Batch 625/1940: 1000 records imported
+
+📥 Fetching batch 626/1940 (offset: 625000)...
+✅ Batch 626/1940: 1000 records imported
+
+📥 Fetching batch 627/1940 (offset: 626000)...
+✅ Batch 627/1940: 1000 records imported
+
+📥 Fetching batch 628/1940 (offset: 627000)...
+✅ Batch 628/1940: 1000 records imported
+
+📥 Fetching batch 629/1940 (offset: 628000)...
+✅ Batch 629/1940: 1000 records imported
+
+📥 Fetching batch 630/1940 (offset: 629000)...
+✅ Batch 630/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 627,000 / 1,939,334
+   Rate: 35 records/sec
+   ETA: 619 minutes
+
+
+📥 Fetching batch 631/1940 (offset: 630000)...
+✅ Batch 631/1940: 1000 records imported
+
+📥 Fetching batch 632/1940 (offset: 631000)...
+✅ Batch 632/1940: 1000 records imported
+
+📥 Fetching batch 633/1940 (offset: 632000)...
+✅ Batch 633/1940: 1000 records imported
+
+📥 Fetching batch 634/1940 (offset: 633000)...
+✅ Batch 634/1940: 1000 records imported
+
+📥 Fetching batch 635/1940 (offset: 634000)...
+✅ Batch 635/1940: 1000 records imported
+
+📥 Fetching batch 636/1940 (offset: 635000)...
+✅ Batch 636/1940: 1000 records imported
+
+📥 Fetching batch 637/1940 (offset: 636000)...
+✅ Batch 637/1940: 1000 records imported
+
+📥 Fetching batch 638/1940 (offset: 637000)...
+✅ Batch 638/1940: 1000 records imported
+
+📥 Fetching batch 639/1940 (offset: 638000)...
+✅ Batch 639/1940: 1000 records imported
+
+📥 Fetching batch 640/1940 (offset: 639000)...
+✅ Batch 640/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 637,000 / 1,939,334
+   Rate: 36 records/sec
+   ETA: 606 minutes
+
+
+📥 Fetching batch 641/1940 (offset: 640000)...
+✅ Batch 641/1940: 1000 records imported
+
+📥 Fetching batch 642/1940 (offset: 641000)...
+✅ Batch 642/1940: 1000 records imported
+
+📥 Fetching batch 643/1940 (offset: 642000)...
+✅ Batch 643/1940: 1000 records imported
+
+📥 Fetching batch 644/1940 (offset: 643000)...
+✅ Batch 644/1940: 1000 records imported
+
+📥 Fetching batch 645/1940 (offset: 644000)...
+✅ Batch 645/1940: 1000 records imported
+
+📥 Fetching batch 646/1940 (offset: 645000)...
+✅ Batch 646/1940: 1000 records imported
+
+📥 Fetching batch 647/1940 (offset: 646000)...
+✅ Batch 647/1940: 1000 records imported
+
+📥 Fetching batch 648/1940 (offset: 647000)...
+✅ Batch 648/1940: 1000 records imported
+
+📥 Fetching batch 649/1940 (offset: 648000)...
+✅ Batch 649/1940: 1000 records imported
+
+📥 Fetching batch 650/1940 (offset: 649000)...
+✅ Batch 650/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 647,000 / 1,939,334
+   Rate: 36 records/sec
+   ETA: 595 minutes
+
+
+📥 Fetching batch 651/1940 (offset: 650000)...
+✅ Batch 651/1940: 1000 records imported
+
+📥 Fetching batch 652/1940 (offset: 651000)...
+✅ Batch 652/1940: 1000 records imported
+
+📥 Fetching batch 653/1940 (offset: 652000)...
+✅ Batch 653/1940: 1000 records imported
+
+📥 Fetching batch 654/1940 (offset: 653000)...
+✅ Batch 654/1940: 1000 records imported
+
+📥 Fetching batch 655/1940 (offset: 654000)...
+✅ Batch 655/1940: 1000 records imported
+
+📥 Fetching batch 656/1940 (offset: 655000)...
+✅ Batch 656/1940: 1000 records imported
+
+📥 Fetching batch 657/1940 (offset: 656000)...
+✅ Batch 657/1940: 1000 records imported
+
+📥 Fetching batch 658/1940 (offset: 657000)...
+✅ Batch 658/1940: 1000 records imported
+
+📥 Fetching batch 659/1940 (offset: 658000)...
+✅ Batch 659/1940: 1000 records imported
+
+📥 Fetching batch 660/1940 (offset: 659000)...
+✅ Batch 660/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 657,000 / 1,939,334
+   Rate: 37 records/sec
+   ETA: 582 minutes
+
+
+📥 Fetching batch 661/1940 (offset: 660000)...
+✅ Batch 661/1940: 1000 records imported
+
+📥 Fetching batch 662/1940 (offset: 661000)...
+✅ Batch 662/1940: 1000 records imported
+
+📥 Fetching batch 663/1940 (offset: 662000)...
+✅ Batch 663/1940: 1000 records imported
+
+📥 Fetching batch 664/1940 (offset: 663000)...
+✅ Batch 664/1940: 1000 records imported
+
+📥 Fetching batch 665/1940 (offset: 664000)...
+✅ Batch 665/1940: 1000 records imported
+
+📥 Fetching batch 666/1940 (offset: 665000)...
+✅ Batch 666/1940: 1000 records imported
+
+📥 Fetching batch 667/1940 (offset: 666000)...
+✅ Batch 667/1940: 1000 records imported
+
+📥 Fetching batch 668/1940 (offset: 667000)...
+✅ Batch 668/1940: 1000 records imported
+
+📥 Fetching batch 669/1940 (offset: 668000)...
+✅ Batch 669/1940: 1000 records imported
+
+📥 Fetching batch 670/1940 (offset: 669000)...
+✅ Batch 670/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 667,000 / 1,939,334
+   Rate: 37 records/sec
+   ETA: 570 minutes
+
+
+📥 Fetching batch 671/1940 (offset: 670000)...
+✅ Batch 671/1940: 1000 records imported
+
+📥 Fetching batch 672/1940 (offset: 671000)...
+✅ Batch 672/1940: 1000 records imported
+
+📥 Fetching batch 673/1940 (offset: 672000)...
+✅ Batch 673/1940: 1000 records imported
+
+📥 Fetching batch 674/1940 (offset: 673000)...
+✅ Batch 674/1940: 1000 records imported
+
+📥 Fetching batch 675/1940 (offset: 674000)...
+✅ Batch 675/1940: 1000 records imported
+
+📥 Fetching batch 676/1940 (offset: 675000)...
+✅ Batch 676/1940: 1000 records imported
+
+📥 Fetching batch 677/1940 (offset: 676000)...
+✅ Batch 677/1940: 1000 records imported
+
+📥 Fetching batch 678/1940 (offset: 677000)...
+✅ Batch 678/1940: 1000 records imported
+
+📥 Fetching batch 679/1940 (offset: 678000)...
+✅ Batch 679/1940: 1000 records imported
+
+📥 Fetching batch 680/1940 (offset: 679000)...
+✅ Batch 680/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 677,000 / 1,939,334
+   Rate: 38 records/sec
+   ETA: 559 minutes
+
+
+📥 Fetching batch 681/1940 (offset: 680000)...
+✅ Batch 681/1940: 1000 records imported
+
+📥 Fetching batch 682/1940 (offset: 681000)...
+✅ Batch 682/1940: 1000 records imported
+
+📥 Fetching batch 683/1940 (offset: 682000)...
+✅ Batch 683/1940: 1000 records imported
+
+📥 Fetching batch 684/1940 (offset: 683000)...
+✅ Batch 684/1940: 1000 records imported
+
+📥 Fetching batch 685/1940 (offset: 684000)...
+✅ Batch 685/1940: 1000 records imported
+
+📥 Fetching batch 686/1940 (offset: 685000)...
+✅ Batch 686/1940: 1000 records imported
+
+📥 Fetching batch 687/1940 (offset: 686000)...
+✅ Batch 687/1940: 1000 records imported
+
+📥 Fetching batch 688/1940 (offset: 687000)...
+✅ Batch 688/1940: 1000 records imported
+
+📥 Fetching batch 689/1940 (offset: 688000)...
+✅ Batch 689/1940: 1000 records imported
+
+📥 Fetching batch 690/1940 (offset: 689000)...
+✅ Batch 690/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 687,000 / 1,939,334
+   Rate: 38 records/sec
+   ETA: 547 minutes
+
+
+📥 Fetching batch 691/1940 (offset: 690000)...
+✅ Batch 691/1940: 1000 records imported
+
+📥 Fetching batch 692/1940 (offset: 691000)...
+✅ Batch 692/1940: 1000 records imported
+
+📥 Fetching batch 693/1940 (offset: 692000)...
+✅ Batch 693/1940: 1000 records imported
+
+📥 Fetching batch 694/1940 (offset: 693000)...
+✅ Batch 694/1940: 1000 records imported
+
+📥 Fetching batch 695/1940 (offset: 694000)...
+✅ Batch 695/1940: 1000 records imported
+
+📥 Fetching batch 696/1940 (offset: 695000)...
+✅ Batch 696/1940: 1000 records imported
+
+📥 Fetching batch 697/1940 (offset: 696000)...
+✅ Batch 697/1940: 1000 records imported
+
+📥 Fetching batch 698/1940 (offset: 697000)...
+✅ Batch 698/1940: 1000 records imported
+
+📥 Fetching batch 699/1940 (offset: 698000)...
+✅ Batch 699/1940: 1000 records imported
+
+📥 Fetching batch 700/1940 (offset: 699000)...
+✅ Batch 700/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 697,000 / 1,939,334
+   Rate: 39 records/sec
+   ETA: 536 minutes
+
+
+📥 Fetching batch 701/1940 (offset: 700000)...
+✅ Batch 701/1940: 1000 records imported
+
+📥 Fetching batch 702/1940 (offset: 701000)...
+✅ Batch 702/1940: 1000 records imported
+
+📥 Fetching batch 703/1940 (offset: 702000)...
+✅ Batch 703/1940: 1000 records imported
+
+📥 Fetching batch 704/1940 (offset: 703000)...
+✅ Batch 704/1940: 1000 records imported
+
+📥 Fetching batch 705/1940 (offset: 704000)...
+✅ Batch 705/1940: 1000 records imported
+
+📥 Fetching batch 706/1940 (offset: 705000)...
+✅ Batch 706/1940: 1000 records imported
+
+📥 Fetching batch 707/1940 (offset: 706000)...
+✅ Batch 707/1940: 1000 records imported
+
+📥 Fetching batch 708/1940 (offset: 707000)...
+✅ Batch 708/1940: 1000 records imported
+
+📥 Fetching batch 709/1940 (offset: 708000)...
+✅ Batch 709/1940: 1000 records imported
+
+📥 Fetching batch 710/1940 (offset: 709000)...
+✅ Batch 710/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 707,000 / 1,939,334
+   Rate: 39 records/sec
+   ETA: 526 minutes
+
+
+📥 Fetching batch 711/1940 (offset: 710000)...
+✅ Batch 711/1940: 1000 records imported
+
+📥 Fetching batch 712/1940 (offset: 711000)...
+✅ Batch 712/1940: 1000 records imported
+
+📥 Fetching batch 713/1940 (offset: 712000)...
+✅ Batch 713/1940: 1000 records imported
+
+📥 Fetching batch 714/1940 (offset: 713000)...
+✅ Batch 714/1940: 1000 records imported
+
+📥 Fetching batch 715/1940 (offset: 714000)...
+✅ Batch 715/1940: 1000 records imported
+
+📥 Fetching batch 716/1940 (offset: 715000)...
+✅ Batch 716/1940: 1000 records imported
+
+📥 Fetching batch 717/1940 (offset: 716000)...
+✅ Batch 717/1940: 1000 records imported
+
+📥 Fetching batch 718/1940 (offset: 717000)...
+✅ Batch 718/1940: 1000 records imported
+
+📥 Fetching batch 719/1940 (offset: 718000)...
+✅ Batch 719/1940: 1000 records imported
+
+📥 Fetching batch 720/1940 (offset: 719000)...
+✅ Batch 720/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 717,000 / 1,939,334
+   Rate: 40 records/sec
+   ETA: 515 minutes
+
+
+📥 Fetching batch 721/1940 (offset: 720000)...
+✅ Batch 721/1940: 1000 records imported
+
+📥 Fetching batch 722/1940 (offset: 721000)...
+✅ Batch 722/1940: 1000 records imported
+
+📥 Fetching batch 723/1940 (offset: 722000)...
+✅ Batch 723/1940: 1000 records imported
+
+📥 Fetching batch 724/1940 (offset: 723000)...
+✅ Batch 724/1940: 1000 records imported
+
+📥 Fetching batch 725/1940 (offset: 724000)...
+✅ Batch 725/1940: 1000 records imported
+
+📥 Fetching batch 726/1940 (offset: 725000)...
+✅ Batch 726/1940: 1000 records imported
+
+📥 Fetching batch 727/1940 (offset: 726000)...
+✅ Batch 727/1940: 1000 records imported
+
+📥 Fetching batch 728/1940 (offset: 727000)...
+✅ Batch 728/1940: 1000 records imported
+
+📥 Fetching batch 729/1940 (offset: 728000)...
+✅ Batch 729/1940: 1000 records imported
+
+📥 Fetching batch 730/1940 (offset: 729000)...
+✅ Batch 730/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 727,000 / 1,939,334
+   Rate: 40 records/sec
+   ETA: 505 minutes
+
+
+📥 Fetching batch 731/1940 (offset: 730000)...
+✅ Batch 731/1940: 1000 records imported
+
+📥 Fetching batch 732/1940 (offset: 731000)...
+✅ Batch 732/1940: 1000 records imported
+
+📥 Fetching batch 733/1940 (offset: 732000)...
+✅ Batch 733/1940: 1000 records imported
+
+📥 Fetching batch 734/1940 (offset: 733000)...
+✅ Batch 734/1940: 1000 records imported
+
+📥 Fetching batch 735/1940 (offset: 734000)...
+✅ Batch 735/1940: 1000 records imported
+
+📥 Fetching batch 736/1940 (offset: 735000)...
+✅ Batch 736/1940: 1000 records imported
+
+📥 Fetching batch 737/1940 (offset: 736000)...
+✅ Batch 737/1940: 1000 records imported
+
+📥 Fetching batch 738/1940 (offset: 737000)...
+✅ Batch 738/1940: 1000 records imported
+
+📥 Fetching batch 739/1940 (offset: 738000)...
+✅ Batch 739/1940: 1000 records imported
+
+📥 Fetching batch 740/1940 (offset: 739000)...
+✅ Batch 740/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 737,000 / 1,939,334
+   Rate: 40 records/sec
+   ETA: 495 minutes
+
+
+📥 Fetching batch 741/1940 (offset: 740000)...
+✅ Batch 741/1940: 1000 records imported
+
+📥 Fetching batch 742/1940 (offset: 741000)...
+✅ Batch 742/1940: 1000 records imported
+
+📥 Fetching batch 743/1940 (offset: 742000)...
+✅ Batch 743/1940: 1000 records imported
+
+📥 Fetching batch 744/1940 (offset: 743000)...
+✅ Batch 744/1940: 1000 records imported
+
+📥 Fetching batch 745/1940 (offset: 744000)...
+✅ Batch 745/1940: 1000 records imported
+
+📥 Fetching batch 746/1940 (offset: 745000)...
+✅ Batch 746/1940: 1000 records imported
+
+📥 Fetching batch 747/1940 (offset: 746000)...
+✅ Batch 747/1940: 1000 records imported
+
+📥 Fetching batch 748/1940 (offset: 747000)...
+✅ Batch 748/1940: 1000 records imported
+
+📥 Fetching batch 749/1940 (offset: 748000)...
+✅ Batch 749/1940: 1000 records imported
+
+📥 Fetching batch 750/1940 (offset: 749000)...
+✅ Batch 750/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 747,000 / 1,939,334
+   Rate: 41 records/sec
+   ETA: 486 minutes
+
+
+📥 Fetching batch 751/1940 (offset: 750000)...
+✅ Batch 751/1940: 1000 records imported
+
+📥 Fetching batch 752/1940 (offset: 751000)...
+✅ Batch 752/1940: 1000 records imported
+
+📥 Fetching batch 753/1940 (offset: 752000)...
+✅ Batch 753/1940: 1000 records imported
+
+📥 Fetching batch 754/1940 (offset: 753000)...
+✅ Batch 754/1940: 1000 records imported
+
+📥 Fetching batch 755/1940 (offset: 754000)...
+✅ Batch 755/1940: 1000 records imported
+
+📥 Fetching batch 756/1940 (offset: 755000)...
+✅ Batch 756/1940: 1000 records imported
+
+📥 Fetching batch 757/1940 (offset: 756000)...
+✅ Batch 757/1940: 1000 records imported
+
+📥 Fetching batch 758/1940 (offset: 757000)...
+✅ Batch 758/1940: 1000 records imported
+
+📥 Fetching batch 759/1940 (offset: 758000)...
+✅ Batch 759/1940: 1000 records imported
+
+📥 Fetching batch 760/1940 (offset: 759000)...
+✅ Batch 760/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 757,000 / 1,939,334
+   Rate: 41 records/sec
+   ETA: 476 minutes
+
+
+📥 Fetching batch 761/1940 (offset: 760000)...
+✅ Batch 761/1940: 1000 records imported
+
+📥 Fetching batch 762/1940 (offset: 761000)...
+✅ Batch 762/1940: 1000 records imported
+
+📥 Fetching batch 763/1940 (offset: 762000)...
+✅ Batch 763/1940: 1000 records imported
+
+📥 Fetching batch 764/1940 (offset: 763000)...
+✅ Batch 764/1940: 1000 records imported
+
+📥 Fetching batch 765/1940 (offset: 764000)...
+✅ Batch 765/1940: 1000 records imported
+
+📥 Fetching batch 766/1940 (offset: 765000)...
+✅ Batch 766/1940: 1000 records imported
+
+📥 Fetching batch 767/1940 (offset: 766000)...
+✅ Batch 767/1940: 1000 records imported
+
+📥 Fetching batch 768/1940 (offset: 767000)...
+✅ Batch 768/1940: 1000 records imported
+
+📥 Fetching batch 769/1940 (offset: 768000)...
+✅ Batch 769/1940: 1000 records imported
+
+📥 Fetching batch 770/1940 (offset: 769000)...
+✅ Batch 770/1940: 1000 records imported
+
+📊 Progress Update:
+   Imported: 767,000 / 1,939,334
+   Rate: 42 records/sec
+   ETA: 467 minutes
+
+
+📥 Fetching batch 771/1940 (offset: 770000)...
+✅ Batch 771/1940: 1000 records imported
+
+📥 Fetching batch 772/1940 (offset: 771000)...
+✅ Batch 772/1940: 1000 records imported
+
+📥 Fetching batch 773/1940 (offset: 772000)...
+✅ Batch 773/1940: 1000 records imported
+
+📥 Fetching batch 774/1940 (offset: 773000)...
+✅ Batch 774/1940: 1000 records imported
+
+📥 Fetching batch 775/1940 (offset: 774000)...
