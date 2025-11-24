@@ -188,7 +188,7 @@ export default function PricingProPage() {
         </div>
 
         <p className="text-center text-sm text-gray-600 mt-8">
-          All plans include a 30-day money-back guarantee. Cancel anytime.
+          Cancel anytime. No long-term contracts required.
         </p>
       </section>
 

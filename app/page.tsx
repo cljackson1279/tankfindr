@@ -62,7 +62,7 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
           Locate Septic Tanks Instantly<br />
-          <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+          <span className="text-green-600">
             Accurate Data for 12+ States
           </span>
         </h1>
@@ -133,7 +133,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-center text-sm text-gray-600 mt-4">
-              From $99/month • 30-day money-back guarantee
+              From $99/month
             </p>
           </Card>
 
