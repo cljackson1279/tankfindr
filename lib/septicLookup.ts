@@ -200,7 +200,7 @@ async function findNearestFeatures(
     const { data, error } = await supabase.rpc('find_nearest_septic_tank', {
       search_lat: lat,
       search_lng: lng,
-      radius_meters: radiusMeters,
+      search_radius_meters: radiusMeters,
     });
 
     if (error) {
