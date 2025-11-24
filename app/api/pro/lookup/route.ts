@@ -18,15 +18,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get user profile to check subscription
-    const { data: profile } = await supabase
+    // Get user email from auth.users
+    const { data: { user }, error: userError } = await supabase.auth.admin.getUserById(userId);
+    
+    console.log('User lookup:', { userId, userEmail: user?.email, userError });
+
+    // Admin bypass - allow unlimited access
+    const isAdmin = user?.email === 'cljackson79@gmail.com';
+    console.log('Admin check:', { email: user?.email, isAdmin });
+
+    if (isAdmin) {
+      console.log('Admin bypass: Skipping subscription check');
+    }
+
+    // Get user profile to check subscription (only for non-admin)
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
-      .select('email, subscription_status, subscription_tier, lookups_used')
+      .select('subscription_status, subscription_tier, lookups_used')
       .eq('id', userId)
       .single();
 
-    // Admin bypass - allow unlimited access
-    const isAdmin = profile?.email === 'cljackson79@gmail.com';
+    console.log('Profile lookup:', { userId, profile, profileError });
 
     if (!isAdmin) {
       // Check subscription for non-admin users
