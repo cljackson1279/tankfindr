@@ -44,21 +44,54 @@ function ReportViewContent() {
           throw new Error('Invalid report parameters')
         }
 
-        // Generate mock report for admin
+        // Generate mock report for admin with complete data
         const mockReport = {
           id: reportId,
           address,
           lat,
           lng,
-          tankLocation: { lat, lng },
+          // GPS coordinates for tank location
+          tankPoint: {
+            lat: lat + 0.0001, // Slightly offset from property
+            lng: lng + 0.0001,
+          },
+          distance: 12.5,
           classification: 'septic',
           confidence: 'high',
-          distance: 12,
-          systemType: 'Conventional Septic System',
-          permitDate: '2015-06-15',
-          lastInspection: '2023-08-22',
-          estimatedAge: 9,
-          risk: 'low',
+          // System information with age estimate
+          systemInfo: {
+            type: 'Conventional Septic System',
+            permitNumber: 'SP-2015-' + Math.floor(Math.random() * 10000),
+            permitDate: '2015-06-15',
+            ageEstimate: '9 years old',
+          },
+          // Risk assessment
+          riskLevel: 'low',
+          // Data sources
+          sources: [
+            {
+              name: 'County Health Department Records',
+              description: 'Official septic system permits and inspections',
+            },
+            {
+              name: 'Property Assessment Database',
+              description: 'Property characteristics and wastewater connection status',
+            },
+          ],
+          // Environmental Risk data (if upsell selected)
+          environmentalRisk: {
+            floodZone: 'Zone X (Minimal Flood Hazard)',
+            wetlands: 'No wetlands within 500 feet',
+            soilType: 'Sandy loam - Good drainage',
+            hazards: 'No known environmental hazards',
+          },
+          // Well & Groundwater data (if upsell selected)
+          groundwaterRisk: {
+            nearbyWells: '3 wells within 1 mile',
+            waterTableDepth: '15-20 feet below surface',
+            contaminationRisk: 'Low - No known contamination sources',
+            aquifer: 'Surficial Aquifer System',
+          },
           notes: 'Admin preview - No payment required',
         }
 
@@ -283,6 +316,56 @@ function ReportViewContent() {
                   {report.riskLevel === 'low' && 
                     'This system is relatively new (under 15 years). Continue regular maintenance.'}
                 </p>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {/* Environmental Risk Add-On */}
+        {report.environmentalRisk && (
+          <Card className="p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Environmental Risk Assessment</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Flood Zone</p>
+                <p className="font-semibold">{report.environmentalRisk.floodZone}</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Wetlands</p>
+                <p className="font-semibold">{report.environmentalRisk.wetlands}</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Soil Type</p>
+                <p className="font-semibold">{report.environmentalRisk.soilType}</p>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Environmental Hazards</p>
+                <p className="font-semibold">{report.environmentalRisk.hazards}</p>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {/* Well & Groundwater Risk Add-On */}
+        {report.groundwaterRisk && (
+          <Card className="p-6 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Well & Groundwater Risk Assessment</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-cyan-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Nearby Wells</p>
+                <p className="font-semibold">{report.groundwaterRisk.nearbyWells}</p>
+              </div>
+              <div className="bg-cyan-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Water Table Depth</p>
+                <p className="font-semibold">{report.groundwaterRisk.waterTableDepth}</p>
+              </div>
+              <div className="bg-cyan-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Contamination Risk</p>
+                <p className="font-semibold">{report.groundwaterRisk.contaminationRisk}</p>
+              </div>
+              <div className="bg-cyan-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600 mb-1">Aquifer</p>
+                <p className="font-semibold">{report.groundwaterRisk.aquifer}</p>
               </div>
             </div>
           </Card>
