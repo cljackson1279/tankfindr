@@ -268,66 +268,27 @@ export default function ProDashboard() {
                 <div key={job.id} className="border-b pb-4 last:border-b-0">
                   <p className="font-medium">{job.address}</p>
                   <p className="text-sm text-gray-600">
-              className="flex-1"
-            />
-            <Button onClick={handleSearch} disabled={searching}>
-              {searching ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Searching...
-                </>
-              ) : (
-                <>
-                  <Search className="w-4 h-4 mr-2" />
-                  Locate Tank
-                </>
-              )}
-            </Button>
-          </div>
-          {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-red-800">{error}</p>
-            </div>
-          )}
-        </Card>
-
-        {/* Job History */}
-        <Card className="p-6">
-          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-            <History className="w-5 h-5" />
-            Recent Lookups
-          </h2>
-          {jobHistory.length === 0 ? (
-            <p className="text-gray-600 text-center py-8">
-              No lookups yet. Start by searching for an address above.
-            </p>
-          ) : (
-            <div className="space-y-4">
-              {jobHistory.slice(0, 10).map((job) => (
-                <div
-                  key={job.id}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-                >
-                  <div className="flex items-center gap-4">
-                    <MapPin className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">{job.address}</p>
-                      <p className="text-sm text-gray-600">
-                        {new Date(job.created_at).toLocaleString()}
-                      </p>
+                    {new Date(job.created_at).toLocaleDateString()} at {new Date(job.created_at).toLocaleTimeString()}
+                  </p>
+                  {job.result_summary && (
+                    <div className="mt-2">
+                      <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">
+                        {job.result_summary.classification}
+                      </span>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">
-                      {job.result?.confidence}% confidence
-                    </p>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
           )}
         </Card>
+
+        {error && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <p className="text-sm text-red-800">{error}</p>
+          </div>
+        )}
       </div>
     </div>
   )
