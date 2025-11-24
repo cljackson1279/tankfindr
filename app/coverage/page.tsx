@@ -265,7 +265,7 @@ export default function CoveragePage() {
                 Request Your County
               </Button>
             </Link>
-            <Link href="/pricing">
+            <Link href="/pricing-pro">
               <Button variant="outline">
                 View Pricing
               </Button>

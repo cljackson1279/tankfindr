@@ -35,7 +35,24 @@ export default function ProDashboard() {
 
     setUser(user)
 
-    // Check subscription status
+    // Admin bypass - skip subscription check for admin
+    const isAdmin = user.email === 'cljackson79@gmail.com'
+
+    if (isAdmin) {
+      // Admin has full access without subscription
+      setSubscription({
+        isActive: true,
+        tier: 'enterprise',
+        lookupsUsed: 0,
+        lookupsLimit: -1,
+        isUnlimited: true,
+      })
+      await loadDashboardData(user.id)
+      setLoading(false)
+      return
+    }
+
+    // Check subscription status for non-admin users
     const subStatus = await checkSubscription(user.id)
     setSubscription(subStatus)
 

@@ -198,7 +198,7 @@ export default function SewerOrSepticWidget() {
       <div className="mt-6 text-center text-sm text-gray-600">
         <p>
           💡 <strong>For septic companies:</strong>{' '}
-          <Link href="/pricing" className="text-emerald-600 hover:underline">
+          <Link href="/pricing-pro" className="text-emerald-600 hover:underline">
             Get unlimited lookups with TankFindr Pro
           </Link>
         </p>

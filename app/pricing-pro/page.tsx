@@ -52,11 +52,8 @@ const PLANS = [
     features: [
       'Unlimited tank lookups',
       'Everything in Pro, plus:',
-      'Dedicated account manager',
       'Custom integrations',
       'Unlimited users',
-      'White-label options',
-      'SLA guarantee',
       'Phone support',
     ],
     cta: 'Get Enterprise',

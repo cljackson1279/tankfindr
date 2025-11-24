@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { MapPin, Building2, Home, TrendingUp, Zap, Shield, CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -32,13 +33,23 @@ const COVERAGE_STATES = [
 
 export default function HomePage() {
   const [activePath, setActivePath] = useState<'pro' | 'consumer' | null>(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      setIsLoggedIn(!!user)
+    }
+    checkAuth()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-green-50">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+          <div className="text-2xl font-bold text-green-600">
             TankFindr
           </div>
           <nav className="hidden md:flex items-center gap-6">
@@ -51,9 +62,15 @@ export default function HomePage() {
             <Link href="/faq" className="text-gray-600 hover:text-gray-900">
               FAQ
             </Link>
-            <Link href="/auth/login">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
+            {!isLoggedIn ? (
+              <Link href="/auth/login">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+            ) : (
+              <Link href="/pro">
+                <Button variant="ghost">Dashboard</Button>
+              </Link>
+            )}
           </nav>
         </div>
       </header>

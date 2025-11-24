@@ -287,7 +287,7 @@ function ReportViewContent() {
           <p className="text-gray-700 mb-4">
             Need reports for multiple properties?
           </p>
-          <Link href="/pricing">
+          <Link href="/pricing-pro">
             <Button variant="outline">
               View TankFindr Pro Plans
             </Button>

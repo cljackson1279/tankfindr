@@ -24,6 +24,9 @@ const PLAN_CONFIG: Record<string, { priceId: string; name: string }> = {
 export async function POST(request: NextRequest) {
   try {
     const { planId } = await request.json();
+    
+    // Get site URL from env or request origin
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || request.headers.get('origin') || 'https://tankfindr.com';
 
     if (!planId || !PLAN_CONFIG[planId]) {
       return NextResponse.json(
@@ -79,8 +82,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pro?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/pricing-pro`,
+      success_url: `${siteUrl}/pro?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/pricing-pro`,
       metadata: {
         supabase_user_id: user.id,
         plan_id: planId,
