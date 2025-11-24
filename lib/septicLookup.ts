@@ -145,9 +145,16 @@ async function checkCoverage(lat: number, lng: number): Promise<SepticSource[]> 
     });
 
     if (tanksError) {
-      console.error('Error checking nearby tanks:', tanksError);
+      console.error('❌ CRITICAL ERROR in checkCoverage - RPC call failed:', {
+        message: tanksError.message,
+        code: tanksError.code,
+        hint: tanksError.hint,
+        details: tanksError.details,
+        hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL
+      });
       // If RPC function doesn't exist, user needs to apply migration
-      if (tanksError.code === 'PGRST202' || tanksError.message?.includes('find_nearest_septic_tank')) {
+      if (tanksError.code === 'PGRST202' || tanksError.message?.includes('find_nearest_septic_tank') || tanksError.message?.includes('does not exist')) {
         console.error('⚠️  CRITICAL: find_nearest_septic_tank RPC function not found!');
         console.error('👉 Apply SQL migration from MIGRATION_INSTRUCTIONS.md');
       }
@@ -204,7 +211,15 @@ async function findNearestFeatures(
     });
 
     if (error) {
-      console.error('Error finding nearest features:', error);
+      console.error('❌ ERROR in findNearestFeatures - RPC call failed:', {
+        message: error.message,
+        code: error.code,
+        hint: error.hint,
+        details: error.details,
+        lat,
+        lng,
+        radiusMeters
+      });
       return [];
     }
 
