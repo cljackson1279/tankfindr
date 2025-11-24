@@ -90,8 +90,14 @@ export default function ProDashboard() {
     }
 
     try {
+      const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+      if (!mapboxToken) {
+        console.warn('Mapbox token not configured')
+        return
+      }
+      
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&country=US&types=address&limit=5`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&country=US&types=address&limit=5`
       )
       const data = await response.json()
       setSuggestions(data.features || [])
