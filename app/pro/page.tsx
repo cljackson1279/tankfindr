@@ -75,7 +75,7 @@ export default function ProDashboard() {
       const historyResponse = await fetch(`/api/pro/job-history?userId=${userId}`)
       if (historyResponse.ok) {
         const historyData = await historyResponse.json()
-        setJobHistory(historyData.jobs || [])
+        setJobs(historyData.jobs || [])
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error)
