@@ -109,15 +109,15 @@ export async function POST(request: NextRequest) {
       tablesUsed: ['septic_sources', 'septic_tanks'], // Debug indicator
     };
 
-    // Add Environmental Risk data if included
-    if (isAdminBypass || upsells.includes('environmental')) {
-      console.log('FETCHING_ENVIRONMENTAL_DATA', { lat, lng });
+    // Add Environmental Risk data ONLY if user selected it (or pass upsells for admin testing)
+    if (upsells.includes('environmental')) {
+      console.log('FETCHING_ENVIRONMENTAL_DATA', { lat, lng, userPaid: true });
       reportData.environmentalRisk = await getEnvironmentalRiskData(lat, lng);
     }
 
-    // Add Well & Groundwater Risk data if included
-    if (isAdminBypass || upsells.includes('well')) {
-      console.log('FETCHING_WELL_DATA', { lat, lng });
+    // Add Well & Groundwater Risk data ONLY if user selected it
+    if (upsells.includes('well')) {
+      console.log('FETCHING_WELL_DATA', { lat, lng, userPaid: true });
       reportData.groundwaterRisk = await getGroundwaterRiskData(lat, lng);
     }
 

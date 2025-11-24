@@ -116,21 +116,71 @@ export async function getSepticContextForLocation(
 async function checkCoverage(lat: number, lng: number): Promise<SepticSource[]> {
   try {
     // Query septic_sources table for coverage
-    // For now, we'll check by state/county since we don't have coverage_geom populated yet
-    // This will be enhanced once coverage geometries are added
-    
     const { data, error } = await supabase
       .from('septic_sources')
       .select('*');
 
     if (error) {
       console.error('Error checking coverage:', error);
+    }
+
+    // If septic_sources table has data, use it
+    if (data && data.length > 0) {
+      console.log('COVERAGE_FROM_SOURCES', { sourcesCount: data.length });
+      return data;
+    }
+
+    // FALLBACK: If septic_sources is empty, check if we have ANY septic_tanks data nearby
+    // This handles the case where data is imported but metadata table not populated yet
+    console.log('COVERAGE_FALLBACK', {
+      message: 'septic_sources empty, checking for nearby tanks',
+      lat,
+      lng
+    });
+
+    const { data: nearbyTanks, error: tanksError } = await supabase.rpc('find_nearest_septic_tank', {
+      search_lat: lat,
+      search_lng: lng,
+      search_radius_meters: 5000, // 5km radius for coverage check
+    });
+
+    if (tanksError) {
+      console.error('Error checking nearby tanks:', tanksError);
+      // If RPC function doesn't exist, user needs to apply migration
+      if (tanksError.code === 'PGRST202' || tanksError.message?.includes('find_nearest_septic_tank')) {
+        console.error('⚠️  CRITICAL: find_nearest_septic_tank RPC function not found!');
+        console.error('👉 Apply SQL migration from MIGRATION_INSTRUCTIONS.md');
+      }
       return [];
     }
 
-    // For now, return all sources as we're building coverage check
-    // TODO: Add proper spatial query when coverage_geom is populated
-    return data || [];
+    // If we found tanks nearby, create synthetic source entries
+    if (nearbyTanks && nearbyTanks.length > 0) {
+      const uniqueCounties = new Set(nearbyTanks.map((t: any) => `${t.county},${t.state}`));
+      const syntheticSources: SepticSource[] = Array.from(uniqueCounties).map((key) => {
+        const [county, state] = key.split(',');
+        return {
+          id: `synthetic-${county}-${state}`,
+          name: `${county} County Septic Records`,
+          state,
+          county,
+          quality: 'high' as const,
+          geometry_type: 'POINT' as const,
+          record_count: nearbyTanks.filter((t: any) => t.county === county && t.state === state).length,
+        };
+      });
+
+      console.log('COVERAGE_SYNTHETIC_SOURCES', {
+        sourcesCount: syntheticSources.length,
+        counties: syntheticSources.map(s => `${s.county}, ${s.state}`)
+      });
+
+      return syntheticSources;
+    }
+
+    // No coverage found
+    console.log('COVERAGE_NONE', { lat, lng });
+    return [];
   } catch (error) {
     console.error('Error in checkCoverage:', error);
     return [];
