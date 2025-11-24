@@ -46,6 +46,8 @@ export default function ProDashboard() {
         lookupsUsed: 0,
         lookupsLimit: -1,
         isUnlimited: true,
+        billingPeriodStart: null,
+        billingPeriodEnd: null,
       })
       await loadDashboardData(user.id)
       setLoading(false)
