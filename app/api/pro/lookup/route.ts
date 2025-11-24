@@ -67,8 +67,29 @@ export async function POST(request: NextRequest) {
         .eq('id', userId);
     }
 
-    // Get septic context
+    // Get septic context from REAL Supabase data
+    console.log('PRO_LOOKUP_QUERY', {
+      userId,
+      userEmail: user?.email,
+      isAdmin,
+      address,
+      lat,
+      lng,
+      dataSource: 'supabase',
+      fromTables: ['septic_sources', 'septic_tanks']
+    });
+
     const context = await getSepticContextForLocation(lat, lng);
+
+    console.log('PRO_LOOKUP_RESULT', {
+      userId,
+      classification: context.classification,
+      confidence: context.confidence,
+      isCovered: context.isCovered,
+      hasTankPoint: !!context.tankPoint,
+      sourcesCount: context.coverageSources?.length || 0,
+      featuresCount: context.nearestFeatures?.length || 0
+    });
 
     // Calculate distance if we have a tank point
     let distance = null;

@@ -21,7 +21,14 @@ export async function POST(request: NextRequest) {
     // Search within 200 meters radius (as specified in the document)
     const searchRadiusMeters = 200;
 
-    console.log(`🔍 Searching for septic tank near: ${lat}, ${lng}`);
+    console.log('LOCATE_SEPTIC_QUERY', {
+      lat,
+      lng,
+      radiusMeters: searchRadiusMeters,
+      dataSource: 'supabase',
+      fromRPC: 'find_nearest_septic_tank',
+      fromTable: 'septic_tanks'
+    });
 
     // Use PostGIS to find the nearest septic tank within radius
     const { data, error } = await supabase.rpc('find_nearest_septic_tank', {
@@ -39,7 +46,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (!data || data.length === 0) {
-      console.log('❌ No septic tank found within radius');
+      console.log('LOCATE_SEPTIC_NO_DATA', {
+        lat,
+        lng,
+        radius: searchRadiusMeters,
+        message: 'No septic tank found within radius'
+      });
       return NextResponse.json({
         found: false,
         message: "No septic data available for this property/county yet. We're constantly adding more counties - join the waitlist to be notified when your area is covered!",
@@ -65,7 +77,14 @@ export async function POST(request: NextRequest) {
       confidence = 0.5;
     }
 
-    console.log(`✅ Found tank: ${tank.address} (${distanceMeters.toFixed(1)}m away, confidence: ${confidence})`);
+    console.log('LOCATE_SEPTIC_FOUND', {
+      address: tank.address,
+      distanceMeters: distanceMeters.toFixed(1),
+      confidence,
+      county: tank.county,
+      state: tank.state,
+      dataSource: 'supabase'
+    });
 
     // Extract coordinates from PostGIS geometry
     const tankLocation = {

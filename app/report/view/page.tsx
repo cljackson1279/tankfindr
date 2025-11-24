@@ -38,64 +38,52 @@ function ReportViewContent() {
       const { data: { user } } = await supabase.auth.getUser()
       const isAdmin = user?.email === 'cljackson79@gmail.com'
 
-      // Admin bypass - generate report without payment
+      // Admin bypass - generate report without payment using REAL Supabase data
       if (isAdmin && reportId?.startsWith('admin_')) {
         if (!address || isNaN(lat) || isNaN(lng)) {
           throw new Error('Invalid report parameters')
         }
 
-        // Generate mock report for admin with complete data
-        const mockReport = {
-          id: reportId,
+        console.log('ADMIN_REPORT_GENERATION', {
+          userEmail: user.email,
           address,
           lat,
           lng,
-          // GPS coordinates for tank location
-          tankPoint: {
-            lat: lat + 0.0001, // Slightly offset from property
-            lng: lng + 0.0001,
+          dataSource: 'supabase',
+          bypassedPayment: true
+        })
+
+        // Call the same report generation endpoint but with admin flag
+        const response = await fetch('/api/generate-report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Admin-Bypass': 'true' // Signal to skip payment verification
           },
-          distance: 12.5,
-          classification: 'septic',
-          confidence: 'high',
-          // System information with age estimate
-          systemInfo: {
-            type: 'Conventional Septic System',
-            permitNumber: 'SP-2015-' + Math.floor(Math.random() * 10000),
-            permitDate: '2015-06-15',
-            ageEstimate: '9 years old',
-          },
-          // Risk assessment
-          riskLevel: 'low',
-          // Data sources
-          sources: [
-            {
-              name: 'County Health Department Records',
-              description: 'Official septic system permits and inspections',
-            },
-            {
-              name: 'Property Assessment Database',
-              description: 'Property characteristics and wastewater connection status',
-            },
-          ],
-          // Environmental Risk data (if upsell selected)
-          environmentalRisk: {
-            floodZone: 'Zone X (Minimal Flood Hazard)',
-            wetlands: 'No wetlands within 500 feet',
-            soilType: 'Sandy loam - Good drainage',
-            hazards: 'No known environmental hazards',
-          },
-          // Well & Groundwater data (if upsell selected)
-          groundwaterRisk: {
-            nearbyWells: '3 wells within 1 mile',
-            waterTableDepth: '15-20 feet below surface',
-            contaminationRisk: 'Low - No known contamination sources',
-            aquifer: 'Surficial Aquifer System',
-          },
-          notes: 'Admin preview - No payment required',
+          body: JSON.stringify({
+            sessionId: 'admin_bypass',
+            address,
+            lat,
+            lng,
+            adminEmail: user.email
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to generate report')
         }
 
-        setReport(mockReport)
+        console.log('ADMIN_REPORT_LOADED', {
+          hasRealData: true,
+          classification: data.classification,
+          tankFound: !!data.tankPoint,
+          sourcesCount: data.sources?.length || 0,
+          tablesUsed: ['septic_sources', 'septic_tanks', 'property_reports']
+        })
+
+        setReport(data)
         setLoading(false)
         return
       }

@@ -14,7 +14,7 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
-    const { sessionId, address, lat, lng } = await request.json();
+    const { sessionId, address, lat, lng, adminEmail } = await request.json();
 
     if (!sessionId || !address || !lat || !lng) {
       return NextResponse.json(
@@ -23,18 +23,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify payment session
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    // Admin bypass - skip payment verification
+    const isAdminBypass = adminEmail === 'cljackson79@gmail.com' && sessionId === 'admin_bypass';
+    let customerEmail = 'unknown';
 
-    if (session.payment_status !== 'paid') {
-      return NextResponse.json(
-        { error: 'Payment not completed' },
-        { status: 400 }
-      );
+    if (isAdminBypass) {
+      console.log('ADMIN_BYPASS_REPORT', {
+        adminEmail,
+        address,
+        skipPaymentVerification: true,
+        dataSource: 'supabase'
+      });
+      customerEmail = adminEmail;
+    } else {
+      // Verify payment session for non-admin users
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+      if (session.payment_status !== 'paid') {
+        return NextResponse.json(
+          { error: 'Payment not completed' },
+          { status: 400 }
+        );
+      }
+      customerEmail = session.customer_details?.email || 'unknown';
     }
 
-    // Get septic context
+    // Get septic context from REAL Supabase data
+    console.log('FETCHING_SEPTIC_DATA', {
+      lat,
+      lng,
+      dataSource: 'supabase',
+      fromTables: ['septic_sources', 'septic_tanks']
+    });
+
     const context = await getSepticContextForLocation(lat, lng);
+
+    console.log('SEPTIC_DATA_FETCHED', {
+      classification: context.classification,
+      confidence: context.confidence,
+      isCovered: context.isCovered,
+      hasTankPoint: !!context.tankPoint,
+      sourcesCount: context.coverageSources?.length || 0,
+      featuresCount: context.nearestFeatures?.length || 0
+    });
 
     // Calculate distance if we have a tank point
     let distance = null;
@@ -61,18 +92,34 @@ export async function POST(request: NextRequest) {
       riskLevel: context.riskLevel,
       sources: context.coverageSources,
       generatedAt: new Date().toISOString(),
+      dataSource: 'supabase', // Debug indicator
+      tablesUsed: ['septic_sources', 'septic_tanks'], // Debug indicator
     };
 
-    // Save report to database
-    await supabase.from('property_reports').insert({
-      email: session.customer_details?.email || 'unknown',
-      address,
-      lat,
-      lng,
-      report_data: reportData,
-      stripe_payment_id: session.payment_intent as string,
-      amount_paid: session.amount_total,
-    });
+    // Save report to database (skip for admin bypass or save with admin flag)
+    if (!isAdminBypass) {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      await supabase.from('property_reports').insert({
+        email: customerEmail,
+        address,
+        lat,
+        lng,
+        report_data: reportData,
+        stripe_payment_id: session.payment_intent as string,
+        amount_paid: session.amount_total,
+      });
+    } else {
+      // Still log admin reports for audit purposes
+      await supabase.from('property_reports').insert({
+        email: customerEmail,
+        address,
+        lat,
+        lng,
+        report_data: reportData,
+        stripe_payment_id: 'admin_bypass',
+        amount_paid: 0,
+      });
+    }
 
     return NextResponse.json(reportData);
   } catch (error: any) {
