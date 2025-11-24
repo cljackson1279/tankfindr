@@ -156,8 +156,8 @@ async function checkCoverage(lat: number, lng: number): Promise<SepticSource[]> 
 
     // If we found tanks nearby, create synthetic source entries
     if (nearbyTanks && nearbyTanks.length > 0) {
-      const uniqueCounties = new Set(nearbyTanks.map((t: any) => `${t.county},${t.state}`));
-      const syntheticSources: SepticSource[] = Array.from(uniqueCounties).map((key) => {
+      const uniqueCounties = new Set<string>(nearbyTanks.map((t: any) => `${t.county},${t.state}`));
+      const syntheticSources: SepticSource[] = Array.from(uniqueCounties).map((key: string) => {
         const [county, state] = key.split(',');
         return {
           id: `synthetic-${county}-${state}`,
