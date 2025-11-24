@@ -20,6 +20,7 @@ export default function ProDashboard() {
   const [error, setError] = useState<string | null>(null)
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
+  const [jobs, setJobs] = useState<any[]>([])
 
   useEffect(() => {
     checkAuth()
