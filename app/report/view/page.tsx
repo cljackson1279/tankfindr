@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Calendar, Hash } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -26,11 +27,46 @@ function ReportViewContent() {
 
   const loadReport = async () => {
     try {
+      const reportId = searchParams?.get('id')
       const sessionId = searchParams?.get('session_id')
       const address = searchParams?.get('address')
       const lat = parseFloat(searchParams?.get('lat') || '')
       const lng = parseFloat(searchParams?.get('lng') || '')
 
+      // Check if admin bypass
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      const isAdmin = user?.email === 'cljackson79@gmail.com'
+
+      // Admin bypass - generate report without payment
+      if (isAdmin && reportId?.startsWith('admin_')) {
+        if (!address || isNaN(lat) || isNaN(lng)) {
+          throw new Error('Invalid report parameters')
+        }
+
+        // Generate mock report for admin
+        const mockReport = {
+          id: reportId,
+          address,
+          lat,
+          lng,
+          tankLocation: { lat, lng },
+          confidence: 'High',
+          distance: 12,
+          systemType: 'Conventional Septic System',
+          permitDate: '2015-06-15',
+          lastInspection: '2023-08-22',
+          estimatedAge: 9,
+          risk: 'low',
+          notes: 'Admin preview - No payment required',
+        }
+
+        setReport(mockReport)
+        setLoading(false)
+        return
+      }
+
+      // Regular flow - verify payment
       if (!sessionId || !address || isNaN(lat) || isNaN(lng)) {
         throw new Error('Invalid report parameters')
       }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Lock, Shield, Droplet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -17,6 +18,17 @@ function ReportPageContent() {
   const [error, setError] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    checkAdmin()
+  }, [])
+
+  const checkAdmin = async () => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    setIsAdmin(user?.email === 'cljackson79@gmail.com')
+  }
 
   const UPSELLS = [
     {
@@ -105,6 +117,13 @@ function ReportPageContent() {
 
   const handlePurchase = async () => {
     if (!preview) return
+
+    // Admin bypass - go directly to report view
+    if (isAdmin) {
+      const reportId = `admin_${Date.now()}`
+      router.push(`/report/view?id=${reportId}&address=${encodeURIComponent(preview.address)}&lat=${preview.lat}&lng=${preview.lng}`)
+      return
+    }
 
     setCheckoutLoading(true)
 
