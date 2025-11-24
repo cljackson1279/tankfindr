@@ -9,6 +9,9 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 
+// Get Mapbox token at module level to avoid runtime issues
+const MAPBOX_TOKEN = typeof window !== 'undefined' ? (window as any).__NEXT_DATA__?.props?.pageProps?.env?.NEXT_PUBLIC_MAPBOX_TOKEN : process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+
 function ReportPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -39,14 +42,13 @@ function ReportPageContent() {
     }
 
     try {
-      const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
-      if (!mapboxToken) {
+      if (!MAPBOX_TOKEN) {
         console.warn('Mapbox token not configured')
         return
       }
       
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxToken}&country=US&types=address&limit=5`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&country=US&types=address&limit=5`
       )
       const data = await response.json()
       setSuggestions(data.features || [])
