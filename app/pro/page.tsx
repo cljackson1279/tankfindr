@@ -17,8 +17,9 @@ export default function ProDashboard() {
   const [subscription, setSubscription] = useState<SubscriptionStatus | null>(null)
   const [address, setAddress] = useState('')
   const [searching, setSearching] = useState(false)
-  const [jobHistory, setJobHistory] = useState<any[]>([])
   const [error, setError] = useState<string | null>(null)
+  const [suggestions, setSuggestions] = useState<any[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   useEffect(() => {
     checkAuth()
@@ -79,6 +80,30 @@ export default function ProDashboard() {
     } catch (error) {
       console.error('Error loading dashboard data:', error)
     }
+  }
+
+  const fetchSuggestions = async (query: string) => {
+    if (query.length < 3) {
+      setSuggestions([])
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&country=US&types=address&limit=5`
+      )
+      const data = await response.json()
+      setSuggestions(data.features || [])
+      setShowSuggestions(true)
+    } catch (error) {
+      console.error('Autocomplete error:', error)
+    }
+  }
+
+  const selectSuggestion = (suggestion: any) => {
+    setAddress(suggestion.place_name)
+    setSuggestions([])
+    setShowSuggestions(false)
   }
 
   const handleSearch = async () => {
@@ -193,11 +218,56 @@ export default function ProDashboard() {
         <Card className="p-6 mb-8">
           <h2 className="text-xl font-bold mb-4">Quick Tank Lookup</h2>
           <div className="flex gap-4">
-            <Input
-              placeholder="Enter property address..."
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            <div className="relative flex-1">
+              <Input
+                placeholder="Enter property address..."
+                value={address}
+                onChange={(e) => {
+                  setAddress(e.target.value)
+                  fetchSuggestions(e.target.value)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !showSuggestions) {
+                    handleSearch()
+                  }
+                }}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+              />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                  {suggestions.map((suggestion, index) => (
+                    <div
+                      key={index}
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                      onClick={() => selectSuggestion(suggestion)}
+                    >
+                      <div className="font-medium text-sm">{suggestion.text}</div>
+                      <div className="text-xs text-gray-600">{suggestion.place_name}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Button
+              onClick={handleSearch}
+              disabled={searching || !address.trim()}
+            >
+              {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Locate Tank'}
+            </Button>
+          </div>
+        </Card>
+
+        {/* Job History */}
+        <Card className="p-6">
+          <h2 className="text-xl font-bold mb-4">Recent Lookups</h2>
+          {jobs.length === 0 ? (
+            <p className="text-gray-600">No lookups yet. Start by searching an address above.</p>
+          ) : (
+            <div className="space-y-4">
+              {jobs.map((job) => (
+                <div key={job.id} className="border-b pb-4 last:border-b-0">
+                  <p className="font-medium">{job.address}</p>
+                  <p className="text-sm text-gray-600">
               className="flex-1"
             />
             <Button onClick={handleSearch} disabled={searching}>

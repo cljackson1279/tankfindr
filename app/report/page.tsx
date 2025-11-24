@@ -19,6 +19,8 @@ function ReportPageContent() {
   const [checkoutLoading, setCheckoutLoading] = useState(false)
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [suggestions, setSuggestions] = useState<any[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
 
   useEffect(() => {
     checkAdmin()
@@ -28,6 +30,30 @@ function ReportPageContent() {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     setIsAdmin(user?.email === 'cljackson79@gmail.com')
+  }
+
+  const fetchSuggestions = async (query: string) => {
+    if (query.length < 3) {
+      setSuggestions([])
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&country=US&types=address&limit=5`
+      )
+      const data = await response.json()
+      setSuggestions(data.features || [])
+      setShowSuggestions(true)
+    } catch (error) {
+      console.error('Autocomplete error:', error)
+    }
+  }
+
+  const selectSuggestion = (suggestion: any) => {
+    setAddress(suggestion.place_name)
+    setSuggestions([])
+    setShowSuggestions(false)
   }
 
   const UPSELLS = [
@@ -180,14 +206,38 @@ function ReportPageContent() {
 
           <Card className="p-6">
             <div className="flex gap-4">
-              <Input
-                placeholder="Enter property address..."
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleCheck()}
-                className="flex-1 text-lg"
-                disabled={loading}
-              />
+              <div className="relative flex-1">
+                <Input
+                  placeholder="Enter property address..."
+                  value={address}
+                  onChange={(e) => {
+                    setAddress(e.target.value)
+                    fetchSuggestions(e.target.value)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !showSuggestions) {
+                      handleCheck()
+                    }
+                  }}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  className="text-lg"
+                  disabled={loading}
+                />
+                {showSuggestions && suggestions.length > 0 && (
+                  <div className="absolute z-10 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                    {suggestions.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer border-b last:border-b-0"
+                        onClick={() => selectSuggestion(suggestion)}
+                      >
+                        <div className="font-medium text-sm">{suggestion.text}</div>
+                        <div className="text-xs text-gray-600">{suggestion.place_name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               <Button onClick={handleCheck} disabled={loading} size="lg">
                 {loading ? (
                   <>

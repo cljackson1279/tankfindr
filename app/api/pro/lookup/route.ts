@@ -18,8 +18,42 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Check user's subscription and usage limits
-    // For now, allow all lookups
+    // Get user profile to check subscription
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('email, subscription_status, subscription_tier, lookups_used')
+      .eq('id', userId)
+      .single();
+
+    // Admin bypass - allow unlimited access
+    const isAdmin = profile?.email === 'cljackson79@gmail.com';
+
+    if (!isAdmin) {
+      // Check subscription for non-admin users
+      if (profile?.subscription_status !== 'active') {
+        return NextResponse.json(
+          { error: 'No active subscription. Please subscribe to TankFindr Pro to access the locator.' },
+          { status: 403 }
+        );
+      }
+
+      // Check usage limits (if not unlimited tier)
+      if (profile.subscription_tier !== 'enterprise') {
+        const limit = profile.subscription_tier === 'starter' ? 300 : 1500;
+        if ((profile.lookups_used || 0) >= limit) {
+          return NextResponse.json(
+            { error: `You've reached your monthly limit of ${limit} lookups. Upgrade your plan or wait for next billing cycle.` },
+            { status: 403 }
+          );
+        }
+      }
+
+      // Increment lookup count for non-admin
+      await supabase
+        .from('profiles')
+        .update({ lookups_used: (profile.lookups_used || 0) + 1 })
+        .eq('id', userId);
+    }
 
     // Get septic context
     const context = await getSepticContextForLocation(lat, lng);
