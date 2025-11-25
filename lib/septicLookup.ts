@@ -239,33 +239,37 @@ function classifySepticStatus(
 ): { classification: SepticContext['classification']; confidence: SepticContext['confidence'] } {
   if (features.length === 0) {
     // No septic tanks found within search radius
-    // This likely means the property is on city sewer
-    // In Florida, if no septic system is found in a covered area,
-    // it's most likely connected to municipal sewer
-    return { classification: 'sewer', confidence: 'medium' };
+    // If we have coverage data, this likely means sewer system
+    if (sources.length > 0) {
+      return { classification: 'sewer', confidence: 'high' };
+    }
+    // No coverage data - truly unknown
+    return { classification: 'unknown', confidence: 'low' };
   }
 
   const nearestFeature = features[0];
   const distance = nearestFeature.distance_meters;
 
-  // High confidence if very close (within 15 meters)
-  if (distance < 15) {
+  // High confidence if very close (within 30 meters)
+  // Increased from 15m to account for property boundaries
+  if (distance < 30) {
     return { classification: 'septic', confidence: 'high' };
   }
 
-  // Medium confidence if reasonably close (15-50 meters)
-  if (distance < 50) {
+  // Medium confidence if reasonably close (30-75 meters)
+  // This is typical for larger properties or corner lots
+  if (distance < 75) {
     return { classification: 'septic', confidence: 'medium' };
   }
 
-  // Lower confidence if farther (50-200 meters)
+  // Lower confidence if farther (75-200 meters)
   // Could be neighbor's tank or property boundary issue
   if (distance < 200) {
     return { classification: 'likely_septic', confidence: 'low' };
   }
 
   // Very far - probably not this property's tank
-  return { classification: 'sewer', confidence: 'low' };
+  return { classification: 'sewer', confidence: 'medium' };
 }
 
 /**
@@ -291,17 +295,20 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
   // Extract common fields (field names vary by county)
   const systemInfo: any = {};
 
-  // Try different field name variations
-  if (attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType) {
-    systemInfo.type = attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType;
+  // Try different field name variations for system type
+  if (attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType || attrs.WW || attrs.LANDUSE) {
+    systemInfo.type = attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType || attrs.WW || attrs.LANDUSE;
   }
 
-  if (attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO) {
-    systemInfo.permitNumber = attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO;
+  // Try different field name variations for permit number
+  if (attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO || attrs.PARCELNO || attrs.ALT_KEY) {
+    systemInfo.permitNumber = attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO || attrs.PARCELNO || attrs.ALT_KEY;
   }
 
-  if (attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE) {
-    systemInfo.permitDate = attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE;
+  // Try different field name variations for dates
+  if (attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE || attrs.WW_UPD || attrs.ASMNT_YR) {
+    const dateValue = attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE || attrs.WW_UPD || attrs.ASMNT_YR;
+    systemInfo.permitDate = dateValue;
   }
 
   if (attrs.INSTALL_DATE || attrs.install_date || attrs.InstallDate) {
@@ -312,17 +319,35 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
     systemInfo.lastServiceDate = attrs.LAST_SERVICE_DATE || attrs.last_service_date || attrs.LastServiceDate;
   }
 
-  // Calculate age estimate
+  // Calculate age estimate from any available date
   const permitDate = systemInfo.permitDate || systemInfo.installDate;
   if (permitDate) {
-    const year = new Date(permitDate).getFullYear();
-    const age = new Date().getFullYear() - year;
-    if (age > 0 && age < 100) {
-      systemInfo.ageEstimate = `${age} years old`;
+    try {
+      const year = typeof permitDate === 'number' ? permitDate : new Date(permitDate).getFullYear();
+      const age = new Date().getFullYear() - year;
+      if (age > 0 && age < 100) {
+        systemInfo.ageEstimate = `${age} years old`;
+      }
+    } catch (e) {
+      // Invalid date, skip age calculation
     }
   }
 
-  return Object.keys(systemInfo).length > 0 ? systemInfo : null;
+  // Add data source information
+  if (nearest.data_source) {
+    systemInfo.dataSource = nearest.data_source;
+  }
+
+  // Add county and state for context
+  if (nearest.county) {
+    systemInfo.county = nearest.county;
+  }
+  if (nearest.state) {
+    systemInfo.state = nearest.state;
+  }
+
+  // Always return system info if we have a septic record, even if minimal
+  return systemInfo;
 }
 
 /**
