@@ -270,7 +270,9 @@ function ReportViewContent() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Septic Status</h2>
           <div className="flex items-center gap-4 mb-4">
             <div className={`flex-1 p-4 rounded-lg border ${
-              report.classification === 'septic' ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-200'
+              report.classification === 'septic' ? 'bg-emerald-50 border-emerald-200' : 
+              report.classification === 'sewer' ? 'bg-blue-50 border-blue-200' : 
+              'bg-gray-50 border-gray-200'
             }`}>
               <p className="text-sm text-gray-600 mb-1">Classification</p>
               <p className="text-xl font-bold capitalize">
@@ -288,11 +290,13 @@ function ReportViewContent() {
           </div>
           <p className="text-gray-700">
             {report.classification === 'septic' && 
-              'This property has a septic system based on county records.'}
+              'This property has a septic system based on official county records. The tank location and system details are included in this report.'}
             {report.classification === 'likely_septic' && 
-              'This property likely has a septic system, but exact data is limited.'}
+              'This property likely has a septic system based on proximity to known septic tanks, but exact data is limited. Consider a professional inspection for confirmation.'}
             {report.classification === 'sewer' && 
-              'This property appears to be connected to sewer.'}
+              'This property appears to be connected to municipal sewer. No septic system records were found in the county database, which typically indicates sewer service availability.'}
+            {report.classification === 'unknown' && 
+              'Unable to determine wastewater system type. This area may not have complete data coverage, or records may not be available.'}
           </p>
         </Card>
 

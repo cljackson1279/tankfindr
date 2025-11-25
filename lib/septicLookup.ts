@@ -238,26 +238,34 @@ function classifySepticStatus(
   sources: SepticSource[]
 ): { classification: SepticContext['classification']; confidence: SepticContext['confidence'] } {
   if (features.length === 0) {
-    // No features found, but we have coverage
-    // Check if this is a known sewer area
-    return { classification: 'likely_septic', confidence: 'low' };
+    // No septic tanks found within search radius
+    // This likely means the property is on city sewer
+    // In Florida, if no septic system is found in a covered area,
+    // it's most likely connected to municipal sewer
+    return { classification: 'sewer', confidence: 'medium' };
   }
 
   const nearestFeature = features[0];
   const distance = nearestFeature.distance_meters;
 
-  // High confidence if very close
+  // High confidence if very close (within 15 meters)
   if (distance < 15) {
     return { classification: 'septic', confidence: 'high' };
   }
 
-  // Medium confidence if reasonably close
+  // Medium confidence if reasonably close (15-50 meters)
   if (distance < 50) {
     return { classification: 'septic', confidence: 'medium' };
   }
 
-  // Lower confidence if farther
-  return { classification: 'likely_septic', confidence: 'low' };
+  // Lower confidence if farther (50-200 meters)
+  // Could be neighbor's tank or property boundary issue
+  if (distance < 200) {
+    return { classification: 'likely_septic', confidence: 'low' };
+  }
+
+  // Very far - probably not this property's tank
+  return { classification: 'sewer', confidence: 'low' };
 }
 
 /**

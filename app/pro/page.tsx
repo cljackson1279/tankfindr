@@ -169,24 +169,24 @@ export default function ProDashboard() {
         throw new Error(data.error || 'Lookup failed')
       }
 
-      // Show result - navigate to a result page or show in a modal
+      // Show result based on classification
       if (data.tankPoint) {
         // Tank found - show coordinates and map link
-        const message = `✅ Septic Tank Found!\n\nLocation: ${data.tankPoint.lat.toFixed(6)}, ${data.tankPoint.lng.toFixed(6)}\nDistance: ${data.distance ? Math.round(data.distance) + 'm' : 'nearby'}\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nOpening map view...`;
+        const message = `✅ Septic Tank Found!\n\nLocation: ${data.tankPoint.lat.toFixed(6)}, ${data.tankPoint.lng.toFixed(6)}\nDistance: ${data.distance ? Math.round(data.distance) + 'm' : 'nearby'}\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nOpening satellite map view...`;
         alert(message);
 
-        // Open map in new window or navigate
+        // Open map in new window
         const mapUrl = `https://www.google.com/maps?q=${data.tankPoint.lat},${data.tankPoint.lng}&z=19&t=k`;
         window.open(mapUrl, '_blank');
-      } else if (data.isCovered && data.classification === 'septic') {
-        // In covered area but no exact tank point
-        alert(`✅ Property Classification: Septic\n\nThis property is in a covered area and classified as having a septic system, but we don't have exact tank coordinates yet.\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}\nCovered: Yes`);
-      } else if (data.isCovered) {
-        // In covered area but not septic
-        alert(`ℹ️ Property covered but not septic\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}`);
+      } else if (data.classification === 'sewer') {
+        // Property is on sewer
+        alert(`🚰 Municipal Sewer Connection\n\nThis property appears to be connected to municipal sewer.\n\nNo septic system records were found in the county database, which typically indicates sewer service availability.\n\nClassification: Sewer\nConfidence: ${data.confidence}`);
+      } else if (data.classification === 'septic' || data.classification === 'likely_septic') {
+        // Septic but no exact coordinates
+        alert(`✅ Septic System Detected\n\nThis property is classified as having a septic system, but exact tank coordinates are not available.\n\nClassification: ${data.classification.replace('_', ' ')}\nConfidence: ${data.confidence}\n\nConsider a professional inspection for exact location.`);
       } else {
-        // Not in covered area
-        alert(`⚠️ No Data Available\n\nThis area is not yet covered in our database.\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nWe're constantly adding new counties!`);
+        // Unknown or no data
+        alert(`⚠️ Unable to Determine\n\nCannot determine wastewater system type for this property.\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nThis area may have incomplete data coverage.`);
       }
 
       // Reload job history
