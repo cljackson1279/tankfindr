@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
 // Dynamically import map to avoid SSR issues
 const MapComponent = dynamic(() => import('@/components/MapComponent'), {
@@ -127,10 +129,76 @@ function ReportViewContent() {
     }
   }
 
-  const handleDownload = () => {
-    // TODO: Generate PDF
-    alert('PDF download coming soon! For now, use Print to PDF from your browser.')
-    window.print()
+  const handleDownload = async () => {
+    if (!report) return
+
+    try {
+      // Show loading state
+      const downloadButton = document.querySelector('[data-download-button]') as HTMLButtonElement
+      if (downloadButton) {
+        downloadButton.disabled = true
+        downloadButton.textContent = 'Generating PDF...'
+      }
+
+      // Get the report content element
+      const reportElement = document.getElementById('report-content')
+      if (!reportElement) {
+        throw new Error('Report content not found')
+      }
+
+      // Hide the download button temporarily
+      const buttonsToHide = document.querySelectorAll('.print\\:hidden')
+      buttonsToHide.forEach(el => (el as HTMLElement).style.display = 'none')
+
+      // Capture the report as canvas
+      const canvas = await html2canvas(reportElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      })
+
+      // Show buttons again
+      buttonsToHide.forEach(el => (el as HTMLElement).style.display = '')
+
+      // Calculate PDF dimensions
+      const imgWidth = 210 // A4 width in mm
+      const pageHeight = 297 // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+      let heightLeft = imgHeight
+
+      // Create PDF
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      let position = 0
+
+      // Add image to PDF
+      const imgData = canvas.toDataURL('image/png')
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pageHeight
+
+      // Add new pages if content is longer than one page
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+        heightLeft -= pageHeight
+      }
+
+      // Generate filename from address
+      const filename = `TankFindr-Report-${report.address.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`
+
+      // Download the PDF
+      pdf.save(filename)
+
+      // Reset button
+      if (downloadButton) {
+        downloadButton.disabled = false
+        downloadButton.innerHTML = '<svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>Download as PDF'
+      }
+    } catch (error) {
+      console.error('PDF generation error:', error)
+      alert('Failed to generate PDF. Please try again or use Print to PDF from your browser.')
+    }
   }
 
   const getRiskColor = (risk?: string) => {
@@ -186,12 +254,16 @@ function ReportViewContent() {
         <div className="mb-6 print:hidden">
           <Button
             onClick={handleDownload}
+            data-download-button
             className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
           >
             <Download className="w-4 h-4 mr-2" />
             Download as PDF
           </Button>
         </div>
+
+        {/* Report Content Wrapper for PDF */}
+        <div id="report-content">
 
         {/* Classification */}
         <Card className="p-6 mb-6">
@@ -402,6 +474,9 @@ function ReportViewContent() {
             responsible for any damages resulting from the use of this information.
           </p>
         </Card>
+
+        </div>
+        {/* End Report Content */}
 
         {/* CTA */}
         <div className="mt-8 text-center print:hidden">
