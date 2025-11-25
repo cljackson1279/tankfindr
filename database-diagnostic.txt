@@ -1,0 +1,18 @@
+[dotenv@17.2.3] injecting env (15) from .env.local -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+/home/ubuntu/tankfindr/node_modules/.pnpm/@supabase+supabase-js@2.84.0/node_modules/@supabase/supabase-js/dist/main/lib/helpers.js:53
+        throw new Error('Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.');
+        ^
+
+Error: Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.
+    at validateSupabaseUrl (/home/ubuntu/tankfindr/node_modules/.pnpm/@supabase+supabase-js@2.84.0/node_modules/@supabase/supabase-js/dist/main/lib/helpers.js:53:15)
+    at new SupabaseClient (/home/ubuntu/tankfindr/node_modules/.pnpm/@supabase+supabase-js@2.84.0/node_modules/@supabase/supabase-js/dist/main/SupabaseClient.js:41:59)
+    at createClient (/home/ubuntu/tankfindr/node_modules/.pnpm/@supabase+supabase-js@2.84.0/node_modules/@supabase/supabase-js/dist/main/index.js:46:12)
+    at Object.<anonymous> (/home/ubuntu/tankfindr/scripts/check-database-state.js:22:18)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object..js (node:internal/modules/cjs/loader:1699:10)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+
+Node.js v22.13.0
