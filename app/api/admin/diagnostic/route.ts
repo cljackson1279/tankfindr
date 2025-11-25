@@ -53,9 +53,9 @@ export async function GET(request: NextRequest) {
       
       results.checks.push({
         name: 'florida_records',
-        status: error ? 'FAIL' : (count > 0 ? 'PASS' : 'WARN'),
-        message: error ? error.message : `${count || 0} Florida records`,
-        count: count || 0,
+        status: error ? 'FAIL' : ((count ?? 0) > 0 ? 'PASS' : 'WARN'),
+        message: error ? error.message : `${count ?? 0} Florida records`,
+        count: count ?? 0,
       });
     } catch (err: any) {
       results.checks.push({
@@ -75,8 +75,8 @@ export async function GET(request: NextRequest) {
       results.checks.push({
         name: 'sample_records',
         status: error ? 'FAIL' : (data && data.length > 0 ? 'PASS' : 'WARN'),
-        message: error ? error.message : `${data?.length || 0} sample records retrieved`,
-        samples: data || [],
+        message: error ? error.message : `${data?.length ?? 0} sample records retrieved`,
+        samples: data ?? [],
       });
     } catch (err: any) {
       results.checks.push({
@@ -98,8 +98,8 @@ export async function GET(request: NextRequest) {
       results.checks.push({
         name: 'find_nearest_function',
         status: error ? 'FAIL' : 'PASS',
-        message: error ? error.message : `Function works, found ${data?.length || 0} tanks`,
-        result: data || null,
+        message: error ? error.message : `Function works, found ${data?.length ?? 0} tanks`,
+        result: data ?? null,
       });
     } catch (err: any) {
       results.checks.push({
@@ -118,8 +118,8 @@ export async function GET(request: NextRequest) {
       results.checks.push({
         name: 'septic_sources_table',
         status: error ? 'FAIL' : 'PASS',
-        message: error ? error.message : `${count || 0} source records`,
-        count: count || 0,
+        message: error ? error.message : `${count ?? 0} source records`,
+        count: count ?? 0,
       });
     } catch (err: any) {
       results.checks.push({
@@ -143,8 +143,8 @@ export async function GET(request: NextRequest) {
       results.checks.push({
         name: 'orlando_test',
         status: error ? 'FAIL' : (data && data.length > 0 ? 'PASS' : 'WARN'),
-        message: error ? error.message : `Found ${data?.length || 0} tanks near Orlando`,
-        result: data || null,
+        message: error ? error.message : `Found ${data?.length ?? 0} tanks near Orlando`,
+        result: data ?? null,
       });
     } catch (err: any) {
       results.checks.push({
