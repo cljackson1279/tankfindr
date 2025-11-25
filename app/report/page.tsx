@@ -333,25 +333,25 @@ function ReportPageContent() {
               <div className="grid md:grid-cols-2 gap-4">
                 {UPSELLS.map((upsell) => {
                   const Icon = upsell.icon
-                  const isSelected = selectedUpsells.includes(upsell.id)
                   return (
                     <Card
                       key={upsell.id}
-                      className={`p-4 cursor-pointer transition-all ${
-                        isSelected ? 'border-2 border-green-600 bg-green-50' : 'hover:border-gray-400'
-                      }`}
-                      onClick={() => toggleUpsell(upsell.id)}
+                      className="p-4 bg-gray-50 border-gray-300 opacity-75 cursor-not-allowed"
                     >
                       <div className="flex items-start gap-4">
-                        <div className={`p-2 rounded-lg ${isSelected ? 'bg-green-600' : 'bg-gray-200'}`}>
-                          <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-gray-600'}`} />
+                        <div className="p-2 rounded-lg bg-gray-300">
+                          <Icon className="w-6 h-6 text-gray-500" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-bold">{upsell.name}</h4>
-                            <span className="font-bold text-green-600">+${upsell.price}</span>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-bold text-gray-700">{upsell.name}</h4>
+                              <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-semibold">Coming Soon</span>
+                            </div>
+                            <span className="font-bold text-gray-400">${upsell.price}</span>
                           </div>
-                          <p className="text-sm text-gray-600">{upsell.description}</p>
+                          <p className="text-sm text-gray-500">{upsell.description}</p>
+                          <p className="text-xs text-gray-500 mt-2 italic">We're integrating with government databases to provide this data. Check back soon!</p>
                         </div>
                       </div>
                     </Card>
