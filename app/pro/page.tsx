@@ -221,7 +221,7 @@ export default function ProDashboard() {
             TankFindr Pro
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/profile">
+            <Link href="/account">
               <Button variant="ghost">Account</Button>
             </Link>
           </div>
