@@ -399,6 +399,25 @@ function ReportViewContent() {
         )}
 
         {/* Environmental Risk Add-On */}
+        {upsells.includes('environmental') && !report.environmentalRisk && (
+          <Card className="p-6 mb-6 bg-yellow-50 border-yellow-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Environmental Risk Assessment</h2>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+              <div>
+                <p className="text-gray-800 font-medium mb-2">
+                  ⏳ Environmental Risk Data Coming Soon
+                </p>
+                <p className="text-sm text-gray-700">
+                  Thank you for purchasing this add-on! We're currently integrating with FEMA, USGS, and EPA databases to provide accurate flood zone, wetlands, soil type, and environmental hazard data for your property.
+                </p>
+                <p className="text-sm text-gray-700 mt-2">
+                  You'll receive an email notification when your environmental risk assessment is ready, typically within 24-48 hours.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
         {report.environmentalRisk && (
           <Card className="p-6 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Environmental Risk Assessment</h2>
@@ -424,6 +443,25 @@ function ReportViewContent() {
         )}
 
         {/* Well & Groundwater Risk Add-On */}
+        {upsells.includes('well') && !report.groundwaterRisk && (
+          <Card className="p-6 mb-6 bg-yellow-50 border-yellow-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Well & Groundwater Risk Assessment</h2>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+              <div>
+                <p className="text-gray-800 font-medium mb-2">
+                  ⏳ Groundwater Risk Data Coming Soon
+                </p>
+                <p className="text-sm text-gray-700">
+                  Thank you for purchasing this add-on! We're currently integrating with USGS, Florida DEP, and EPA databases to provide accurate well locations, water table depth, contamination risk, and aquifer data for your property.
+                </p>
+                <p className="text-sm text-gray-700 mt-2">
+                  You'll receive an email notification when your groundwater risk assessment is ready, typically within 24-48 hours.
+                </p>
+              </div>
+            </div>
+          </Card>
+        )}
         {report.groundwaterRisk && (
           <Card className="p-6 mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Well & Groundwater Risk Assessment</h2>

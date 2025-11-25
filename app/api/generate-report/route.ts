@@ -178,59 +178,28 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 
 // Fetch environmental risk data (flood zones, wetlands, soil type)
 async function getEnvironmentalRiskData(lat: number, lng: number) {
-  try {
-    // TODO: Integrate with FEMA Flood Map API, USGS Soil Data, etc.
-    // For now, returning placeholder structure that will be populated with real APIs
+  // TODO: Integrate with FEMA Flood Map API, USGS Soil Data, etc.
+  // Returning null until real APIs are integrated
+  
+  console.log('ENVIRONMENTAL_RISK_NOT_AVAILABLE', {
+    lat,
+    lng,
+    note: 'Environmental risk data not yet available - integrate FEMA/USGS APIs'
+  });
 
-    console.log('ENVIRONMENTAL_RISK_PLACEHOLDER', {
-      lat,
-      lng,
-      note: 'Using placeholder data - integrate FEMA/USGS APIs for production'
-    });
-
-    return {
-      floodZone: 'Zone X (Minimal Flood Hazard)',
-      floodZoneDescription: 'Area of minimal flood hazard from the principal source of flood in the area.',
-      wetlands: 'No wetlands within 500 feet',
-      soilType: 'Sandy loam - Good drainage characteristics',
-      soilDrainageClass: 'Well-drained',
-      environmentalHazards: 'No known environmental hazards within 1 mile',
-      dataSource: 'FEMA NFHL + USGS Soil Survey',
-      lastUpdated: new Date().toISOString(),
-    };
-  } catch (error) {
-    console.error('Error fetching environmental data:', error);
-    return null;
-  }
+  return null;
 }
 
 // Fetch well and groundwater risk data
 async function getGroundwaterRiskData(lat: number, lng: number) {
-  try {
-    // TODO: Integrate with USGS National Water Information System, state well databases
-    // For now, returning placeholder structure
+  // TODO: Integrate with USGS National Water Information System, state well databases
+  // Returning null until real APIs are integrated
+  
+  console.log('GROUNDWATER_RISK_NOT_AVAILABLE', {
+    lat,
+    lng,
+    note: 'Groundwater risk data not yet available - integrate USGS/state well databases'
+  });
 
-    console.log('GROUNDWATER_RISK_PLACEHOLDER', {
-      lat,
-      lng,
-      note: 'Using placeholder data - integrate USGS/state well databases for production'
-    });
-
-    return {
-      nearbyWells: '3 registered wells within 1 mile',
-      wellCount: 3,
-      closestWellDistance: '0.4 miles',
-      waterTableDepth: '15-20 feet below surface',
-      waterTableSeason: 'Average depth (varies seasonally)',
-      contaminationRisk: 'Low - No known contamination sources',
-      contaminationSources: [],
-      aquifer: 'Surficial Aquifer System',
-      aquiferType: 'Unconfined',
-      dataSource: 'USGS NWIS + State Well Database',
-      lastUpdated: new Date().toISOString(),
-    };
-  } catch (error) {
-    console.error('Error fetching groundwater data:', error);
-    return null;
-  }
+  return null;
 }
