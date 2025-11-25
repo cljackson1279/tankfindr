@@ -156,10 +156,11 @@ function ReportPageContent() {
   const handlePurchase = async () => {
     if (!preview) return
 
-    // Admin bypass - go directly to report view
+    // Admin bypass - go directly to report view with upsells
     if (isAdmin) {
       const reportId = `admin_${Date.now()}`
-      router.push(`/report/view?id=${reportId}&address=${encodeURIComponent(preview.address)}&lat=${preview.lat}&lng=${preview.lng}`)
+      const upsellsParam = selectedUpsells.length > 0 ? `&upsells=${encodeURIComponent(JSON.stringify(selectedUpsells))}` : ''
+      router.push(`/report/view?id=${reportId}&address=${encodeURIComponent(preview.address)}&lat=${preview.lat}&lng=${preview.lng}${upsellsParam}`)
       return
     }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSepticContextForLocation } from '@/lib/septicLookup';
 
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -14,8 +15,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get septic context
+    // Get septic context from REAL Supabase data
+    console.log('COVERAGE_CHECK', {
+      lat,
+      lng,
+      dataSource: 'supabase',
+      fromTables: ['septic_sources']
+    });
+
     const context = await getSepticContextForLocation(lat, lng);
+
+    console.log('COVERAGE_RESULT', {
+      isCovered: context.isCovered,
+      classification: context.classification,
+      sourcesCount: context.coverageSources?.length || 0
+    });
 
     return NextResponse.json({
       isCovered: context.isCovered,

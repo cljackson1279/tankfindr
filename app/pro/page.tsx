@@ -169,11 +169,25 @@ export default function ProDashboard() {
         throw new Error(data.error || 'Lookup failed')
       }
 
-      // Show result
-      const tankInfo = data.tankPoint
-        ? `Tank found ${data.distance ? Math.round(data.distance) + 'm away' : 'nearby'}\nConfidence: ${data.confidence}%`
-        : `Classification: ${data.classification}\nConfidence: ${data.confidence}%`
-      alert(tankInfo)
+      // Show result - navigate to a result page or show in a modal
+      if (data.tankPoint) {
+        // Tank found - show coordinates and map link
+        const message = `✅ Septic Tank Found!\n\nLocation: ${data.tankPoint.lat.toFixed(6)}, ${data.tankPoint.lng.toFixed(6)}\nDistance: ${data.distance ? Math.round(data.distance) + 'm' : 'nearby'}\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nOpening map view...`;
+        alert(message);
+
+        // Open map in new window or navigate
+        const mapUrl = `https://www.google.com/maps?q=${data.tankPoint.lat},${data.tankPoint.lng}&z=19&t=k`;
+        window.open(mapUrl, '_blank');
+      } else if (data.isCovered && data.classification === 'septic') {
+        // In covered area but no exact tank point
+        alert(`✅ Property Classification: Septic\n\nThis property is in a covered area and classified as having a septic system, but we don't have exact tank coordinates yet.\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}\nCovered: Yes`);
+      } else if (data.isCovered) {
+        // In covered area but not septic
+        alert(`ℹ️ Property covered but not septic\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}`);
+      } else {
+        // Not in covered area
+        alert(`⚠️ No Data Available\n\nThis area is not yet covered in our database.\n\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nWe're constantly adding new counties!`);
+      }
 
       // Reload job history
       await loadDashboardData(user.id)
@@ -207,7 +221,7 @@ export default function ProDashboard() {
             TankFindr Pro
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/profile">
+            <Link href="/account">
               <Button variant="ghost">Account</Button>
             </Link>
           </div>

@@ -15,18 +15,21 @@ export const SUBSCRIPTION_TIERS = {
     name: 'Starter',
     price: 99,
     lookups: 300,
+    maxUsers: 1,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_STARTER,
   },
   pro: {
     name: 'Pro',
     price: 249,
     lookups: 1500,
+    maxUsers: 5,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_PRO,
   },
   enterprise: {
     name: 'Enterprise',
     price: 599,
     lookups: -1, // Unlimited
+    maxUsers: 10,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_ENTERPRISE,
   },
 };
@@ -164,4 +167,49 @@ export async function incrementLookupCount(userId: string): Promise<boolean> {
 export async function getUserRole(userId: string): Promise<'pro' | 'consumer'> {
   const subscription = await checkSubscription(userId);
   return subscription.isActive ? 'pro' : 'consumer';
+}
+
+/**
+ * Check if organization can add more users
+ */
+export async function canAddUser(organizationId: string, tier: 'starter' | 'pro' | 'enterprise'): Promise<{
+  allowed: boolean;
+  currentUsers: number;
+  maxUsers: number;
+  reason?: string;
+}> {
+  const supabase = createClient();
+
+  // Get current user count for this organization
+  const { count: currentUsers, error } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true })
+    .eq('organization_id', organizationId);
+
+  if (error) {
+    return {
+      allowed: false,
+      currentUsers: 0,
+      maxUsers: SUBSCRIPTION_TIERS[tier].maxUsers,
+      reason: 'Error checking user count',
+    };
+  }
+
+  const maxUsers = SUBSCRIPTION_TIERS[tier].maxUsers;
+  const userCount = currentUsers || 0;
+
+  if (userCount >= maxUsers) {
+    return {
+      allowed: false,
+      currentUsers: userCount,
+      maxUsers,
+      reason: `Your ${tier} plan allows up to ${maxUsers} user${maxUsers > 1 ? 's' : ''}. Please upgrade to add more users.`,
+    };
+  }
+
+  return {
+    allowed: true,
+    currentUsers: userCount,
+    maxUsers,
+  };
 }
