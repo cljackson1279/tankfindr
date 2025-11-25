@@ -186,14 +186,14 @@ export default function AccountPage() {
             <div className="space-y-3 mb-6">
               <h3 className="font-semibold text-gray-900">Change Plan</h3>
 
-              {subscription.tier !== 'professional' && (
+              {subscription.tier !== 'pro' && (
                 <Button
-                  onClick={() => handleUpgradeDowngrade('professional')}
+                  onClick={() => handleUpgradeDowngrade('pro')}
                   variant="outline"
                   className="w-full justify-start border-blue-200 hover:bg-blue-50"
                 >
                   <ArrowUpCircle className="w-4 h-4 mr-2 text-blue-600" />
-                  {subscription.tier === 'starter' ? 'Upgrade to Professional (50/mo)' : 'Change to Professional (50/mo)'}
+                  {subscription.tier === 'starter' ? 'Upgrade to Pro ($249/mo)' : 'Change to Pro ($249/mo)'}
                 </Button>
               )}
 
@@ -204,7 +204,7 @@ export default function AccountPage() {
                   className="w-full justify-start border-purple-200 hover:bg-purple-50"
                 >
                   <ArrowUpCircle className="w-4 h-4 mr-2 text-purple-600" />
-                  {subscription.tier === 'professional' ? 'Upgrade to Enterprise (150/mo)' : 'Upgrade to Enterprise (150/mo)'}
+                  {subscription.tier === 'pro' ? 'Upgrade to Enterprise ($599/mo)' : 'Upgrade to Enterprise ($599/mo)'}
                 </Button>
               )}
 
@@ -215,7 +215,7 @@ export default function AccountPage() {
                   className="w-full justify-start border-gray-200 hover:bg-gray-50"
                 >
                   <ArrowDownCircle className="w-4 h-4 mr-2 text-gray-600" />
-                  Downgrade to Starter (29/mo)
+                  Downgrade to Starter ($99/mo)
                 </Button>
               )}
             </div>
