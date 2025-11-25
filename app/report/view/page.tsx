@@ -22,6 +22,7 @@ function ReportViewContent() {
   const [loading, setLoading] = useState(true)
   const [report, setReport] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
+  const [upsells, setUpsells] = useState<string[]>([])
 
   useEffect(() => {
     loadReport()
@@ -48,14 +49,15 @@ function ReportViewContent() {
 
         // Parse upsells from URL
         const upsellsParam = searchParams?.get('upsells')
-        let upsells: string[] = []
+        let parsedUpsells: string[] = []
         if (upsellsParam) {
           try {
-            upsells = JSON.parse(decodeURIComponent(upsellsParam))
+            parsedUpsells = JSON.parse(decodeURIComponent(upsellsParam))
           } catch (e) {
             console.error('Failed to parse upsells:', e)
           }
         }
+        setUpsells(parsedUpsells)
 
         console.log('ADMIN_REPORT_GENERATION', {
           userEmail: user.email,
@@ -64,7 +66,7 @@ function ReportViewContent() {
           lng,
           dataSource: 'supabase',
           bypassedPayment: true,
-          upsells
+          upsells: parsedUpsells
         })
 
         // Call the same report generation endpoint but with admin flag and upsells
@@ -80,7 +82,7 @@ function ReportViewContent() {
             lat,
             lng,
             adminEmail: user.email,
-            upsells
+            upsells: parsedUpsells
           }),
         })
 
