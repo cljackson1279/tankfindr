@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { getSepticContextForLocation } from '@/lib/septicLookup';
+import { getEnvironmentalRisk } from '@/lib/environmental';
+import { getGroundwaterRisk } from '@/lib/groundwater';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-11-17.clover',
@@ -113,16 +115,20 @@ export async function POST(request: NextRequest) {
       tablesUsed: ['septic_sources', 'septic_tanks'], // Debug indicator
     };
 
+    // Extract county and state from context for add-on APIs
+    const county = context.nearestFeatures?.[0]?.county || undefined;
+    const state = context.nearestFeatures?.[0]?.state || undefined;
+
     // Add Environmental Risk data ONLY if user selected it (or pass upsells for admin testing)
     if (upsells.includes('environmental')) {
-      console.log('FETCHING_ENVIRONMENTAL_DATA', { lat, lng, userPaid: true });
-      reportData.environmentalRisk = await getEnvironmentalRiskData(lat, lng);
+      console.log('FETCHING_ENVIRONMENTAL_DATA', { lat, lng, county, state, userPaid: true });
+      reportData.environmentalRisk = await getEnvironmentalRiskData(lat, lng, county, state);
     }
 
     // Add Well & Groundwater Risk data ONLY if user selected it
     if (upsells.includes('well')) {
-      console.log('FETCHING_WELL_DATA', { lat, lng, userPaid: true });
-      reportData.groundwaterRisk = await getGroundwaterRiskData(lat, lng);
+      console.log('FETCHING_WELL_DATA', { lat, lng, county, state, userPaid: true });
+      reportData.groundwaterRisk = await getGroundwaterRiskData(lat, lng, county, state);
     }
 
     // Save report to database (skip for admin bypass or save with admin flag)
@@ -177,29 +183,29 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 }
 
 // Fetch environmental risk data (flood zones, wetlands, soil type)
-async function getEnvironmentalRiskData(lat: number, lng: number) {
-  // TODO: Integrate with FEMA Flood Map API, USGS Soil Data, etc.
-  // Returning null until real APIs are integrated
+async function getEnvironmentalRiskData(lat: number, lng: number, county?: string, state?: string) {
+  console.log('FETCHING_REAL_ENVIRONMENTAL_DATA', { lat, lng, county, state });
   
-  console.log('ENVIRONMENTAL_RISK_NOT_AVAILABLE', {
-    lat,
-    lng,
-    note: 'Environmental risk data not yet available - integrate FEMA/USGS APIs'
-  });
-
-  return null;
+  try {
+    const data = await getEnvironmentalRisk(lat, lng, county, state);
+    console.log('ENVIRONMENTAL_DATA_FETCHED', { success: true, dataSource: data.dataSource });
+    return data;
+  } catch (error: any) {
+    console.error('ENVIRONMENTAL_DATA_ERROR', error);
+    return null;
+  }
 }
 
 // Fetch well and groundwater risk data
-async function getGroundwaterRiskData(lat: number, lng: number) {
-  // TODO: Integrate with USGS National Water Information System, state well databases
-  // Returning null until real APIs are integrated
+async function getGroundwaterRiskData(lat: number, lng: number, county?: string, state?: string) {
+  console.log('FETCHING_REAL_GROUNDWATER_DATA', { lat, lng, county, state });
   
-  console.log('GROUNDWATER_RISK_NOT_AVAILABLE', {
-    lat,
-    lng,
-    note: 'Groundwater risk data not yet available - integrate USGS/state well databases'
-  });
-
-  return null;
+  try {
+    const data = await getGroundwaterRisk(lat, lng, county, state);
+    console.log('GROUNDWATER_DATA_FETCHED', { success: true, dataSource: data.dataSource });
+    return data;
+  } catch (error: any) {
+    console.error('GROUNDWATER_DATA_ERROR', error);
+    return null;
+  }
 }
