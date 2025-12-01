@@ -25,10 +25,17 @@ export async function POST(request: Request) {
     const septicContext = await getSepticContextForLocation(
       parseFloat(lat),
       parseFloat(lng),
-      address
+      200 // search radius in meters
     )
 
-    console.log('✅ Septic context retrieved:', septicContext.classification)
+    console.log('✅ Septic context retrieved:', {
+      classification: septicContext.classification,
+      confidence: septicContext.confidence,
+      isCovered: septicContext.isCovered,
+      nearestFeaturesCount: septicContext.nearestFeatures?.length || 0,
+      hasSystemInfo: !!septicContext.systemInfo,
+      systemInfo: septicContext.systemInfo
+    })
 
     // Return the full septic context
     return NextResponse.json({
