@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { MapPin, Building2, Home, TrendingUp, Zap, Shield, CheckCircle, ArrowRight } from 'lucide-react'
+import { MapPin, Building2, Home, TrendingUp, Zap, Shield, CheckCircle, ArrowRight, LogOut, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
@@ -67,12 +67,32 @@ export default function HomePage() {
             </Link>
             {!isLoggedIn ? (
               <Link href="/auth/login">
-                <Button variant="ghost">Sign In</Button>
+                <Button variant="outline">Sign In</Button>
               </Link>
             ) : (
-              <Link href="/pro">
-                <Button variant="ghost">Dashboard</Button>
-              </Link>
+              <>
+                <Link href="/pro">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white">
+                    Dashboard
+                  </Button>
+                </Link>
+                <Link href="/account">
+                  <Button variant="ghost" size="icon">
+                    <Settings className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={async () => {
+                    const supabase = createClient()
+                    await supabase.auth.signOut()
+                    window.location.reload()
+                  }}
+                >
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
             )}
           </nav>
         </div>

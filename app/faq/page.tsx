@@ -46,9 +46,10 @@ const faqs: FAQItem[] = [
       'We offer several options:',
       '• Free Widget: Basic "Sewer or Septic?" check on our homepage',
       '• Property Reports: $19 one-time purchase for detailed reports',
-      '• Starter Plan: $99/month for 300 lookups',
-      '• Pro Plan: $249/month for 1,500 lookups (most popular)',
-      '• Enterprise Plan: $599/month for unlimited lookups',
+      '• Inspector Pro: $79/month for unlimited septic reports (for home inspectors)',
+      '• TankFindr Pro - Starter: $99/month for 300 lookups',
+      '• TankFindr Pro - Pro: $249/month for 1,500 lookups (most popular)',
+      '• TankFindr Pro - Enterprise: $599/month for unlimited lookups',
     ],
   },
   {
