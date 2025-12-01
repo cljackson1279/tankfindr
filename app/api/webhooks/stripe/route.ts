@@ -111,18 +111,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return
   }
 
-  // Update user profile with subscription info
+  // Update user with subscription info
   const { error } = await supabaseAdmin
-    .from('profiles')
-    .upsert({
-      id: userId,
+    .from('users')
+    .update({
       stripe_customer_id: session.customer as string,
       subscription_tier: tier,
-      subscription_status: 'trialing',
-      trial_start: new Date().toISOString(),
-      trial_locates_used: 0,
+      subscription_status: 'active',
+      subscription_end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
       updated_at: new Date().toISOString()
     })
+    .eq('id', userId)
 
   if (error) {
     console.error('Error updating profile:', error)
@@ -153,9 +152,22 @@ async function handleSubscriptionUpdate(subscription: Stripe.Subscription) {
   }
 
   const supabaseAdmin = getSupabaseAdmin()
+  
+  // Map to users table columns
+  const userData: any = {
+    subscription_status: subscription.status,
+    stripe_subscription_id: subscription.id,
+    updated_at: new Date().toISOString()
+  }
+  
+  // Add subscription end date
+  if (subData.current_period_end) {
+    userData.subscription_end_date = new Date(subData.current_period_end * 1000).toISOString()
+  }
+  
   const { error } = await supabaseAdmin
-    .from('profiles')
-    .update(updateData)
+    .from('users')
+    .update(userData)
     .eq('id', userId)
 
   if (error) {
@@ -173,10 +185,10 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
   const supabaseAdmin = getSupabaseAdmin()
   const { error } = await supabaseAdmin
-    .from('profiles')
+    .from('users')
     .update({
       subscription_status: 'canceled',
-      subscription_id: null,
+      stripe_subscription_id: null,
       updated_at: new Date().toISOString()
     })
     .eq('id', userId)
@@ -191,20 +203,29 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
   const customerId = invoice.customer as string
   const supabaseAdmin = getSupabaseAdmin()
 
-  const { data: profile } = await supabaseAdmin
-    .from('profiles')
-    .select('id')
+  const { data: user } = await supabaseAdmin
+    .from('users')
+    .select('id, subscription_tier')
     .eq('stripe_customer_id', customerId)
     .single()
 
-  if (profile) {
+  if (user) {
+    // Reset lookups based on tier
+    const tier = user.subscription_tier
+    let lookupsRemaining = 0
+    
+    if (tier === 'starter') lookupsRemaining = 300
+    else if (tier === 'pro') lookupsRemaining = 1500
+    else if (tier === 'enterprise' || tier === 'inspector') lookupsRemaining = -1 // Unlimited
+    
     await supabaseAdmin
-      .from('profiles')
+      .from('users')
       .update({
-        monthly_locates_used: 0,
+        lookups_remaining: lookupsRemaining,
+        subscription_end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         updated_at: new Date().toISOString()
       })
-      .eq('id', profile.id)
+      .eq('id', user.id)
   }
 }
 
@@ -212,19 +233,19 @@ async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
   const customerId = invoice.customer as string
   const supabaseAdmin = getSupabaseAdmin()
 
-  const { data: profile } = await supabaseAdmin
-    .from('profiles')
+  const { data: user } = await supabaseAdmin
+    .from('users')
     .select('id')
     .eq('stripe_customer_id', customerId)
     .single()
 
-  if (profile) {
+  if (user) {
     await supabaseAdmin
-      .from('profiles')
+      .from('users')
       .update({
         subscription_status: 'past_due',
         updated_at: new Date().toISOString()
       })
-      .eq('id', profile.id)
+      .eq('id', user.id)
   }
 }

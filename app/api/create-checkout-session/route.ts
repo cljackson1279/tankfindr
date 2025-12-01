@@ -52,8 +52,12 @@ export async function POST(request: NextRequest) {
         user_id: user.id,
         tier: tier,
       },
-      success_url: `${siteUrl}/protected?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/pricing`,
+      success_url: tier === 'inspector' 
+        ? `${siteUrl}/inspector-pro/dashboard?session_id={CHECKOUT_SESSION_ID}`
+        : `${siteUrl}/pro?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: tier === 'inspector'
+        ? `${siteUrl}/inspector-pro`
+        : `${siteUrl}/pricing-pro`,
     })
 
     return NextResponse.json({ sessionId: session.id, url: session.url })
