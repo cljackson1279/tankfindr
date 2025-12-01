@@ -103,7 +103,10 @@ export default function HomePage() {
             <CheckCircle className="w-5 h-5 text-green-600" />
             <span>Government Data</span>
           </div>
-        </div      {/* Choose Your Path */}
+        </div>
+      </section>
+
+      {/* Choose Your Path */}
       <section className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold text-center mb-12">
           Choose Your Path
