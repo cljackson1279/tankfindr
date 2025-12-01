@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic'
 import { Loader2, MapPin, FileText, Download, CheckCircle, AlertTriangle, Info, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
