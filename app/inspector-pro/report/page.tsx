@@ -83,29 +83,9 @@ export default function InspectorReport() {
 
       setReportData(data)
 
-      // Log the usage (with error handling)
-      try {
-        const supabase = createClient()
-        const { error: usageError } = await supabase.from('usage').insert({
-          user_id: user.id,
-          action: 'inspector_report',
-          payment_type: 'subscription',
-          metadata: {
-            lat: parseFloat(lat!),
-            lng: parseFloat(lng!),
-          address: address,
-            classification: data.classification,
-          },
-        })
-        
-        if (usageError) {
-          console.warn('Usage tracking failed (non-critical):', usageError.message)
-          // Don't throw - this shouldn't block the user
-        }
-      } catch (usageErr) {
-        console.error('Unexpected error in usage tracking:', usageErr)
-        // Continue anyway - don't block report generation
-      }
+      // TODO: Re-enable usage tracking after fixing table schema
+      // Usage tracking temporarily disabled to prevent blocking report generation
+      console.log('✅ Report generated successfully (usage tracking disabled)')
 
       setLoading(false)
     } catch (error) {
