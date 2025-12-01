@@ -9,29 +9,29 @@ export const TIERS = {
   starter: {
     name: 'Starter',
     price: 99,
-    locates: 10,
-    priceId: process.env.STRIPE_STARTER_PRICE_ID!,
-    overage: 8
+    locates: 300, // 300 lookups per month
+    priceId: process.env.STRIPE_PRICE_STARTER!,
+    overage: 0 // No overage - hard limit
   },
   pro: {
     name: 'Pro',
     price: 249,
-    locates: 40,
-    priceId: process.env.STRIPE_PRO_PRICE_ID!,
-    overage: 6
+    locates: 1500, // 1,500 lookups per month
+    priceId: process.env.STRIPE_PRICE_PRO!,
+    overage: 0 // No overage - hard limit
   },
   enterprise: {
     name: 'Enterprise',
     price: 599,
-    locates: 150,
-    priceId: process.env.STRIPE_ENTERPRISE_PRICE_ID!,
-    overage: 4
+    locates: -1, // Unlimited
+    priceId: process.env.STRIPE_PRICE_ENTERPRISE!,
+    overage: 0 // No overage for unlimited plan
   },
   inspector: {
     name: 'Inspector Pro',
     price: 79,
-    locates: 999999, // Unlimited
-    priceId: 'price_1SZMs6Rsawlh5ooWuJ5X98xG', // Inspector Pro price ID
+    locates: -1, // Unlimited reports
+    priceId: process.env.STRIPE_PRICE_INSPECTOR!,
     overage: 0 // No overage for unlimited plan
   }
 } as const

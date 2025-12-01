@@ -1,20 +1,41 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { StructuredData } from '@/components/StructuredData'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TankFindr - AI Septic Tank Locator | Find Tanks in 5 Minutes',
-  description: 'Find septic tanks in 5 minutes with AI-powered satellite imagery analysis. 85% accuracy, confidence scoring, and Google Maps integration. Save 3+ hours per job.',
-  keywords: 'septic tank locator, septic service, AI satellite imagery, GPS tank location, septic inspection, septic pumping, tank finder, septic system',
+  title: {
+    default: 'TankFindr - Find Septic Tanks Instantly with GPS-Accurate Locations',
+    template: '%s | TankFindr',
+  },
+  description: 'Locate septic tanks 10x faster with TankFindr. Access 2.3M+ GPS-accurate tank locations from government records. Perfect for septic companies, home inspectors, and homeowners. Does my house have a septic tank or sewer? Find out instantly.',
+  keywords: [
+    'septic tank location',
+    'find septic tank',
+    'septic system',
+    'septic tank finder',
+    'where is my septic tank',
+    'septic tank GPS',
+    'septic tank map',
+    'does my house have a septic tank',
+    'septic or sewer',
+    'septic inspection',
+    'home inspection septic',
+    'septic company software',
+    'septic tank records',
+    'septic tank permit',
+    'septic system location',
+    'find my septic tank',
+  ],
   authors: [{ name: 'TankFindr' }],
   creator: 'TankFindr',
   publisher: 'TankFindr',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   openGraph: {
-    title: 'TankFindr - AI Septic Tank Locator',
-    description: 'Find septic tanks in 5 minutes with AI-powered satellite imagery. 85% accuracy with confidence scoring.',
+    title: 'TankFindr - Find Septic Tanks Instantly',
+    description: 'Locate septic tanks 10x faster with GPS-accurate locations from government records. 2.3M+ tanks mapped across 12 states.',
     type: 'website',
     url: 'https://tankfindr.com',
     siteName: 'TankFindr',
@@ -59,6 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <StructuredData />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
