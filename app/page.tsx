@@ -32,7 +32,7 @@ const COVERAGE_STATES = [
 ]
 
 export default function HomePage() {
-  const [activePath, setActivePath] = useState<'pro' | 'consumer' | null>(null)
+  const [activePath, setActivePath] = useState<'pro' | 'inspector' | 'consumer' | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -57,7 +57,10 @@ export default function HomePage() {
               Coverage
             </Link>
             <Link href="/pricing-pro" className="text-gray-600 hover:text-gray-900">
-              Pro Pricing
+              For Contractors
+            </Link>
+            <Link href="/inspector-pro" className="text-purple-600 hover:text-purple-900 font-medium">
+              For Inspectors
             </Link>
             <Link href="/faq" className="text-gray-600 hover:text-gray-900">
               FAQ
@@ -100,13 +103,12 @@ export default function HomePage() {
             <CheckCircle className="w-5 h-5 text-green-600" />
             <span>Government Data</span>
           </div>
-        </div>
-      </section>
-
-      {/* Choose Your Path */}
+        </div      {/* Choose Your Path */}
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Choose Your Path</h2>
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Choose Your Path
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Pro Path */}
           <Card
             className={`p-8 cursor-pointer transition-all hover:shadow-xl ${
@@ -151,6 +153,53 @@ export default function HomePage() {
             </Link>
             <p className="text-center text-sm text-gray-600 mt-4">
               From $99/month
+            </p>
+          </Card>
+
+          {/* Inspector Pro Path */}
+          <Card
+            className={`p-8 cursor-pointer transition-all hover:shadow-xl ${
+              activePath === 'inspector' ? 'border-2 border-purple-600 shadow-xl' : ''
+            }`}
+            onMouseEnter={() => setActivePath('inspector')}
+            onMouseLeave={() => setActivePath(null)}
+          >
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-purple-600" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">For Home Inspectors</h3>
+              <p className="text-gray-600">Unlimited Reports</p>
+            </div>
+
+            <div className="space-y-4 mb-8">
+              <p className="text-center text-gray-700">
+                Professional septic reports with verified permit data for every inspection.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span className="text-sm">Unlimited property reports</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span className="text-sm">Verified permit & system data</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                  <span className="text-sm">Professional PDF reports</span>
+                </li>
+              </ul>
+            </div>
+
+            <Link href="/inspector-pro">
+              <Button className="w-full bg-purple-600 hover:bg-purple-700" size="lg">
+                Start Inspector Pro
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+            <p className="text-center text-sm text-gray-600 mt-4">
+              $79/month • Unlimited reports
             </p>
           </Card>
 
