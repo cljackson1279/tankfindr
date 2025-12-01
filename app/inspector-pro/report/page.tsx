@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 // Force dynamic rendering for this page
 export const dynamic = 'force-dynamic'
 import { Loader2, MapPin, FileText, Download, CheckCircle, AlertTriangle, Info, ArrowLeft } from 'lucide-react'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
@@ -95,8 +97,81 @@ export default function InspectorReport() {
   }
 
   const handleDownloadPDF = async () => {
-    // TODO: Implement PDF generation
-    alert('PDF download coming soon!')
+    try {
+      // Disable button during generation
+      const downloadButton = document.querySelector('[data-download-button]') as HTMLButtonElement
+      if (downloadButton) {
+        downloadButton.disabled = true
+        downloadButton.textContent = 'Generating PDF...'
+      }
+
+      // Get the report content element
+      const reportElement = document.getElementById('report-content')
+      if (!reportElement) {
+        throw new Error('Report content not found')
+      }
+
+      // Hide the download button and back button temporarily
+      const buttonsToHide = document.querySelectorAll('.print\\:hidden')
+      buttonsToHide.forEach(el => (el as HTMLElement).style.display = 'none')
+
+      // Capture the report as canvas
+      const canvas = await html2canvas(reportElement, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff'
+      })
+
+      // Show buttons again
+      buttonsToHide.forEach(el => (el as HTMLElement).style.display = '')
+
+      // Calculate PDF dimensions
+      const imgWidth = 210 // A4 width in mm
+      const pageHeight = 297 // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+      let heightLeft = imgHeight
+
+      // Create PDF
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      let position = 0
+
+      // Add image to PDF
+      const imgData = canvas.toDataURL('image/png')
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pageHeight
+
+      // Add new pages if content is longer than one page
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight
+        pdf.addPage()
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+        heightLeft -= pageHeight
+      }
+
+      // Generate filename from address
+      const safeAddress = address?.replace(/[^a-zA-Z0-9]/g, '-') || 'report'
+      const filename = `TankFindr-Inspector-Report-${safeAddress}.pdf`
+
+      // Download the PDF
+      pdf.save(filename)
+
+      // Reset button
+      if (downloadButton) {
+        downloadButton.disabled = false
+        downloadButton.textContent = 'Download PDF'
+      }
+    } catch (error) {
+      console.error('PDF generation error:', error)
+      alert('Failed to generate PDF. Please try again.')
+      
+      // Reset button
+      const downloadButton = document.querySelector('[data-download-button]') as HTMLButtonElement
+      if (downloadButton) {
+        downloadButton.disabled = false
+        downloadButton.textContent = 'Download PDF'
+      }
+    }
   }
 
   if (loading) {
@@ -142,7 +217,7 @@ export default function InspectorReport() {
                 Back to Dashboard
               </Button>
             </Link>
-            <Button onClick={handleDownloadPDF} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={handleDownloadPDF} className="bg-blue-600 hover:bg-blue-700" data-download-button>
               <Download className="w-4 h-4 mr-2" />
               Download PDF
             </Button>
@@ -151,7 +226,7 @@ export default function InspectorReport() {
       </div>
 
       {/* Report Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div id="report-content" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Report Header */}
         <Card className="p-8 mb-6">
           <div className="text-center mb-6">
