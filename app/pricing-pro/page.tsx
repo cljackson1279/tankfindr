@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Check, Zap, TrendingUp, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 const PLANS = [
   {
@@ -63,9 +64,36 @@ const PLANS = [
 
 export default function PricingProPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = useState<string | null>(null)
+  const [user, setUser] = useState<any>(null)
+  
+  useEffect(() => {
+    checkAuth()
+  }, [])
+  
+  const checkAuth = async () => {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    setUser(user)
+    
+    // If user just logged in and there's a plan in URL, auto-trigger checkout
+    if (user && searchParams?.get('plan')) {
+      const planId = searchParams.get('plan')
+      if (planId) {
+        handleSubscribe(planId)
+      }
+    }
+  }
 
   const handleSubscribe = async (planId: string) => {
+    // Check if user is logged in
+    if (!user) {
+      // Redirect to login with plan in URL
+      router.push(`/auth/login?redirect=/pricing-pro?plan=${planId}`)
+      return
+    }
+    
     setLoading(planId)
 
     try {
@@ -79,6 +107,11 @@ export default function PricingProPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        // If still not authenticated (shouldn't happen), redirect to login
+        if (response.status === 401) {
+          router.push(`/auth/login?redirect=/pricing-pro?plan=${planId}`)
+          return
+        }
         throw new Error(data.error || 'Failed to create checkout session')
       }
 
@@ -178,7 +211,7 @@ export default function PricingProPage() {
                 disabled={loading === plan.id}
                 variant={plan.popular ? 'default' : 'outline'}
               >
-                {loading === plan.id ? 'Loading...' : plan.cta}
+                {loading === plan.id ? 'Loading...' : user ? plan.cta : 'Sign Up & Subscribe'}
               </Button>
             </Card>
           ))}
