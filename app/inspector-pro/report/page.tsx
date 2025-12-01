@@ -83,18 +83,29 @@ export default function InspectorReport() {
 
       setReportData(data)
 
-      // Log the usage
-      const supabase = createClient()
-      await supabase.from('usage').insert({
-        user_id: user.id,
-        action_type: 'inspector_report',
-        metadata: {
-          lat: parseFloat(lat!),
-          lng: parseFloat(lng!),
+      // Log the usage (with error handling)
+      try {
+        const supabase = createClient()
+        const { error: usageError } = await supabase.from('usage').insert({
+          user_id: user.id,
+          action: 'inspector_report',
+          payment_type: 'subscription',
+          metadata: {
+            lat: parseFloat(lat!),
+            lng: parseFloat(lng!),
           address: address,
-          classification: data.classification,
-        },
-      })
+            classification: data.classification,
+          },
+        })
+        
+        if (usageError) {
+          console.warn('Usage tracking failed (non-critical):', usageError.message)
+          // Don't throw - this shouldn't block the user
+        }
+      } catch (usageErr) {
+        console.error('Unexpected error in usage tracking:', usageErr)
+        // Continue anyway - don't block report generation
+      }
 
       setLoading(false)
     } catch (error) {
