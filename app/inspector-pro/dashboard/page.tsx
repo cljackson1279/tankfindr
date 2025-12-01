@@ -54,8 +54,8 @@ export default function InspectorDashboard() {
 
     setSubscription(profile)
 
-    // Load recent reports
-    loadRecentReports(user.id)
+    // Load recent reports (temporarily disabled)
+    // loadRecentReports(user.id)
 
     setLoading(false)
   }
@@ -268,7 +268,8 @@ export default function InspectorDashboard() {
           </div>
         </Card>
 
-        {/* Recent Reports */}
+        {/* Recent Reports - Temporarily disabled */}
+        {false && (
         <div>
           <h2 className="text-xl font-bold mb-4">Recent Reports</h2>
           
@@ -304,6 +305,7 @@ export default function InspectorDashboard() {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   )
