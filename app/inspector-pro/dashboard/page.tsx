@@ -61,17 +61,28 @@ export default function InspectorDashboard() {
   }
 
   const loadRecentReports = async (userId: string) => {
-    const supabase = createClient()
-    const { data } = await supabase
-      .from('usage')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('action_type', 'inspector_report')
-      .order('created_at', { ascending: false })
-      .limit(10)
+    try {
+      const supabase = createClient()
+      const { data, error } = await supabase
+        .from('usage')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('action', 'inspector_report')
+        .order('created_at', { ascending: false })
+        .limit(10)
 
-    if (data) {
-      setRecentReports(data)
+      if (error) {
+        console.warn('Failed to load recent reports:', error.message)
+        setRecentReports([])
+        return
+      }
+
+      if (data) {
+        setRecentReports(data)
+      }
+    } catch (err) {
+      console.error('Error loading recent reports:', err)
+      setRecentReports([])
     }
   }
 
