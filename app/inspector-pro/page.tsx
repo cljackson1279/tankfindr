@@ -138,8 +138,8 @@ export default function InspectorProPage() {
               <div className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900">Florida Coverage</p>
-                  <p className="text-sm text-gray-600">2.1M+ verified septic records statewide</p>
+                  <p className="font-semibold text-gray-900">Nationwide Coverage</p>
+                  <p className="text-sm text-gray-600">2.1M+ verified septic records across multiple states</p>
                 </div>
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function InspectorProPage() {
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to streamline your inspections?</h2>
           <p className="text-xl text-gray-600 mb-8">
-            Join home inspectors across Florida who trust TankFindr for accurate septic data.
+            Join home inspectors nationwide who trust TankFindr for accurate septic data.
           </p>
           <Button
             onClick={handleSubscribe}

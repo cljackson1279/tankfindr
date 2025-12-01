@@ -23,23 +23,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Get user's subscription from database
-    const { data: subscription, error: subError } = await supabase
-      .from('pro_subscriptions')
-      .select('stripe_subscription_id, stripe_customer_id')
-      .eq('user_id', userId)
-      .eq('status', 'active')
+    const { data: user, error: subError } = await supabase
+      .from('users')
+      .select('stripe_subscription_id, stripe_customer_id, subscription_status')
+      .eq('id', userId)
       .single();
 
-    if (subError || !subscription) {
+    if (subError || !user || !user.stripe_subscription_id) {
       return NextResponse.json(
         { error: 'No active subscription found' },
         { status: 404 }
       );
     }
+    
+    if (user.subscription_status !== 'active') {
+      return NextResponse.json(
+        { error: 'Subscription is not active' },
+        { status: 400 }
+      );
+    }
 
     // Cancel the subscription in Stripe (at period end)
     const stripeSubscription = await stripe.subscriptions.update(
-      subscription.stripe_subscription_id,
+      user.stripe_subscription_id,
       {
         cancel_at_period_end: true,
       }
@@ -47,12 +53,12 @@ export async function POST(request: NextRequest) {
 
     // Update subscription status in database
     await supabase
-      .from('pro_subscriptions')
+      .from('users')
       .update({
-        cancel_at_period_end: true,
+        subscription_status: 'canceling', // Mark as canceling but still active until period end
         updated_at: new Date().toISOString(),
       })
-      .eq('user_id', userId);
+      .eq('id', userId);
 
     return NextResponse.json({
       success: true,
