@@ -61,12 +61,11 @@ export default function InspectorReport() {
 
   const generateReport = async () => {
     try {
-      // Call the septic lookup API
-      const response = await fetch('/api/pro/lookup', {
+      // Call the fresh Inspector Report API (v2 - bypasses cached code)
+      const response = await fetch('/api/inspector-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: user.id,
           lat: parseFloat(lat!),
           lng: parseFloat(lng!),
           address: address,
