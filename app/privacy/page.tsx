@@ -195,7 +195,7 @@ export default function PrivacyPage() {
           </p>
           <div className="bg-gray-50 p-4 rounded-lg">
             <p className="text-gray-700">
-              <strong>Email:</strong> support@tankfindr.com
+              <strong>Email:</strong> <a href="mailto:support@tankfindr.com" className="text-blue-600 hover:text-blue-800 underline">support@tankfindr.com</a>
             </p>
           </div>
         </Card>
