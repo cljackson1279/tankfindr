@@ -26,6 +26,13 @@ export const TIERS = {
     locates: 150,
     priceId: process.env.STRIPE_ENTERPRISE_PRICE_ID!,
     overage: 4
+  },
+  inspector: {
+    name: 'Inspector Pro',
+    price: 79,
+    locates: 999999, // Unlimited
+    priceId: 'price_1SZMs6Rsawlh5ooWuJ5X98xG', // Inspector Pro price ID
+    overage: 0 // No overage for unlimited plan
   }
 } as const
 

@@ -295,20 +295,91 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
   // Extract common fields (field names vary by county)
   const systemInfo: any = {};
 
-  // Try different field name variations for system type
-  if (attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType || attrs.WW || attrs.LANDUSE) {
+  // FLORIDA-SPECIFIC RICH DATA EXTRACTION
+  // System Type - Florida has detailed SYSTTYPE field
+  if (attrs.SYSTTYPE) {
+    systemInfo.type = attrs.SYSTTYPE; // e.g., "OSTDS Abandonment", "OSTDS Repair", "OSTDS Existing"
+    systemInfo.systemTypeVerified = true;
+  } else if (attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType || attrs.WW || attrs.LANDUSE) {
     systemInfo.type = attrs.SYSTEM_TYPE || attrs.system_type || attrs.SystemType || attrs.WW || attrs.LANDUSE;
+    systemInfo.systemTypeVerified = false;
   }
 
-  // Try different field name variations for permit number
-  if (attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO || attrs.PARCELNO || attrs.ALT_KEY) {
+  // Permit Number - Florida has APNO field
+  if (attrs.APNO) {
+    systemInfo.permitNumber = attrs.APNO; // e.g., "AP1267843"
+    systemInfo.permitNumberVerified = true;
+  } else if (attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO || attrs.PARCELNO || attrs.ALT_KEY) {
     systemInfo.permitNumber = attrs.PERMIT_NUMBER || attrs.permit_number || attrs.PermitNumber || attrs.PERMIT_NO || attrs.PARCELNO || attrs.ALT_KEY;
+    systemInfo.permitNumberVerified = false;
   }
 
-  // Try different field name variations for dates
-  if (attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE || attrs.WW_UPD || attrs.ASMNT_YR) {
+  // System Capacity - Florida has ESTIMGPD (Estimated Gallons Per Day)
+  if (attrs.ESTIMGPD) {
+    systemInfo.capacity = `${attrs.ESTIMGPD} GPD`;
+    systemInfo.capacityVerified = true;
+    // Estimate tank size from GPD
+    const gpd = parseInt(attrs.ESTIMGPD);
+    if (gpd <= 200) {
+      systemInfo.estimatedTankSize = "750-1000 gallons";
+    } else if (gpd <= 300) {
+      systemInfo.estimatedTankSize = "1000-1250 gallons";
+    } else if (gpd <= 400) {
+      systemInfo.estimatedTankSize = "1250-1500 gallons";
+    } else {
+      systemInfo.estimatedTankSize = "1500+ gallons";
+    }
+  }
+
+  // Lot Size - Florida has ACREAGE field
+  if (attrs.ACREAGE || attrs.ACRES) {
+    const acres = attrs.ACREAGE || attrs.ACRES;
+    systemInfo.lotSize = `${acres} acres`;
+    systemInfo.lotSizeVerified = true;
+  }
+
+  // Property Type - Florida has COMRESID field
+  if (attrs.COMRESID) {
+    systemInfo.propertyType = attrs.COMRESID; // "Residential" or "Commercial"
+    systemInfo.propertyTypeVerified = true;
+  }
+
+  // Water Supply Type - Florida has WSUPLTYP field
+  if (attrs.WSUPLTYP) {
+    systemInfo.waterSupply = attrs.WSUPLTYP; // e.g., "SDWA Community", "SDWA Transient non community"
+    systemInfo.waterSupplyVerified = true;
+  }
+
+  // Approval Status - Florida has FINSYSAPRV field
+  if (attrs.FINSYSAPRV) {
+    systemInfo.approvalStatus = attrs.FINSYSAPRV; // "Approved", etc.
+    systemInfo.approvalStatusVerified = true;
+  }
+
+  // Dates - Florida has APPRDATE and FINALINSP (timestamps)
+  if (attrs.APPRDATE) {
+    try {
+      const date = new Date(attrs.APPRDATE);
+      systemInfo.permitDate = date.toLocaleDateString();
+      systemInfo.approvalDate = date.toLocaleDateString();
+      systemInfo.permitDateVerified = true;
+    } catch (e) {
+      systemInfo.permitDate = attrs.APPRDATE;
+    }
+  } else if (attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE || attrs.WW_UPD || attrs.ASMNT_YR) {
     const dateValue = attrs.PERMIT_DATE || attrs.permit_date || attrs.PermitDate || attrs.APPROVAL_DATE || attrs.WW_UPD || attrs.ASMNT_YR;
     systemInfo.permitDate = dateValue;
+    systemInfo.permitDateVerified = false;
+  }
+
+  if (attrs.FINALINSP) {
+    try {
+      const date = new Date(attrs.FINALINSP);
+      systemInfo.finalInspectionDate = date.toLocaleDateString();
+      systemInfo.finalInspectionVerified = true;
+    } catch (e) {
+      systemInfo.finalInspectionDate = attrs.FINALINSP;
+    }
   }
 
   if (attrs.INSTALL_DATE || attrs.install_date || attrs.InstallDate) {
@@ -317,6 +388,17 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
 
   if (attrs.LAST_SERVICE_DATE || attrs.last_service_date || attrs.LastServiceDate) {
     systemInfo.lastServiceDate = attrs.LAST_SERVICE_DATE || attrs.last_service_date || attrs.LastServiceDate;
+  }
+
+  // Tax Folio - Florida has FOLIO field
+  if (attrs.FOLIO || attrs.GEOFOLIO) {
+    systemInfo.taxFolio = attrs.FOLIO || attrs.GEOFOLIO;
+    systemInfo.taxFolioVerified = true;
+  }
+
+  // System Address - Florida has SYSTADDR (often cleaner than main address)
+  if (attrs.SYSTADDR) {
+    systemInfo.systemAddress = attrs.SYSTADDR;
   }
 
   // Calculate age estimate from any available date
