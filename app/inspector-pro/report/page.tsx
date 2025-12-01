@@ -62,7 +62,7 @@ export default function InspectorReport() {
   const generateReport = async () => {
     try {
       // Call the septic lookup API
-      const response = await fetch('/api/septic-lookup', {
+      const response = await fetch('/api/pro/lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
