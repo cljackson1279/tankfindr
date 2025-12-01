@@ -42,8 +42,8 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
 
   // Get user profile with subscription info
   const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('subscription_tier, subscription_status, lookups_used, billing_period_start, billing_period_end')
+    .from('users')
+    .select('subscription_tier, subscription_status, lookups_remaining, subscription_end_date')
     .eq('id', userId)
     .single();
 
@@ -59,14 +59,27 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
     };
   }
 
-  const tier = profile.subscription_tier as 'starter' | 'pro' | 'enterprise' | null;
+  const tier = profile.subscription_tier as 'starter' | 'pro' | 'enterprise' | 'inspector' | null;
   const isActive = profile.subscription_status === 'active';
+  
+  // Handle inspector tier separately
+  if (tier === 'inspector') {
+    return {
+      isActive: true,
+      tier: 'enterprise', // Treat inspector as unlimited for compatibility
+      lookupsUsed: 0,
+      lookupsLimit: -1,
+      isUnlimited: true,
+      billingPeriodStart: null,
+      billingPeriodEnd: profile.subscription_end_date,
+    };
+  }
   
   if (!isActive || !tier) {
     return {
       isActive: false,
       tier: null,
-      lookupsUsed: profile.lookups_used || 0,
+      lookupsUsed: 0,
       lookupsLimit: 0,
       isUnlimited: false,
       billingPeriodStart: null,
@@ -77,15 +90,17 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
   const tierConfig = SUBSCRIPTION_TIERS[tier];
   const isUnlimited = tierConfig.lookups === -1;
   const lookupsLimit = isUnlimited ? -1 : tierConfig.lookups;
+  const lookupsRemaining = profile.lookups_remaining || 0;
+  const lookupsUsed = isUnlimited ? 0 : Math.max(0, lookupsLimit - lookupsRemaining);
 
   return {
     isActive: true,
     tier,
-    lookupsUsed: profile.lookups_used || 0,
+    lookupsUsed,
     lookupsLimit,
     isUnlimited,
-    billingPeriodStart: profile.billing_period_start,
-    billingPeriodEnd: profile.billing_period_end,
+    billingPeriodStart: null,
+    billingPeriodEnd: profile.subscription_end_date,
   };
 }
 
@@ -182,7 +197,7 @@ export async function canAddUser(organizationId: string, tier: 'starter' | 'pro'
 
   // Get current user count for this organization
   const { count: currentUsers, error } = await supabase
-    .from('profiles')
+    .from('users')
     .select('*', { count: 'exact', head: true })
     .eq('organization_id', organizationId);
 
