@@ -36,14 +36,11 @@ export default function InspectorProPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          priceId: 'price_1SZMs6Rsawlh5ooWuJ5X98xG', // Inspector Pro price
           tier: 'inspector',
-          successUrl: `${window.location.origin}/inspector-pro/dashboard`,
-          cancelUrl: `${window.location.origin}/inspector-pro`,
         }),
       })
 
-      const { sessionId, error } = await response.json()
+      const { url, error } = await response.json()
 
       if (error) {
         alert(error)
@@ -51,9 +48,13 @@ export default function InspectorProPage() {
         return
       }
 
-      // Redirect to Stripe Checkout
-      const stripe = (window as any).Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-      await stripe.redirectToCheckout({ sessionId })
+      if (url) {
+        // Redirect to Stripe Checkout
+        window.location.href = url
+      } else {
+        alert('Failed to create checkout session')
+        setLoading(false)
+      }
     } catch (error) {
       console.error('Error:', error)
       alert('Failed to start checkout. Please try again.')
