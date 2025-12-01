@@ -1,5 +1,8 @@
 -- CORRECTED Florida Geometry Fix Query
 -- This updates latitude and longitude columns that the app actually uses
+--
+-- PREREQUISITE: Run ADD_LAT_LNG_COLUMNS.sql FIRST to create the columns!
+-- If you get an error about columns not existing, run that script first.
 
 UPDATE septic_tanks
 SET 
