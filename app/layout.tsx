@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: 'TankFindr - Find Septic Tanks Instantly with GPS-Accurate Locations',
     template: '%s | TankFindr',
   },
-  description: 'Locate septic tanks 10x faster with TankFindr. Access 2.3M+ GPS-accurate tank locations from government records. Perfect for septic companies, home inspectors, and homeowners. Does my house have a septic tank or sewer? Find out instantly.',
+  description: 'Locate septic tanks 10x faster with TankFindr. Access 2.2M+ verified and estimated septic tank locations from government records across 13 states. Perfect for septic companies, home inspectors, and homeowners. Does my house have a septic tank or sewer? Find out instantly.',
   keywords: [
     'septic tank location',
     'find septic tank',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   openGraph: {
     title: 'TankFindr - Find Septic Tanks Instantly',
-    description: 'Locate septic tanks 10x faster with GPS-accurate locations from government records. 2.3M+ tanks mapped across 12 states.',
+    description: 'Locate septic tanks 10x faster with GPS-accurate locations from government records. 2.2M+ tanks mapped across 13 states including Florida, California, Virginia, and more.',
     type: 'website',
     url: 'https://tankfindr.com',
     siteName: 'TankFindr',
