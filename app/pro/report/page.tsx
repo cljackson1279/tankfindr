@@ -5,7 +5,6 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { Loader2, MapPin, FileText, Home, Calendar, Droplets, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { createClient } from '@/lib/supabase/client'
 
 interface ReportData {
   address: string
@@ -13,9 +12,6 @@ interface ReportData {
   distance: number
   classification: string
   confidence: string
-  systemInfo: any
-  dataQuality?: 'verified_permit' | 'estimated_inventory'
-  qualitySource?: string
 }
 
 function ProReportContent() {
@@ -33,8 +29,6 @@ function ProReportContent() {
     try {
       // Get report data from URL params
       const address = searchParams.get('address')
-      const lat = searchParams.get('lat')
-      const lng = searchParams.get('lng')
       const tankLat = searchParams.get('tankLat')
       const tankLng = searchParams.get('tankLng')
       const classification = searchParams.get('classification')
@@ -45,18 +39,6 @@ function ProReportContent() {
         throw new Error('Missing report data')
       }
 
-      // Fetch system info from the tank location
-      const response = await fetch('/api/septic-lookup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lat: parseFloat(tankLat),
-          lng: parseFloat(tankLng),
-        }),
-      })
-
-      const data = await response.json()
-
       setReport({
         address: address,
         tankPoint: {
@@ -66,9 +48,6 @@ function ProReportContent() {
         distance: distance ? parseFloat(distance) : 0,
         classification: classification || 'unknown',
         confidence: confidence || 'unknown',
-        systemInfo: data.systemInfo || {},
-        dataQuality: data.systemInfo?.dataQuality,
-        qualitySource: data.systemInfo?.qualitySource,
       })
 
       setLoading(false)
@@ -77,31 +56,6 @@ function ProReportContent() {
       setError(err.message)
       setLoading(false)
     }
-  }
-
-  const getDataQualityBadge = () => {
-    if (report?.dataQuality === 'verified_permit') {
-      return (
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-100 border border-green-300 rounded-lg">
-          <CheckCircle className="w-5 h-5 text-green-600" />
-          <div>
-            <div className="font-semibold text-green-900">Verified Permit Data</div>
-            <div className="text-sm text-green-700">{report.qualitySource}</div>
-          </div>
-        </div>
-      )
-    } else if (report?.dataQuality === 'estimated_inventory') {
-      return (
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 border border-yellow-300 rounded-lg">
-          <AlertCircle className="w-5 h-5 text-yellow-600" />
-          <div>
-            <div className="font-semibold text-yellow-900">Estimated Data (2009-2015 Inventory)</div>
-            <div className="text-sm text-yellow-700">{report.qualitySource}</div>
-          </div>
-        </div>
-      )
-    }
-    return null
   }
 
   if (loading) {
@@ -127,8 +81,6 @@ function ProReportContent() {
     )
   }
 
-  const { systemInfo } = report
-
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
@@ -144,9 +96,8 @@ function ProReportContent() {
           </Button>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Septic System Report</h1>
-            <p className="text-lg text-gray-600 mb-4">{report.address}</p>
-            {getDataQualityBadge()}
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Septic Tank Location Report</h1>
+            <p className="text-lg text-gray-600">{report.address}</p>
           </div>
         </div>
 
@@ -163,6 +114,7 @@ function ProReportContent() {
                 {report.classification === 'confirmed' && 'Septic System Confirmed'}
                 {report.classification === 'likely_septic' && 'Likely Septic System'}
                 {report.classification === 'sewer' && 'Municipal Sewer System'}
+                {!['confirmed', 'likely_septic', 'sewer'].includes(report.classification) && 'Septic Tank Located'}
               </h2>
               <p className="text-gray-600 capitalize">Confidence: {report.confidence}</p>
             </div>
@@ -221,100 +173,30 @@ function ProReportContent() {
           </Card>
         )}
 
-        {/* System Information */}
-        {systemInfo && Object.keys(systemInfo).length > 0 && (
-          <Card className="p-6 mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Droplets className="w-6 h-6 text-blue-600" />
-              <h3 className="text-xl font-bold">System Information</h3>
+        {/* Information Notice */}
+        <Card className="p-6 mb-6 bg-blue-50 border-blue-200">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+            <div>
+              <h3 className="font-bold text-blue-900 mb-2">📍 Tank Location Data</h3>
+              <p className="text-sm text-blue-800 mb-2">
+                This report shows the GPS coordinates of the septic tank based on county permit records and our database of 2.2+ million septic systems across 13 states.
+              </p>
+              <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                <li>Coordinates are from official county permit records where available</li>
+                <li>Some locations may be approximate based on property data</li>
+                <li>Always verify tank location in the field before excavation</li>
+                <li>Use coordinates with GPS device or mapping app for on-site location</li>
+              </ul>
             </div>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              {systemInfo.permitNumber && (
-                <div>
-                  <p className="text-sm text-gray-600">Permit Number</p>
-                  <p className="font-semibold">{systemInfo.permitNumber}</p>
-                </div>
-              )}
-
-              {systemInfo.systemType && (
-                <div>
-                  <p className="text-sm text-gray-600">System Type</p>
-                  <p className="font-semibold">{systemInfo.systemType}</p>
-                </div>
-              )}
-
-              {systemInfo.capacity && (
-                <div>
-                  <p className="text-sm text-gray-600">Daily Capacity</p>
-                  <p className="font-semibold">{systemInfo.capacity} gallons/day</p>
-                </div>
-              )}
-
-              {systemInfo.approvalDate && (
-                <div>
-                  <p className="text-sm text-gray-600">Approval Date</p>
-                  <p className="font-semibold">{new Date(systemInfo.approvalDate * 1000).toLocaleDateString()}</p>
-                </div>
-              )}
-
-              {systemInfo.propertyType && (
-                <div>
-                  <p className="text-sm text-gray-600">Property Type</p>
-                  <p className="font-semibold">{systemInfo.propertyType}</p>
-                </div>
-              )}
-
-              {systemInfo.lotSize && (
-                <div>
-                  <p className="text-sm text-gray-600">Lot Size</p>
-                  <p className="font-semibold">{systemInfo.lotSize} acres</p>
-                </div>
-              )}
-
-              {systemInfo.parcelNumber && (
-                <div>
-                  <p className="text-sm text-gray-600">Parcel Number</p>
-                  <p className="font-semibold font-mono text-sm">{systemInfo.parcelNumber}</p>
-                </div>
-              )}
-
-              {systemInfo.waterSupply && (
-                <div>
-                  <p className="text-sm text-gray-600">Water Supply</p>
-                  <p className="font-semibold">{systemInfo.waterSupply}</p>
-                </div>
-              )}
-            </div>
-          </Card>
-        )}
-
-        {/* Data Quality Warning for Estimated Records */}
-        {report.dataQuality === 'estimated_inventory' && (
-          <Card className="p-6 mb-6 bg-yellow-50 border-yellow-200">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-bold text-yellow-900 mb-2">⚠️ Estimated Inventory Records</h3>
-                <p className="text-sm text-yellow-800 mb-2">
-                  This data is from the Florida DOH 2009-2015 statewide septic inventory and represents an <strong>estimate</strong> based on property characteristics, not a verified permit.
-                </p>
-                <ul className="text-sm text-yellow-800 space-y-1 list-disc list-inside">
-                  <li>Tank location is approximate (property centroid)</li>
-                  <li>System details may be incomplete or outdated</li>
-                  <li>Professional field verification recommended</li>
-                  <li>Not a substitute for official permit records</li>
-                </ul>
-              </div>
-            </div>
-          </Card>
-        )}
+          </div>
+        </Card>
 
         {/* Disclaimer */}
         <Card className="p-6 bg-gray-50">
           <h3 className="font-bold text-gray-900 mb-2">Professional Use Only</h3>
           <p className="text-sm text-gray-600">
-            This report is provided for professional contractor use and preliminary assessment. All data is sourced from public records and may not reflect current conditions. Tank locations should be verified in the field. Always conduct proper site assessment and obtain necessary permits from your local health department.
+            This report is provided for professional contractor use and preliminary assessment. All data is sourced from public records and may not reflect current conditions. Tank locations should be verified in the field before any excavation or work begins. Always conduct proper site assessment and obtain necessary permits from your local health department.
           </p>
         </Card>
 
