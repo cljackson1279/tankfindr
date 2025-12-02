@@ -11,8 +11,8 @@ import SewerOrSepticWidget from '@/components/SewerOrSepticWidget'
 const COVERAGE_STATES = [
   {
     name: 'Florida',
-    counties: ['Miami-Dade', 'Sarasota', 'Peace River Basin', 'All 67 Counties'],
-    records: '1.9M+',
+    counties: ['Miami-Dade', 'All 67 Counties'],
+    records: '2.1M+',
   },
   {
     name: 'New Mexico',
@@ -20,14 +20,14 @@ const COVERAGE_STATES = [
     records: '60K+',
   },
   {
-    name: 'California',
-    counties: ['Sonoma', 'Sacramento'],
-    records: '5K+',
-  },
-  {
     name: 'Virginia',
     counties: ['Fairfax County'],
-    records: '22K+',
+    records: '44K+',
+  },
+  {
+    name: 'California',
+    counties: ['Sonoma County'],
+    records: '33K+',
   },
 ]
 
@@ -335,8 +335,8 @@ export default function HomePage() {
             </h2>
             <p className="text-gray-700">
               TankFindr provides comprehensive septic tank location data for all 67 counties in Florida, 
-              including Miami-Dade, Broward, Palm Beach, Sarasota, and more. Access 1.9+ million septic 
-              system records with GPS coordinates, permit history, and system classification.
+              including Miami-Dade and statewide coverage. Access 2.1+ million septic 
+              system records with GPS coordinates, verified permits, and estimated inventory data (clearly labeled).
             </p>
           </div>
 
