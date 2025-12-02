@@ -83,7 +83,8 @@ export default function InspectorProPage() {
                 $79
                 <span className="text-2xl text-gray-600 font-normal">/month</span>
               </div>
-              <p className="text-gray-600">Unlimited Reports • Cancel Anytime</p>
+              <p className="text-blue-600 font-semibold mb-1">7-Day Free Trial</p>
+              <p className="text-gray-600 text-sm">Then $79/month • Unlimited Reports • Cancel Anytime</p>
             </div>
 
             <Button
@@ -91,7 +92,7 @@ export default function InspectorProPage() {
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold mb-6"
             >
-              {loading ? 'Loading...' : user ? 'Subscribe Now' : 'Sign Up & Subscribe'}
+              {loading ? 'Loading...' : user ? 'Start 7-Day Free Trial' : 'Sign Up & Start Free Trial'}
             </Button>
 
             <div className="space-y-4">

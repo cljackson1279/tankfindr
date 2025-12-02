@@ -23,7 +23,7 @@ const PLANS = [
       'Email support',
       'Mobile-friendly dashboard',
     ],
-    cta: 'Start with Starter',
+    cta: 'Start 7-Day Free Trial',
     popular: false,
   },
   {
@@ -39,7 +39,7 @@ const PLANS = [
       'Advanced analytics',
       'Multi-user access (up to 5 users)',
     ],
-    cta: 'Go Pro',
+    cta: 'Start 7-Day Free Trial',
     popular: true,
   },
   {
@@ -57,7 +57,7 @@ const PLANS = [
       'Custom reporting',
       'API access',
     ],
-    cta: 'Get Enterprise',
+    cta: 'Start 7-Day Free Trial',
     popular: false,
   },
 ]
@@ -188,6 +188,7 @@ function PricingProContent() {
                   <span className="text-5xl font-bold">${plan.price}</span>
                   <span className="text-gray-600">/month</span>
                 </div>
+                <p className="text-blue-600 font-semibold text-sm mb-1">7-Day Free Trial</p>
                 <p className="text-sm text-gray-600">
                   {plan.lookups === -1
                     ? 'Unlimited lookups'
@@ -211,7 +212,7 @@ function PricingProContent() {
                 disabled={loading === plan.id}
                 variant={plan.popular ? 'default' : 'outline'}
               >
-                {loading === plan.id ? 'Loading...' : user ? plan.cta : 'Sign Up & Subscribe'}
+                {loading === plan.id ? 'Loading...' : user ? plan.cta : 'Sign Up & Start Free Trial'}
               </Button>
             </Card>
           ))}

@@ -111,20 +111,36 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return
   }
 
+  // Get subscription to check if it has a trial
+  const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
+  const hasTrial = subscription.trial_start !== null
+
   // Update user with subscription info
   const { error } = await supabaseAdmin
     .from('users')
     .update({
       stripe_customer_id: session.customer as string,
       subscription_tier: tier,
-      subscription_status: 'active',
+      subscription_status: hasTrial ? 'trialing' : 'active',
       subscription_end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days from now
       updated_at: new Date().toISOString()
     })
     .eq('id', userId)
 
   if (error) {
-    console.error('Error updating profile:', error)
+    console.error('Error updating user:', error)
+  }
+
+  // Record trial usage in profiles table
+  if (hasTrial) {
+    await supabaseAdmin
+      .from('profiles')
+      .update({
+        trial_used_at: new Date().toISOString(),
+        trial_product: tier === 'inspector' ? 'inspector' : 'pro',
+        stripe_customer_id: session.customer as string
+      })
+      .eq('id', userId)
   }
 }
 
