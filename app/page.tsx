@@ -101,14 +101,14 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Locate Septic Tanks Instantly<br />
+          Most Comprehensive Septic Database<br />
           <span className="text-green-600">
-            Accurate Data for 12+ States
+            Verified Permits + Statewide Coverage
           </span>
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto">
-          TankFindr helps septic companies, realtors, homeowners, and homebuyers identify septic tank locations, 
-          septic vs sewer status, system age, risk, and permit history — powered by county records and geospatial intelligence.
+          TankFindr provides transparent septic system data for contractors, inspectors, realtors, and homebuyers. 
+          Verified permit records where available, estimated inventory for comprehensive coverage — all clearly labeled so you know exactly what you're getting.
         </p>
         <div className="flex items-center justify-center gap-8 text-sm text-gray-600 mb-12">
           <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            <span>Government Data</span>
+            <span>Transparent Quality Indicators</span>
           </div>
         </div>
       </section>
@@ -197,7 +197,7 @@ export default function HomePage() {
 
             <div className="space-y-4 mb-8">
               <p className="text-center text-gray-700">
-                Professional septic reports with verified permit data for every inspection.
+                Professional septic reports with clear data quality indicators — verified permits and estimated records.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">

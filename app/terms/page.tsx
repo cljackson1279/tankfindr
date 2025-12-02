@@ -124,7 +124,19 @@ export default function TermsPage() {
         <Card className="p-8 mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Data Accuracy and Limitations</h2>
           
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Data Sources</h3>
+          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Data Quality Tiers</h3>
+          <p className="text-gray-700 mb-4">
+            TankFindr provides data from multiple sources with varying quality levels. All reports clearly indicate which data quality tier applies:
+          </p>
+          <ul className="list-disc list-inside text-gray-700 space-y-3 mb-4">
+            <li><strong>Verified Permit Data:</strong> Actual permit records from state Departments of Health including permit numbers, system types, capacity, and approval dates. High accuracy for tank locations (5-15 meters). Available in select counties (e.g., Miami-Dade, FL).</li>
+            <li><strong>Estimated Inventory Data:</strong> Property-level septic likelihood estimates from state environmental inventories based on property tax records and land use. Moderate accuracy (30-100 meters). Does not include permit numbers or system details. Available statewide in Florida and other states.</li>
+          </ul>
+          <p className="text-gray-700 mb-4">
+            <strong>Important:</strong> Estimated inventory records are preliminary assessments only and must be verified through field inspection and/or county records requests before making financial or construction decisions.
+          </p>
+
+          <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Data Sources and Limitations</h3>
           <p className="text-gray-700 mb-4">
             TankFindr aggregates data from publicly available government sources. We make reasonable efforts to ensure data accuracy, but we do not guarantee:
           </p>
@@ -133,17 +145,20 @@ export default function TermsPage() {
             <li>Real-time updates from government agencies</li>
             <li>Accuracy of GPS coordinates provided by source agencies</li>
             <li>Identification of all septic systems on a property</li>
+            <li>Currency of estimated inventory records (may be 10-15 years old)</li>
           </ul>
 
           <h3 className="text-xl font-semibold text-gray-900 mb-3">Professional Verification Required</h3>
           <p className="text-gray-700 mb-4">
-            <strong>IMPORTANT:</strong> TankFindr reports are for informational purposes only and should not replace professional septic system inspections or surveys. You agree that:
+            <strong>IMPORTANT:</strong> TankFindr reports are for informational and preliminary assessment purposes only and should not replace professional septic system inspections or surveys. You agree that:
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-2">
-            <li>Our reports are estimates based on government records</li>
-            <li>Physical verification by licensed professionals is required before excavation or construction</li>
-            <li>We are not responsible for damages resulting from reliance on our data</li>
-            <li>You will not use our Service as a substitute for professional septic inspections</li>
+            <li>Verified permit data provides high-quality information but may not reflect current system conditions</li>
+            <li>Estimated inventory records are preliminary indicators only and must be verified through professional inspection</li>
+            <li>Physical verification by licensed professionals is required before excavation, construction, or property transactions</li>
+            <li>We are not responsible for damages, financial losses, or legal issues resulting from reliance on our data</li>
+            <li>You will not use our Service as a substitute for professional septic inspections, surveys, or permit applications</li>
+            <li>You understand that estimated data may be inaccurate and should not be used for final decision-making</li>
           </ul>
         </Card>
 

@@ -71,7 +71,7 @@ export default function InspectorProPage() {
             TankFindr Inspector Pro
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Professional septic system reports for home inspectors. Unlimited searches, verified permit data, and instant PDF reports.
+            Professional septic system reports for home inspectors. Unlimited searches with transparent data quality indicators — verified permits and estimated records clearly labeled.
           </p>
         </div>
 
@@ -106,16 +106,16 @@ export default function InspectorProPage() {
               <div className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900">Verified Permit Data</p>
-                  <p className="text-sm text-gray-600">System type, capacity, approval dates, and permit numbers</p>
+                  <p className="font-semibold text-gray-900">Transparent Data Quality</p>
+                  <p className="text-sm text-gray-600">Verified permits where available, estimated records for comprehensive coverage</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900">GPS Coordinates</p>
-                  <p className="text-sm text-gray-600">Exact tank location from county GIS data</p>
+                  <p className="font-semibold text-gray-900">Tank Location Maps</p>
+                  <p className="text-sm text-gray-600">GPS coordinates with accuracy indicators</p>
                 </div>
               </div>
 
@@ -138,8 +138,8 @@ export default function InspectorProPage() {
               <div className="flex items-start gap-3">
                 <Check className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-gray-900">Nationwide Coverage</p>
-                  <p className="text-sm text-gray-600">2.1M+ verified septic records across multiple states</p>
+                  <p className="font-semibold text-gray-900">Comprehensive Coverage</p>
+                  <p className="text-sm text-gray-600">2.1M+ septic records with quality indicators across multiple states</p>
                 </div>
               </div>
             </div>

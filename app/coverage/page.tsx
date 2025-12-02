@@ -10,8 +10,8 @@ const coverageData = [
     state: 'Florida',
     counties: 'All 67 counties',
     records: '1,939,334',
-    quality: 'High',
-    notes: 'Statewide parcel-level septic classification',
+    quality: 'Mixed: Verified + Estimated',
+    notes: 'Miami-Dade: Verified DOH permits. Statewide: 2009-2015 estimated inventory. All clearly labeled.',
   },
   {
     state: 'Virginia',
