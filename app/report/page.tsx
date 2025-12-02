@@ -290,6 +290,8 @@ function ReportPageContent() {
                   <p className="text-lg font-bold">
                     {preview.classification === 'septic' ? (
                       <span className="text-orange-600">🟠 Septic System</span>
+                    ) : preview.classification === 'likely_septic' ? (
+                      <span className="text-yellow-600">🟡 Likely Septic System</span>
                     ) : preview.classification === 'sewer' ? (
                       <span className="text-blue-600">🔵 Public Sewer</span>
                     ) : (
