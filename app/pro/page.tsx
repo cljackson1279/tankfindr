@@ -171,13 +171,18 @@ export default function ProDashboard() {
 
       // Show result based on classification
       if (data.tankPoint) {
-        // Tank found - show coordinates and map link
-        const message = `✅ Septic Tank Found!\n\nLocation: ${data.tankPoint.lat.toFixed(6)}, ${data.tankPoint.lng.toFixed(6)}\nDistance: ${data.distance ? Math.round(data.distance) + 'm' : 'nearby'}\nClassification: ${data.classification}\nConfidence: ${data.confidence}\n\nOpening satellite map view...`;
-        alert(message);
-
-        // Open map in new window
-        const mapUrl = `https://www.google.com/maps?q=${data.tankPoint.lat},${data.tankPoint.lng}&z=19&t=k`;
-        window.open(mapUrl, '_blank');
+        // Tank found - navigate to detailed report page
+        const reportParams = new URLSearchParams({
+          address: address,
+          lat: geocodeData.lat.toString(),
+          lng: geocodeData.lng.toString(),
+          tankLat: data.tankPoint.lat.toString(),
+          tankLng: data.tankPoint.lng.toString(),
+          classification: data.classification || 'unknown',
+          confidence: data.confidence || 'unknown',
+          distance: data.distance?.toString() || '0',
+        })
+        router.push(`/pro/report?${reportParams.toString()}`)
       } else if (data.classification === 'sewer') {
         // Property is on sewer
         alert(`🚰 Municipal Sewer Connection\n\nThis property appears to be connected to municipal sewer.\n\nNo septic system records were found in the county database, which typically indicates sewer service availability.\n\nClassification: Sewer\nConfidence: ${data.confidence}`);
