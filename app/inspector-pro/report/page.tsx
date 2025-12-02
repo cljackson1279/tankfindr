@@ -204,6 +204,8 @@ export default function InspectorReport() {
   const classification = reportData?.classification || 'unknown'
   const confidence = reportData?.confidence || 'low'
   const tankPoint = reportData?.tankPoint
+  const dataQuality = reportData?.dataQuality || 'unknown'
+  const qualitySource = reportData?.qualitySource || 'Unknown'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -238,6 +240,24 @@ export default function InspectorReport() {
               Generated on {new Date().toLocaleDateString()} at {new Date().toLocaleTimeString()}
             </p>
           </div>
+
+          {/* Data Quality Badge */}
+          {dataQuality !== 'unknown' && (
+            <div className="mb-4 flex justify-center">
+              {dataQuality === 'verified_permit' && (
+                <div className="inline-flex items-center gap-2 bg-green-50 border-2 border-green-200 text-green-800 px-4 py-2 rounded-lg">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm font-semibold">✅ Verified Permit Data</span>
+                </div>
+              )}
+              {dataQuality === 'estimated_inventory' && (
+                <div className="inline-flex items-center gap-2 bg-yellow-50 border-2 border-yellow-200 text-yellow-800 px-4 py-2 rounded-lg">
+                  <AlertTriangle className="w-4 h-4" />
+                  <span className="text-sm font-semibold">⚠️ Estimated Data (2009-2015 Inventory)</span>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Classification Badge */}
           <div className="flex justify-center">
@@ -276,11 +296,23 @@ export default function InspectorReport() {
             <Card className="p-6 mb-6">
               <div className="flex items-center gap-2 mb-4">
                 <CheckCircle className="w-6 h-6 text-green-600" />
-                <h2 className="text-2xl font-bold">Verified Information</h2>
+                <h2 className="text-2xl font-bold">{dataQuality === 'verified_permit' ? 'Verified Information' : 'Property Information'}</h2>
               </div>
-              <p className="text-sm text-gray-600 mb-6">
-                The following information comes from official county permit records and state GIS databases.
-              </p>
+              {dataQuality === 'verified_permit' && (
+                <p className="text-sm text-gray-600 mb-6">
+                  The following information comes from official Florida Department of Health permit records.
+                </p>
+              )}
+              {dataQuality === 'estimated_inventory' && (
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+                  <p className="text-sm font-semibold text-yellow-800 mb-1">⚠️ Important: Estimated Data</p>
+                  <p className="text-sm text-yellow-700">
+                    This septic system is identified in the Florida Department of Health's 2009-2015 estimated inventory based on property tax records. 
+                    No active permit was found. This is an estimate and should be verified through field inspection and/or county records request.
+                  </p>
+                  <p className="text-xs text-yellow-600 mt-2">Source: {qualitySource}</p>
+                </div>
+              )}
 
               <div className="grid md:grid-cols-2 gap-6">
                 {systemInfo.type && (
@@ -433,13 +465,43 @@ export default function InspectorReport() {
           </>
         )}
 
-        {/* Disclaimer */}
+        {/* Data Quality & Disclaimer */}
         <Card className="p-6 bg-gray-50 border-gray-300">
-          <h3 className="font-bold mb-2">Important Disclaimer</h3>
+          <h3 className="font-bold text-lg mb-4">Data Quality & Limitations</h3>
+          
+          {dataQuality === 'verified_permit' && (
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-green-800 mb-1">✅ Verified Permit Records</p>
+              <p className="text-sm text-gray-700">
+                This report contains data from Florida Department of Health active permits, including actual permit numbers, system types, and approval dates. 
+                <strong>Data Quality: High</strong>
+              </p>
+            </div>
+          )}
+          
+          {dataQuality === 'estimated_inventory' && (
+            <div className="mb-4">
+              <p className="text-sm font-semibold text-yellow-800 mb-1">⚠️ Estimated Inventory Records</p>
+              <p className="text-sm text-gray-700">
+                This report is based on Florida DOH 2009-2015 estimated septic inventory derived from property tax records. 
+                <strong>These are estimates only</strong> and do not represent confirmed septic systems. No permit information is available. 
+                <strong>Data Quality: Moderate to Low</strong>
+              </p>
+              <p className="text-sm text-gray-700 mt-2">
+                <strong>Professional Recommendation:</strong> Estimated records should be verified through field inspection and/or county records request before making financial or construction decisions.
+              </p>
+            </div>
+          )}
+          
+          <h3 className="font-bold mb-2 mt-4">Legal Disclaimer</h3>
           <p className="text-sm text-gray-700">
-            This report is provided for informational purposes only and should not be considered a substitute for a professional septic system inspection. 
+            This report is provided for informational and preliminary assessment purposes only and should not be considered a substitute for a professional septic system inspection. 
             All data is sourced from public records and may not reflect current conditions. Tank locations are approximate and should be verified in the field. 
-            TankFindr makes no warranties regarding the accuracy or completeness of this information.
+            {dataQuality === 'estimated_inventory' && ' We are not responsible for decisions based on estimated data.'}
+            {' '}Always conduct a professional septic inspection and obtain permits from your local health department.
+          </p>
+          <p className="text-xs text-gray-600 mt-3">
+            For questions about data quality or to report inaccuracies, contact support@tankfindr.com
           </p>
         </Card>
       </div>

@@ -47,6 +47,8 @@ export interface SepticContext {
     ageEstimate?: string;
   } | null;
   riskLevel?: 'low' | 'medium' | 'high';
+  dataQuality?: 'verified_permit' | 'estimated_inventory' | 'unknown';
+  qualitySource?: string;
 }
 
 /**
@@ -78,7 +80,7 @@ export async function getSepticContextForLocation(
     // 2. Find nearest septic features within radius
     const nearestFeatures = await findNearestFeatures(lat, lng, radiusMeters);
 
-    // 3. Classify septic vs sewer
+    // 3. Classify septic vs sewer (with data quality awareness)
     const { classification, confidence } = classifySepticStatus(
       nearestFeatures,
       coverageSources
@@ -87,8 +89,17 @@ export async function getSepticContextForLocation(
     // 4. Get best tank point
     const tankPoint = getBestTankPoint(nearestFeatures);
 
-    // 5. Extract system info
+    // 5. Extract system info and detect data quality
     const systemInfo = extractSystemInfo(nearestFeatures);
+    
+    // 5b. Detect data quality from nearest feature
+    let dataQuality: 'verified_permit' | 'estimated_inventory' | 'unknown' = 'unknown';
+    let qualitySource = 'Unknown';
+    if (nearestFeatures.length > 0) {
+      const quality = detectDataQuality(nearestFeatures[0].attributes || {});
+      dataQuality = quality.quality;
+      qualitySource = quality.source;
+    }
 
     // 6. Calculate risk level
     const riskLevel = calculateRiskLevel(systemInfo, nearestFeatures);
@@ -103,6 +114,8 @@ export async function getSepticContextForLocation(
       parcelGeom: null, // TODO: Add parcel geometry if available
       systemInfo,
       riskLevel,
+      dataQuality,
+      qualitySource,
     };
   } catch (error) {
     console.error('Error in getSepticContextForLocation:', error);
@@ -249,26 +262,49 @@ function classifySepticStatus(
 
   const nearestFeature = features[0];
   const distance = nearestFeature.distance_meters;
+  const attrs = nearestFeature.attributes || {};
+  
+  // Check data quality to adjust classification
+  const quality = detectDataQuality(attrs);
+  const isEstimated = quality.quality === 'estimated_inventory';
+  const isVerified = quality.quality === 'verified_permit';
 
-  // High confidence if very close (within 30 meters)
-  // Increased from 15m to account for property boundaries
-  if (distance < 30) {
-    return { classification: 'septic', confidence: 'high' };
+  // For verified permits: stricter distance thresholds
+  if (isVerified) {
+    if (distance < 30) {
+      return { classification: 'septic', confidence: 'high' };
+    }
+    if (distance < 75) {
+      return { classification: 'septic', confidence: 'medium' };
+    }
+    if (distance < 200) {
+      return { classification: 'likely_septic', confidence: 'low' };
+    }
+    return { classification: 'sewer', confidence: 'medium' };
   }
-
-  // Medium confidence if reasonably close (30-75 meters)
-  // This is typical for larger properties or corner lots
-  if (distance < 75) {
-    return { classification: 'septic', confidence: 'medium' };
-  }
-
-  // Lower confidence if farther (75-200 meters)
-  // Could be neighbor's tank or property boundary issue
-  if (distance < 200) {
+  
+  // For estimated records: more lenient, always show as likely_septic if found
+  if (isEstimated) {
+    if (distance < 100) {
+      return { classification: 'likely_septic', confidence: 'medium' };
+    }
+    if (distance < 200) {
+      return { classification: 'likely_septic', confidence: 'low' };
+    }
+    // Even if far, still show as likely_septic but low confidence
     return { classification: 'likely_septic', confidence: 'low' };
   }
 
-  // Very far - probably not this property's tank
+  // Default behavior for unknown quality
+  if (distance < 30) {
+    return { classification: 'septic', confidence: 'high' };
+  }
+  if (distance < 75) {
+    return { classification: 'septic', confidence: 'medium' };
+  }
+  if (distance < 200) {
+    return { classification: 'likely_septic', confidence: 'low' };
+  }
   return { classification: 'sewer', confidence: 'medium' };
 }
 
@@ -281,6 +317,33 @@ function getBestTankPoint(features: SepticFeature[]): { lat: number; lng: number
   // Return the nearest feature's location
   const nearest = features[0];
   return { lat: nearest.lat, lng: nearest.lng };
+}
+
+/**
+ * Detect data quality tier from attributes
+ */
+function detectDataQuality(attrs: any): { quality: 'verified_permit' | 'estimated_inventory' | 'unknown'; source: string } {
+  // Check for verified permit data (has APNO permit number)
+  if (attrs.APNO) {
+    return {
+      quality: 'verified_permit',
+      source: 'Florida DOH Permit Records'
+    };
+  }
+  
+  // Check for estimated inventory data (has WW = "LikelySeptic")
+  if (attrs.WW === 'LikelySeptic') {
+    return {
+      quality: 'estimated_inventory',
+      source: 'Florida DOH 2009-2015 Inventory'
+    };
+  }
+  
+  // Unknown/other data
+  return {
+    quality: 'unknown',
+    source: 'Unknown'
+  };
 }
 
 /**
