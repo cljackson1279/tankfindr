@@ -41,19 +41,19 @@ export const metadata: Metadata = {
     siteName: 'TankFindr',
     images: [
       {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'TankFindr - AI Septic Tank Locator'
+        url: '/icon-512.png',
+        width: 512,
+        height: 512,
+        alt: 'TankFindr - Septic Tank Locator'
       }
     ],
     locale: 'en_US'
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'TankFindr - AI Septic Tank Locator',
-    description: 'Find septic tanks in 5 minutes with AI-powered satellite imagery',
-    images: ['/og-image.jpg']
+    card: 'summary',
+    title: 'TankFindr - Septic Tank Locator',
+    description: 'Find septic tanks instantly with GPS-accurate locations. 2.2M+ records across 13 states.',
+    images: ['/icon-512.png']
   },
   robots: {
     index: true,
@@ -88,8 +88,10 @@ export default function RootLayout({
           href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css"
           rel="stylesheet"
         />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+        <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#10B981" />
       </head>
