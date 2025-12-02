@@ -88,10 +88,7 @@ export default function RootLayout({
           href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css"
           rel="stylesheet"
         />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
-        <link rel="icon" href="/icon-512.png" type="image/png" sizes="512x512" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+        {/* Icons auto-detected from app directory: favicon.ico, icon.png, apple-icon.png */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#10B981" />
       </head>
