@@ -12,11 +12,11 @@ const PLANS = [
   {
     id: 'starter',
     name: 'Starter',
-    price: 99,
-    lookups: 300,
+    price: 79,
+    lookups: 100,
     description: 'Perfect for small septic companies or individual contractors',
     features: [
-      '300 tank lookups per month',
+      '100 tank lookups per month',
       'GPS-accurate locations',
       'Job history tracking',
       'Basic reporting',
@@ -29,11 +29,11 @@ const PLANS = [
   {
     id: 'pro',
     name: 'Pro',
-    price: 249,
-    lookups: 1500,
+    price: 159,
+    lookups: 300,
     description: 'For growing septic businesses with multiple technicians',
     features: [
-      '1,500 tank lookups per month',
+      '300 tank lookups per month',
       'Everything in Starter, plus:',
       'Priority support',
       'Advanced analytics',
@@ -45,7 +45,7 @@ const PLANS = [
   {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 599,
+    price: 279,
     lookups: -1,
     description: 'For large septic companies with high-volume needs',
     features: [

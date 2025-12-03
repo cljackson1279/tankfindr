@@ -25,7 +25,7 @@ export default function TermsPage() {
           <ul className="list-disc list-inside text-gray-700 space-y-2">
             <li><strong>Free Widget:</strong> Basic septic system classification checks</li>
             <li><strong>Property Reports:</strong> Detailed one-time reports with GPS coordinates and system information ($19)</li>
-            <li><strong>Inspector Pro:</strong> Unlimited septic system reports for home inspectors ($79/month)</li>
+            <li><strong>Inspector Pro:</strong> Unlimited septic system reports for home inspectors ($69/month)</li>
             <li><strong>TankFindr Pro Subscriptions:</strong> Recurring access for septic professionals with job history tracking (Starter, Pro, Enterprise tiers)</li>
             <li><strong>Coverage Information:</strong> Transparency about data availability by county and state</li>
           </ul>
@@ -62,10 +62,10 @@ export default function TermsPage() {
           <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Subscription Tiers</h3>
           <p className="text-gray-700 mb-4">TankFindr offers the following subscription plans:</p>
           <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
-            <li><strong>Inspector Pro ($79/month):</strong> Unlimited septic system reports for home inspectors</li>
-            <li><strong>TankFindr Pro - Starter ($99/month):</strong> 300 lookups per month</li>
-            <li><strong>TankFindr Pro - Pro ($249/month):</strong> 1,500 lookups per month</li>
-            <li><strong>TankFindr Pro - Enterprise ($599/month):</strong> Unlimited lookups (subject to fair use policy)</li>
+            <li><strong>Inspector Pro ($69/month):</strong> Unlimited septic system reports for home inspectors</li>
+            <li><strong>TankFindr Pro - Starter ($79/month):</strong> 100 lookups per month</li>
+            <li><strong>TankFindr Pro - Pro ($159/month):</strong> 300 lookups per month</li>
+            <li><strong>TankFindr Pro - Enterprise ($279/month):</strong> Unlimited lookups (subject to fair use policy)</li>
           </ul>
 
           <h3 className="text-xl font-semibold text-gray-900 mb-3">Billing and Payment</h3>

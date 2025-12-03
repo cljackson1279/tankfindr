@@ -175,7 +175,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-center text-sm text-gray-600 mt-4">
-              From $99/month
+              From $79/month
             </p>
           </Card>
 
@@ -222,7 +222,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-center text-sm text-gray-600 mt-4">
-              $79/month • Unlimited reports
+              $69/month • Unlimited reports
             </p>
           </Card>
 

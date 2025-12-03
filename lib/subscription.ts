@@ -13,21 +13,21 @@ export interface SubscriptionStatus {
 export const SUBSCRIPTION_TIERS = {
   starter: {
     name: 'Starter',
-    price: 99,
-    lookups: 300,
+    price: 79,
+    lookups: 100,
     maxUsers: 1,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_STARTER,
   },
   pro: {
     name: 'Pro',
-    price: 249,
-    lookups: 1500,
+    price: 159,
+    lookups: 300,
     maxUsers: 5,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_PRO,
   },
   enterprise: {
     name: 'Enterprise',
-    price: 599,
+    price: 279,
     lookups: -1, // Unlimited
     maxUsers: 10,
     stripeProductId: process.env.NEXT_PUBLIC_STRIPE_PRODUCT_ENTERPRISE,
