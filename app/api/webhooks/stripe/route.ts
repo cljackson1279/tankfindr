@@ -230,8 +230,8 @@ async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
     const tier = user.subscription_tier
     let lookupsRemaining = 0
     
-    if (tier === 'starter') lookupsRemaining = 300
-    else if (tier === 'pro') lookupsRemaining = 1500
+    if (tier === 'starter') lookupsRemaining = 100
+    else if (tier === 'pro') lookupsRemaining = 300
     else if (tier === 'enterprise' || tier === 'inspector') lookupsRemaining = -1 // Unlimited
     
     await supabaseAdmin
