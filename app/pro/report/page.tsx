@@ -217,6 +217,25 @@ function ProReportContent() {
             New Lookup
           </Button>
         </div>
+
+        {/* Data Quality Feedback */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Is this information incorrect?</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Help us improve TankFindr's data quality by reporting inaccuracies. Your feedback helps us maintain the most accurate septic system database.
+          </p>
+          <Button
+            onClick={() => {
+              const subject = encodeURIComponent(`Data Correction: ${report?.address}`);
+              const body = encodeURIComponent(`Property Address: ${report?.address}\n\nCurrent Classification: ${report?.classification}\nCurrent Confidence: ${report?.confidence}\n\nWhat's incorrect:\n[Please describe the issue]\n\nCorrect information:\n[Please provide the correct information]\n\nEvidence (optional):\n[e.g., MLS listing, pump receipt, county permit number]`);
+              window.open(`mailto:support@tankfindr.com?subject=${subject}&body=${body}`, '_blank');
+            }}
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
+            📝 Report Incorrect Data
+          </Button>
+        </div>
       </div>
     </div>
   )

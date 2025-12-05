@@ -252,9 +252,23 @@ function classifySepticStatus(
 ): { classification: SepticContext['classification']; confidence: SepticContext['confidence'] } {
   if (features.length === 0) {
     // No septic tanks found within search radius
-    // If we have coverage data, this likely means sewer system
     if (sources.length > 0) {
-      return { classification: 'sewer', confidence: 'high' };
+      // We have coverage but no records found
+      // Could be sewer OR could be old/missing septic records
+      // Be cautious: false negatives (missing septic) are worse than false positives
+      
+      // Check data quality of the source
+      const source = sources[0];
+      const hasGoodCoverage = source.record_count && source.record_count > 500;
+      
+      if (hasGoodCoverage) {
+        // High quality data with many records, more likely sewer
+        // But still not "high" confidence due to potential gaps in old records
+        return { classification: 'likely_sewer', confidence: 'medium' };
+      } else {
+        // Lower quality data or few records, can't be sure
+        return { classification: 'unknown', confidence: 'low' };
+      }
     }
     // No coverage data - truly unknown
     return { classification: 'unknown', confidence: 'low' };

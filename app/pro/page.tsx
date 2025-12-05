@@ -183,9 +183,10 @@ export default function ProDashboard() {
           distance: data.distance?.toString() || '0',
         })
         router.push(`/pro/report?${reportParams.toString()}`)
-      } else if (data.classification === 'sewer') {
-        // Property is on sewer
-        alert(`🚰 Municipal Sewer Connection\n\nThis property appears to be connected to municipal sewer.\n\nNo septic system records were found in the county database, which typically indicates sewer service availability.\n\nClassification: Sewer\nConfidence: ${data.confidence}`);
+      } else if (data.classification === 'sewer' || data.classification === 'likely_sewer') {
+        // Property is on sewer or likely sewer
+        const isSewer = data.classification === 'sewer';
+        alert(`🚰 ${isSewer ? 'Municipal Sewer Connection' : 'Likely Municipal Sewer'}\n\nThis property appears to be connected to municipal sewer.\n\nNo septic system records were found in the county database, which typically indicates sewer service availability.\n\n⚠️ DATA LIMITATION: Our records may not include older septic systems (pre-1980) or systems without digital permits. Always verify with the county health department before excavation.\n\nClassification: ${data.classification.replace('_', ' ')}\nConfidence: ${data.confidence}`);
       } else if (data.classification === 'septic' || data.classification === 'likely_septic') {
         // Septic but no exact coordinates
         alert(`✅ Septic System Detected\n\nThis property is classified as having a septic system, but exact tank coordinates are not available.\n\nClassification: ${data.classification.replace('_', ' ')}\nConfidence: ${data.confidence}\n\nConsider a professional inspection for exact location.`);
