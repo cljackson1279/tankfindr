@@ -2,9 +2,12 @@
 User-agent: *
 Allow: /
 
-# Disallow admin and API routes
-Disallow: /api/
-Disallow: /admin/
-
 # Sitemap location
 Sitemap: https://tankfindr.com/sitemap.xml
+
+# Disallow private pages
+Disallow: /api/
+Disallow: /auth/
+Disallow: /account/
+Disallow: /pro/
+Disallow: /admin/

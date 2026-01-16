@@ -101,14 +101,16 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Most Comprehensive Septic Database<br />
+          Septic Tank Locator<br />
           <span className="text-green-600">
-            Verified Permits + Statewide Coverage
+            Find Your Septic Tank Instantly
           </span>
         </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-4xl mx-auto">
-          TankFindr provides transparent septic system data for contractors, inspectors, realtors, and homebuyers. 
-          Verified permit records where available, estimated inventory for comprehensive coverage — all clearly labeled so you know exactly what you're getting.
+        <p className="text-xl text-gray-600 mb-4 max-w-4xl mx-auto">
+          Looking for a <strong>septic tank locator</strong>? TankFindr is the #1 septic tank finder tool with 2.3M+ verified septic system locations across 12 states. 
+        </p>
+        <p className="text-lg text-gray-600 mb-8 max-w-4xl mx-auto">
+          Whether you're a contractor, home inspector, or homeowner asking <strong>"where is my septic tank?"</strong>, we provide instant GPS coordinates from government permit records. Find your septic tank location in seconds with transparent data quality indicators.
         </p>
         <div className="flex items-center justify-center gap-8 text-sm text-gray-600 mb-12">
           <div className="flex items-center gap-2">

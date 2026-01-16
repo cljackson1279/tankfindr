@@ -7,16 +7,18 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'TankFindr - Find Septic Tanks Instantly with GPS-Accurate Locations',
+    default: 'Septic Tank Locator | Find Your Septic Tank Instantly - TankFindr',
     template: '%s | TankFindr',
   },
-  description: 'Locate septic tanks 10x faster with TankFindr. Access 2.2M+ verified and estimated septic tank locations from government records across 13 states. Perfect for septic companies, home inspectors, and homeowners. Does my house have a septic tank or sewer? Find out instantly.',
+  description: '#1 Septic Tank Locator - Find your septic tank instantly with GPS coordinates. 2.3M+ verified records across 12 states. Perfect for contractors, inspectors & homeowners. Where is my septic tank? Find out in seconds.',
   keywords: [
+    'septic tank locator',
     'septic tank location',
     'find septic tank',
     'septic system',
     'septic tank finder',
     'where is my septic tank',
+    'locate septic tank',
     'septic tank GPS',
     'septic tank map',
     'does my house have a septic tank',
@@ -34,8 +36,8 @@ export const metadata: Metadata = {
   publisher: 'TankFindr',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   openGraph: {
-    title: 'TankFindr - Find Septic Tanks Instantly',
-    description: 'Locate septic tanks 10x faster with GPS-accurate locations from government records. 2.2M+ tanks mapped across 13 states including Florida, California, Virginia, and more.',
+    title: 'Septic Tank Locator | Find Your Septic Tank Instantly',
+    description: '#1 Septic Tank Locator - Find your septic tank with GPS coordinates. 2.3M+ verified records across 12 states. Where is my septic tank? Find out instantly.',
     type: 'website',
     url: 'https://tankfindr.com',
     siteName: 'TankFindr',
