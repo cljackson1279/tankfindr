@@ -32,7 +32,7 @@ export interface SepticFeature {
 
 export interface SepticContext {
   isCovered: boolean;
-  classification: 'septic' | 'sewer' | 'likely_septic' | 'unknown';
+  classification: 'septic' | 'sewer' | 'likely_septic' | 'likely_sewer' | 'unknown';
   confidence: 'high' | 'medium' | 'low';
   coverageSources: SepticSource[];
   nearestFeatures: SepticFeature[];
