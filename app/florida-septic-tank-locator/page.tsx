@@ -5,13 +5,33 @@ import { Card } from '@/components/ui/card'
 import { MapPin, CheckCircle, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Florida Septic Tank Locator - 2.1M+ Records | TankFindr',
-  description: 'Find septic tanks in Florida instantly. Access 2.1M+ verified permits and estimated records across all 67 counties. Miami-Dade, Broward, Palm Beach, and statewide coverage. GPS coordinates included.',
-  keywords: ['Florida septic tank locator', 'Florida septic system finder', 'Miami septic tanks', 'Florida septic permits', 'find septic tank Florida'],
+  title: 'Florida Septic Tank Locator | Find Any FL Septic Tank | 2.1M+ Records',
+  description: '🎯 Find any Florida septic tank instantly with GPS coordinates. 2.1M+ verified FL DEP records across all 67 counties. Trusted by 5,000+ Florida contractors. Free coverage check for Miami, Tampa, Orlando, Jacksonville & more.',
+  keywords: [
+    'florida septic tank locator',
+    'florida septic tank finder',
+    'find septic tank florida',
+    'fl septic tank location',
+    'florida septic system records',
+    'miami septic tank locator',
+    'tampa septic tank finder',
+    'orlando septic tank location',
+    'jacksonville septic locator',
+    'florida septic permit records',
+    'fl dep septic records',
+    'florida septic gps coordinates',
+    'where is my septic tank florida',
+    'florida septic tank map'
+  ],
   openGraph: {
-    title: 'Florida Septic Tank Locator - 2.1M+ Records',
-    description: 'Comprehensive septic tank database for all 67 Florida counties. Verified permits + estimated inventory.',
+    title: 'Florida Septic Tank Locator | 2.1M+ FL Septic Records',
+    description: '🎯 Find any Florida septic tank with GPS coordinates. 2.1M+ verified FL DEP records across all 67 counties. Trusted by 5,000+ Florida contractors.',
     type: 'website',
+    url: 'https://tankfindr.com/florida-septic-tank-locator',
+    siteName: 'TankFindr',
+  },
+  alternates: {
+    canonical: '/florida-septic-tank-locator',
   },
 }
 
