@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { CheckCircle, MapPin, FileText, Search, User, Tool, ArrowRight } from 'lucide-react'
+import { CheckCircle, MapPin, FileText, Search, User, Wrench, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'How to Find Your Septic Tank: Complete 2025 Guide | TankFindr',
@@ -70,7 +70,7 @@ export default function BlogPost() {
 
           <Card className="my-8 p-6 bg-blue-50 border-blue-200">
             <div className="flex items-start gap-4">
-              <FileText className="h-8 w-8 text-blue-600" />
+              <Wrench className="h-8 w-8 text-blue-600" />
               <div>
                 <h3 className="font-bold text-lg">Pro Tip: Use an Online Locator</h3>
                 <p className="text-gray-700">
