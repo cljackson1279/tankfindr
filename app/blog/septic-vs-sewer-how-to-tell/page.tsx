@@ -43,7 +43,7 @@ export default function BlogPost() {
               Whether you're buying a new home or just curious about your current one, knowing your wastewater system is essential. This guide will walk you through five simple methods to determine if you're on a private septic system or a public sewer line.
             </p>
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-              <span>Published: Feb 6, 2025</span>
+              <span>Published: Oct 22, 2025</span>
               <span>|</span>
               <span>8 min read</span>
             </div>

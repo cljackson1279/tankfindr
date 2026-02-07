@@ -42,7 +42,7 @@ export default function BlogPost() {
               Move beyond probing and guesswork. This guide covers how professionals leverage GPS coordinates for fast, accurate septic tank location, improving efficiency and customer satisfaction.
             </p>
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-              <span>Published: Feb 6, 2025</span>
+              <span>Published: Jan 17, 2026</span>
               <span>|</span>
               <span>7 min read</span>
             </div>

@@ -43,7 +43,7 @@ export default function BlogPost() {
               Buying a home with a septic system? Don't get stuck with a failing system that costs thousands to replace. This checklist covers everything you need to know about a pre-purchase septic inspection.
             </p>
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-              <span>Published: Feb 6, 2025</span>
+              <span>Published: Nov 8, 2025</span>
               <span>|</span>
               <span>10 min read</span>
             </div>

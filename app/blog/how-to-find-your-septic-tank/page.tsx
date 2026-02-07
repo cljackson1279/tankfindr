@@ -45,7 +45,7 @@ export default function BlogPost() {
               Learn 7 proven methods to locate your septic tank, from property records to professional tools. Includes step-by-step instructions, cost comparisons, and expert tips for homeowners.
             </p>
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-              <span>Published: Feb 6, 2025</span>
+              <span>Published: Sep 15, 2025</span>
               <span>|</span>
               <span>12 min read</span>
             </div>

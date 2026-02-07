@@ -42,7 +42,7 @@ export default function BlogPost() {
               Florida's unique environment means strict rules for septic systems. This guide simplifies the latest state and county regulations, including new laws impacting inspections, maintenance, and system types.
             </p>
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-500">
-              <span>Published: Feb 6, 2025</span>
+              <span>Published: Dec 3, 2025</span>
               <span>|</span>
               <span>9 min read</span>
             </div>
