@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CheckCircle, MapPin, FileText, Search, User, Wrench, ArrowRight } from 'lucide-react'
+import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'How to Find Your Septic Tank: Complete 2025 Guide | TankFindr',
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="bg-white">
+      <SiteHeader />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

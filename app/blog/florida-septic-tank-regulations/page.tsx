@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { Scale, Map, FileText, Waves } from 'lucide-react'
+import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'Florida Septic Tank Regulations: 2025 Homeowner Guide | TankFindr',
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="bg-white">
+      <SiteHeader />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

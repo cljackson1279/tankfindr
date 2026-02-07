@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CheckSquare, AlertTriangle, FileText, DollarSign } from 'lucide-react'
+import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'Septic Tank Inspection Checklist for Home Buyers | TankFindr',
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
 export default function BlogPost() {
   return (
     <div className="bg-white">
+      <SiteHeader />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">
