@@ -62,6 +62,9 @@ export default function HomePage() {
             <Link href="/inspector-pro" className="text-purple-600 hover:text-purple-900 font-medium">
               For Inspectors
             </Link>
+            <Link href="/blog" className="text-gray-600 hover:text-gray-900">
+              Blog
+            </Link>
             <Link href="/faq" className="text-gray-600 hover:text-gray-900">
               FAQ
             </Link>
