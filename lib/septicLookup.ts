@@ -55,21 +55,18 @@ export interface SepticContext {
 const FDEP_SEPTIC_API = 'https://ca.dep.state.fl.us/arcgis/rest/services/OpenData/SEPTIC_SYSTEMS/MapServer/0/query';
 
 /**
- * Query Florida DEP ArcGIS API for septic data (fallback for uncovered areas)
- * Covers all 67 Florida counties with KnownSeptic / LikelySeptic classifications
+ * Helper: fetch FDEP features within a bounding box, with optional WHERE clause.
  */
-async function queryFDEPApi(lat: number, lng: number, radiusMeters: number = 300): Promise<SepticFeature[]> {
+async function fetchFDEPInRadius(
+  lat: number,
+  lng: number,
+  radiusM: number,
+  whereClause?: string
+): Promise<any[]> {
   try {
-    // Use bounding box (envelope) query - much faster than point+distance on FDEP server
-    // Convert radius in meters to degrees (~111320 meters per degree latitude)
-    const radiusDeg = (radiusMeters + 500) / 111320; // add 500m buffer
-    const minX = lng - radiusDeg;
-    const minY = lat - radiusDeg;
-    const maxX = lng + radiusDeg;
-    const maxY = lat + radiusDeg;
-
+    const delta = radiusM / 111320;
     const params = new URLSearchParams({
-      geometry: `${minX},${minY},${maxX},${maxY}`,
+      geometry: `${lng - delta},${lat - delta},${lng + delta},${lat + delta}`,
       geometryType: 'esriGeometryEnvelope',
       inSR: '4326',
       spatialRel: 'esriSpatialRelIntersects',
@@ -79,56 +76,97 @@ async function queryFDEPApi(lat: number, lng: number, radiusMeters: number = 300
       resultRecordCount: '10',
       f: 'json',
     });
-
+    if (whereClause) params.set('where', whereClause);
+    const controller = new AbortController();
+    setTimeout(() => controller.abort(), 12000);
     const response = await fetch(`${FDEP_SEPTIC_API}?${params}`, {
       headers: { 'Accept': 'application/json' },
-      signal: (() => { const c = new AbortController(); setTimeout(() => c.abort(), 12000); return c.signal; })(),
+      signal: controller.signal,
     });
-
     if (!response.ok) return [];
-
     const data = await response.json();
-    const features = data?.features || [];
-
-    if (features.length === 0) return [];
-
-    // Convert FDEP features to SepticFeature format
-    return features.map((f: any, i: number) => {
-      const attrs = f.attributes || {};
-      const geom = f.geometry || {};
-      const featureLat = geom.y || lat;
-      const featureLng = geom.x || lng;
-
-      // Calculate distance from search point
-      const dlat = (featureLat - lat) * 111320;
-      const dlng = (featureLng - lng) * 111320 * Math.cos(lat * Math.PI / 180);
-      const distance = Math.sqrt(dlat * dlat + dlng * dlng);
-
-      return {
-        id: `fdep-${attrs.PARCELNO || attrs.ALT_KEY || i}`,
-        source_id: 'fdep-statewide',
-        county: attrs.PHY_CITY?.replace(' FL', '').trim() || 'Florida',
-        state: 'FL',
-        parcel_id: attrs.PARCELNO || null,
-        address: attrs.PHY_ADD1 || null,
-        lat: featureLat,
-        lng: featureLng,
-        distance_meters: Math.round(distance),
-        attributes: {
-          ...attrs,
-          // Normalize WW field for classification
-          WW: attrs.WW,
-          // Map FDEP fields to standard fields
-          data_source_type: 'fdep_statewide',
-        },
-        data_source: `FDEP Statewide - ${attrs.WW_SRC_NAM || 'Florida DEP'}`,
-      };
-    }).sort((a: SepticFeature, b: SepticFeature) => a.distance_meters - b.distance_meters);
-
-  } catch (error) {
-    console.error('FDEP API error:', error);
+    return data?.features || [];
+  } catch {
     return [];
   }
+}
+
+/**
+ * Query Florida DEP ArcGIS API for septic data (fallback for uncovered areas).
+ *
+ * The FDEP database contains ONLY septic/OSTDS records — sewer properties are absent.
+ * Strategy:
+ *   1. Address match (street number + city within 2km): if found within 500m → septic
+ *   2. Area coverage check (1.5km): if FDEP has records nearby but no address match → sewer
+ *   3. No FDEP data at all → unknown
+ */
+async function queryFDEPApi(
+  lat: number,
+  lng: number,
+  address?: string
+): Promise<{
+  features: SepticFeature[];
+  areaHasData: boolean;
+  propertyHasRecord: boolean;
+}> {
+  const calcDistM = (fLat: number, fLng: number) => {
+    const dlat = (fLat - lat) * 111320;
+    const dlng = (fLng - lng) * 111320 * Math.cos(lat * Math.PI / 180);
+    return Math.sqrt(dlat * dlat + dlng * dlng);
+  };
+
+  // Step 1: Address-matched search
+  if (address) {
+    const streetNumMatch = address.trim().match(/^(\d+)/);
+    const streetNum = streetNumMatch ? streetNumMatch[1] : null;
+    const parts = address.split(',').map((p: string) => p.trim());
+    const city = parts.length >= 3
+      ? parts[parts.length - 2].toUpperCase().replace(/\s+FL\s*\d*$/, '').trim().substring(0, 12)
+      : null;
+
+    if (streetNum && city) {
+      const safeCity = city.replace(/'/g, "''");
+      const whereClause = `PHY_ADD1 LIKE '${streetNum}%' AND PHY_CITY LIKE '%${safeCity}%'`;
+      const matchRaw = await fetchFDEPInRadius(lat, lng, 2000, whereClause);
+
+      if (matchRaw.length > 0) {
+        // Find closest match
+        let best = matchRaw[0];
+        let bestDist = Infinity;
+        for (const f of matchRaw) {
+          const fLat = f.geometry?.y ?? lat;
+          const fLng = f.geometry?.x ?? lng;
+          const d = calcDistM(fLat, fLng);
+          if (d < bestDist) { bestDist = d; best = f; }
+        }
+
+        if (bestDist <= 500) {
+          const attrs = best.attributes || {};
+          const geom  = best.geometry  || {};
+          const fLat  = geom.y ?? lat;
+          const fLng  = geom.x ?? lng;
+          const feature: SepticFeature = {
+            id: `fdep-${attrs.PARCELNO || attrs.ALT_KEY || 'addr'}`,
+            source_id: 'fdep-statewide',
+            county: attrs.PHY_CITY?.replace(/ FL$/i, '').trim() || 'Florida',
+            state: 'FL',
+            parcel_id: attrs.PARCELNO || null,
+            address: attrs.PHY_ADD1 || null,
+            lat: fLat,
+            lng: fLng,
+            distance_meters: Math.round(bestDist),
+            attributes: { ...attrs, WW: attrs.WW, data_source_type: 'fdep_statewide' },
+            data_source: `FDEP Statewide - ${attrs.WW_SRC_NAM || 'Florida DEP'}`,
+          };
+          return { features: [feature], areaHasData: true, propertyHasRecord: true };
+        }
+      }
+    }
+  }
+
+  // Step 2: Area coverage check — does FDEP have any data within 1.5km?
+  const areaRaw = await fetchFDEPInRadius(lat, lng, 1500);
+  return { features: [], areaHasData: areaRaw.length > 0, propertyHasRecord: false };
 }
 
 /**
@@ -138,7 +176,8 @@ async function queryFDEPApi(lat: number, lng: number, radiusMeters: number = 300
 export async function getSepticContextForLocation(
   lat: number,
   lng: number,
-  radiusMeters: number = 200
+  radiusMeters: number = 200,
+  address?: string
 ): Promise<SepticContext> {
   try {
     // 1. Check coverage - which sources cover this point?
@@ -147,33 +186,30 @@ export async function getSepticContextForLocation(
     if (coverageSources.length === 0) {
       // No local database coverage - try FDEP statewide API as fallback
       console.log('FDEP_FALLBACK', { lat, lng, reason: 'No local coverage' });
-      const fdepFeatures = await queryFDEPApi(lat, lng, radiusMeters);
+      const fdepResult = await queryFDEPApi(lat, lng, address);
 
-      if (fdepFeatures.length > 0) {
-        // FDEP has data - classify based on WW field
-        const nearestFdep = fdepFeatures[0];
+      if (fdepResult.propertyHasRecord && fdepResult.features.length > 0) {
+        // A septic record was found ON this specific parcel
+        const nearestFdep = fdepResult.features[0];
         const wwType = nearestFdep.attributes?.WW || '';
         let classification: SepticContext['classification'] = 'unknown';
         let confidence: SepticContext['confidence'] = 'medium';
 
         if (wwType === 'KnownSeptic') {
-          classification = nearestFdep.distance_meters < 150 ? 'septic' : 'likely_septic';
-          confidence = nearestFdep.distance_meters < 50 ? 'high' : 'medium';
-        } else if (wwType === 'LikelySeptic') {
+          classification = 'septic';
+          confidence = 'high';
+        } else if (wwType === 'LikelySeptic' || wwType === 'SWLSeptic') {
           classification = 'likely_septic';
           confidence = 'medium';
-        } else if (wwType === 'KnownSewer' || wwType === 'Sewer') {
-          classification = 'likely_sewer';
-          confidence = 'medium';
         } else {
-          classification = 'unknown';
+          classification = 'likely_septic';
           confidence = 'low';
         }
 
         const tankPoint = { lat: nearestFdep.lat, lng: nearestFdep.lng };
-        const systemInfo = extractSystemInfo(fdepFeatures);
+        const systemInfo = extractSystemInfo(fdepResult.features);
 
-        console.log('FDEP_RESULT', { classification, confidence, distance: nearestFdep.distance_meters, wwType });
+        console.log('FDEP_RESULT_SEPTIC', { classification, confidence, distance: nearestFdep.distance_meters, wwType });
 
         return {
           isCovered: true,
@@ -186,19 +222,42 @@ export async function getSepticContextForLocation(
             county: null,
             quality: 'medium',
             geometry_type: 'POINT',
-            record_count: fdepFeatures.length,
+            record_count: fdepResult.features.length,
           }],
-          nearestFeatures: fdepFeatures,
+          nearestFeatures: fdepResult.features,
           tankPoint,
           parcelGeom: null,
           systemInfo,
-          riskLevel: calculateRiskLevel(systemInfo, fdepFeatures),
+          riskLevel: calculateRiskLevel(systemInfo, fdepResult.features),
           dataQuality: 'estimated_inventory',
           qualitySource: nearestFdep.attributes?.WW_SRC_NAM || 'Florida DEP Statewide',
         };
       }
 
-      // FDEP also has no data - truly unknown
+      if (fdepResult.areaHasData) {
+        // FDEP has data for this area but no record for this property → on sewer
+        console.log('FDEP_RESULT_SEWER', { lat, lng });
+        return {
+          isCovered: true,
+          classification: 'likely_sewer',
+          confidence: 'medium',
+          coverageSources: [{
+            id: 'fdep-statewide',
+            name: 'Florida DEP Statewide OSTDS Database',
+            state: 'FL',
+            county: null,
+            quality: 'medium',
+            geometry_type: 'POINT',
+            record_count: 0,
+          }],
+          nearestFeatures: [],
+          tankPoint: null,
+          parcelGeom: null,
+          systemInfo: null,
+        };
+      }
+
+      // FDEP has no data for this area at all - truly unknown
       return {
         isCovered: false,
         classification: 'unknown',
