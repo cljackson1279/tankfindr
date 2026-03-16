@@ -60,22 +60,29 @@ const FDEP_SEPTIC_API = 'https://ca.dep.state.fl.us/arcgis/rest/services/OpenDat
  */
 async function queryFDEPApi(lat: number, lng: number, radiusMeters: number = 300): Promise<SepticFeature[]> {
   try {
+    // Use bounding box (envelope) query - much faster than point+distance on FDEP server
+    // Convert radius in meters to degrees (~111320 meters per degree latitude)
+    const radiusDeg = (radiusMeters + 500) / 111320; // add 500m buffer
+    const minX = lng - radiusDeg;
+    const minY = lat - radiusDeg;
+    const maxX = lng + radiusDeg;
+    const maxY = lat + radiusDeg;
+
     const params = new URLSearchParams({
-      geometry: `${lng},${lat}`,
-      geometryType: 'esriGeometryPoint',
+      geometry: `${minX},${minY},${maxX},${maxY}`,
+      geometryType: 'esriGeometryEnvelope',
       inSR: '4326',
       spatialRel: 'esriSpatialRelIntersects',
-      distance: String(radiusMeters),
-      units: 'esriSRUnit_Meter',
       outFields: 'PHY_ADD1,PHY_CITY,PHY_ZIPCD,WW,WW_UPD,WW_SRC_NAM,PARCELNO,LANDUSE,ACRES,CO_NO,ALT_KEY',
       returnGeometry: 'true',
       outSR: '4326',
+      resultRecordCount: '10',
       f: 'json',
     });
 
     const response = await fetch(`${FDEP_SEPTIC_API}?${params}`, {
       headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(8000), // 8 second timeout
+      signal: AbortSignal.timeout(12000), // 12 second timeout
     });
 
     if (!response.ok) return [];
