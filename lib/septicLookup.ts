@@ -252,32 +252,13 @@ export async function getSepticContextForLocation(
 
 /**
  * Check which data sources cover this location
+ * IMPORTANT: Must use geographic proximity - NOT just checking if table has any rows.
+ * Otherwise all addresses worldwide would appear "covered" by Broward County data.
  */
 async function checkCoverage(lat: number, lng: number): Promise<SepticSource[]> {
   try {
-    // Query septic_sources table for coverage
-    const { data, error } = await supabase
-      .from('septic_sources')
-      .select('*');
-
-    if (error) {
-      console.error('Error checking coverage:', error);
-    }
-
-    // If septic_sources table has data, use it
-    if (data && data.length > 0) {
-      console.log('COVERAGE_FROM_SOURCES', { sourcesCount: data.length });
-      return data;
-    }
-
-    // FALLBACK: If septic_sources is empty, check if we have ANY septic_tanks data nearby
-    // This handles the case where data is imported but metadata table not populated yet
-    console.log('COVERAGE_FALLBACK', {
-      message: 'septic_sources empty, checking for nearby tanks',
-      lat,
-      lng
-    });
-
+    // Check if we have ANY septic_tanks data within 5km of this point
+    // This is the REAL coverage check - geographic, not just table existence
     const { data: nearbyTanks, error: tanksError } = await supabase.rpc('find_nearest_septic_tank', {
       search_lat: lat,
       search_lng: lng,
@@ -293,10 +274,8 @@ async function checkCoverage(lat: number, lng: number): Promise<SepticSource[]> 
         hasServiceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
         supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL
       });
-      // If RPC function doesn't exist, user needs to apply migration
       if (tanksError.code === 'PGRST202' || tanksError.message?.includes('find_nearest_septic_tank') || tanksError.message?.includes('does not exist')) {
         console.error('⚠️  CRITICAL: find_nearest_septic_tank RPC function not found!');
-        console.error('👉 Apply SQL migration from MIGRATION_INSTRUCTIONS.md');
       }
       return [];
     }
