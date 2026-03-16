@@ -82,7 +82,7 @@ async function queryFDEPApi(lat: number, lng: number, radiusMeters: number = 300
 
     const response = await fetch(`${FDEP_SEPTIC_API}?${params}`, {
       headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(12000), // 12 second timeout
+      signal: (() => { const c = new AbortController(); setTimeout(() => c.abort(), 12000); return c.signal; })(),
     });
 
     if (!response.ok) return [];
