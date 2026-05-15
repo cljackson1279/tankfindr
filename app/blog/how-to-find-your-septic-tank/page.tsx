@@ -6,7 +6,7 @@ import { CheckCircle, MapPin, FileText, Search, User, Wrench, ArrowRight } from 
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'How to Find Your Septic Tank: Complete 2025 Guide | TankFindr',
+  title: 'How to Find Your Septic Tank: Complete 2025 Guide',
   description: 'Learn 7 proven methods to locate your septic tank, from property records to professional tools. Includes step-by-step instructions, cost comparisons, and expert tips for homeowners.',
   keywords: [
     'how to find septic tank',

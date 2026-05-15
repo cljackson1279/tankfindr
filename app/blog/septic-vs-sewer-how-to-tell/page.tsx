@@ -6,7 +6,7 @@ import { CheckCircle, HelpCircle, FileText, Eye, Droplet } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'Septic vs Sewer: 5 Ways to Tell What Your House Has | TankFindr',
+  title: 'Septic vs Sewer: 5 Ways to Tell What Your House Has',
   description: 'Is your home on septic or sewer? Learn 5 easy methods to find out, from checking your water bill to inspecting your property. Essential guide for homeowners and buyers.',
   keywords: [
     'septic vs sewer',

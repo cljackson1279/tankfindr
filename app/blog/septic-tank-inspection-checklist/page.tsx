@@ -6,7 +6,7 @@ import { CheckSquare, AlertTriangle, FileText, DollarSign } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'Septic Tank Inspection Checklist for Home Buyers | TankFindr',
+  title: 'Septic Tank Inspection Checklist for Home Buyers',
   description: 'A complete pre-purchase septic inspection guide. Learn what inspectors check, red flags to watch for, and how to negotiate repairs. Save thousands on your home purchase.',
   keywords: [
     'septic tank inspection checklist',

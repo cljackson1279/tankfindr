@@ -6,7 +6,7 @@ import { Calendar, Clock, ArrowRight } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'Septic Tank Blog | Expert Guides & Tips | TankFindr',
+  title: 'Septic Tank Blog | Expert Guides & Tips',
   description: '📚 Expert guides on finding septic tanks, maintenance tips, and property inspection advice. Learn from industry professionals. Free resources for homeowners, contractors, and inspectors.',
   keywords: [
     'septic tank blog',

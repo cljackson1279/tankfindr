@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card'
 import { MapPin, CheckCircle, FileText } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Florida Septic Tank Locator | Find Any FL Septic Tank | 2.1M+ Records',
+  title: 'Florida Septic Tank Locator | 2.1M+ FL Septic Records',
   description: '🎯 Find any Florida septic tank instantly with GPS coordinates. 2.1M+ verified FL DEP records across all 67 counties. Trusted by 5,000+ Florida contractors. Free coverage check for Miami, Tampa, Orlando, Jacksonville & more.',
   keywords: [
     'florida septic tank locator',

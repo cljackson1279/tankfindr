@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: {
     default: 'Septic Tank Locator | Find Your Septic Tank in Seconds | 2.3M+ Records',
-    template: '%s | TankFindr - #1 Septic Tank Locator',
+    template: '%s | TankFindr',
   },
   description: 'Find your septic tank instantly with GPS-accurate locations. Access 2.3M+ verified septic system records across 12 states. Trusted by 10,000+ contractors, inspectors & homeowners. Free coverage check. Where is my septic tank? Find out now.',
   keywords: [
@@ -96,9 +96,6 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'nPQS4z3guOL25_XL2QNBNmpx8gZHmdLYKtqbyij3O2o'
-  },
-  other: {
-    'google-site-verification': 'nPQS4z3guOL25_XL2QNBNmpx8gZHmdLYKtqbyij3O2o',
   }
 }
 
@@ -120,7 +117,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
         {/* Icons auto-detected from app directory: favicon.ico, icon.png, apple-icon.png */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#10B981" />
         
         {/* Additional SEO meta tags */}

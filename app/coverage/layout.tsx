@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Coverage Areas - 13 States, 2.2M+ Septic Records | TankFindr',
+  title: 'Coverage Areas - 13 States, 2.2M+ Septic Records',
   description: 'TankFindr covers 13 states including Florida (2.1M records), California, Virginia, New Mexico, Vermont, and more. Verified permits and estimated inventory data clearly labeled.',
   keywords: ['septic tank database', 'septic records by state', 'Florida septic tanks', 'California septic systems', 'Virginia septic permits'],
   openGraph: {

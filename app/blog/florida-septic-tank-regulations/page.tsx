@@ -5,7 +5,7 @@ import { Scale, Map, FileText, Waves } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'Florida Septic Tank Regulations: 2025 Homeowner Guide | TankFindr',
+  title: 'Florida Septic Tank Regulations: 2025 Homeowner Guide',
   description: 'Navigate Florida\'s complex septic system laws, including new 2023 regulations, permit requirements, and inspection schedules. County-specific rules for Miami-Dade, Broward, and more.',
   keywords: [
     'florida septic tank regulations',

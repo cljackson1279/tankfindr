@@ -5,7 +5,7 @@ import { MapPin, Target, CheckCircle, HardHat } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
-  title: 'Using GPS Coordinates to Locate Septic Tanks | TankFindr',
+  title: 'Using GPS Coordinates to Locate Septic Tanks',
   description: 'A professional guide to GPS-based septic tank location. Learn how contractors use coordinates, accuracy requirements, and how to mark your tank permanently for future access.',
   keywords: [
     'septic tank gps coordinates',
