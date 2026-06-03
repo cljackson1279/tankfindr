@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     description: 'Unlimited septic reports for home inspectors. $79/month. GPS coordinates, tank locations, verified data.',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://tankfindr.com/inspector-pro',
+  },
 }
 
 export default function InspectorProLayout({

@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   publisher: 'TankFindr',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tankfindr.com'),
   alternates: {
-    canonical: '/',
+    canonical: 'https://tankfindr.com',
   },
   openGraph: {
     title: 'Septic Tank Locator | Find Your Septic Tank in Seconds',

@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     description: 'Detailed septic reports with GPS coordinates, tank maps, and permit data. $19 one-time purchase. Instant results.',
     type: 'website',
   },
+  alternates: {
+    canonical: 'https://tankfindr.com/report',
+  },
 }
 
 export default function ReportLayout({
