@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CheckCircle, MapPin, FileText, Search, User, Wrench, ArrowRight } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
+import { ArticleSchema } from '@/components/ArticleSchema'
 
 export const metadata: Metadata = {
   title: 'How to Find Your Septic Tank: Complete 2025 Guide',
@@ -33,6 +34,7 @@ export default function BlogPost() {
   return (
     <div className="bg-white">
       <SiteHeader />
+      <ArticleSchema title={"How to Find Your Septic Tank: Complete 2025 Guide"} description={"Learn 7 proven methods to locate your septic tank, from property records to professional tools. Includes step-by-step instructions, cost comparisons, and expert tips for homeowners."} slug={"how-to-find-your-septic-tank"} datePublished={"2025-09-15"} />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

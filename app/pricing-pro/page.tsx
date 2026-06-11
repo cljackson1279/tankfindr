@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { Check, Zap, TrendingUp, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 const PLANS = [
@@ -64,25 +64,27 @@ const PLANS = [
 
 function PricingProContent() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [loading, setLoading] = useState<string | null>(null)
   const [user, setUser] = useState<any>(null)
-  
+
   useEffect(() => {
     checkAuth()
   }, [])
-  
+
   const checkAuth = async () => {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     setUser(user)
-    
-    // If user just logged in and there's a plan in URL, auto-trigger checkout
-    if (user && searchParams?.get('plan')) {
-      const planId = searchParams.get('plan')
-      if (planId) {
-        handleSubscribe(planId)
-      }
+
+    // If user just logged in and there's a plan in URL, auto-trigger checkout.
+    // Read from window.location instead of useSearchParams() — the hook forced
+    // the whole page (including the <h1>) into a Suspense fallback, so the H1
+    // was missing from the static HTML (an SEO problem on a conversion page).
+    const planId = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('plan')
+      : null
+    if (user && planId) {
+      handleSubscribe(planId)
     }
   }
 
@@ -152,11 +154,11 @@ function PricingProContent() {
         <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-green-600" />
-            <span>2.3M+ Tanks Mapped</span>
+            <span>2.5M+ Tanks Mapped</span>
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-green-600" />
-            <span>12 States Covered</span>
+            <span>20 States Covered</span>
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-green-600" />
@@ -268,16 +270,7 @@ function PricingProContent() {
 }
 
 export default function PricingProPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading pricing...</p>
-        </div>
-      </div>
-    }>
-      <PricingProContent />
-    </Suspense>
-  )
+  // No Suspense needed now that useSearchParams() is gone — the page renders
+  // statically, so the hero <h1> is present in the initial HTML for SEO.
+  return <PricingProContent />
 }

@@ -193,7 +193,7 @@ export default function ProofOnePager({
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div>
-              <div className="font-semibold text-gray-900 text-sm">2.2M+ Florida Records</div>
+              <div className="font-semibold text-gray-900 text-sm">2.3M+ Florida Records</div>
               <div className="text-xs text-gray-600">
                 County permits, DOH data, and parcel records statewide
               </div>

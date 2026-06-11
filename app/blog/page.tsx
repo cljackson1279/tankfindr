@@ -146,7 +146,7 @@ export default function BlogPage() {
             Ready to Find Your Septic Tank?
           </h2>
           <p className="text-xl text-blue-100 mb-6">
-            Access 2.3M+ verified septic tank records instantly
+            Access 2.5M+ septic tank records instantly
           </p>
           <Link href="/pro">
             <Button size="lg" variant="secondary">

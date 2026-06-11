@@ -68,6 +68,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/about`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/sample-report`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.75,
+    },
     
     // Blog - High Priority for SEO
     {
@@ -120,20 +132,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
     },
     
-    // Auth Pages - Medium Priority
-    {
-      url: `${baseUrl}/auth/login`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/auth/sign-up`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    
+    // NOTE: auth pages (/auth/login, /auth/sign-up) intentionally excluded —
+    // they have no crawl value and were diluting the sitemap. They are also
+    // disallowed in robots.ts and carry noindex.
+
     // Legal Pages - Low Priority
     {
       url: `${baseUrl}/privacy`,

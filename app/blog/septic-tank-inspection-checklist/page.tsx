@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CheckSquare, AlertTriangle, FileText, DollarSign } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
+import { ArticleSchema } from '@/components/ArticleSchema'
 
 export const metadata: Metadata = {
   title: 'Septic Tank Inspection Checklist for Home Buyers',
@@ -31,6 +32,7 @@ export default function BlogPost() {
   return (
     <div className="bg-white">
       <SiteHeader />
+      <ArticleSchema title={"Septic Tank Inspection Checklist for Home Buyers"} description={"A complete pre-purchase septic inspection guide. Learn what inspectors check, red flags to watch for, and how to negotiate repairs. Save thousands on your home purchase."} slug={"septic-tank-inspection-checklist"} datePublished={"2025-11-08"} />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

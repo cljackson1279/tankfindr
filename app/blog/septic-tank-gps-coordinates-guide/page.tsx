@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 import { MapPin, Target, CheckCircle, HardHat } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
+import { ArticleSchema } from '@/components/ArticleSchema'
 
 export const metadata: Metadata = {
   title: 'Using GPS Coordinates to Locate Septic Tanks',
@@ -30,6 +31,7 @@ export default function BlogPost() {
   return (
     <div className="bg-white">
       <SiteHeader />
+      <ArticleSchema title={"Using GPS Coordinates to Locate Septic Tanks"} description={"A professional guide to GPS-based septic tank location. Learn how contractors use coordinates, accuracy requirements, and how to mark your tank permanently for future access."} slug={"septic-tank-gps-coordinates-guide"} datePublished={"2026-01-17"} />
       {/* Article Header */}
       <section className="py-12 bg-gray-50">
         <div className="container mx-auto px-4">

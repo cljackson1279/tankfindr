@@ -180,7 +180,7 @@ function ProReportContent() {
             <div>
               <h3 className="font-bold text-blue-900 mb-2">📍 Tank Location Data</h3>
               <p className="text-sm text-blue-800 mb-2">
-                This report shows the GPS coordinates of the septic tank based on county permit records and our database of 2.2+ million septic systems across 13 states.
+                This report shows the GPS coordinates of the septic tank based on county permit records and our database of 2.5+ million septic systems across 20 states.
               </p>
               <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
                 <li>Coordinates are from official county permit records where available</li>
