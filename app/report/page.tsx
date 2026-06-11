@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Lock, Shield, Droplet } from 'lucide-react'
+import { Loader2, MapPin, AlertTriangle, CheckCircle, Lock, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -20,7 +20,9 @@ function ReportPageContent() {
   const [preview, setPreview] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
   const [checkoutLoading, setCheckoutLoading] = useState(false)
-  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
+  // Add-on upsells removed from checkout until the data integrations ship —
+  // "Coming Soon" cards at the point of purchase hurt buyer confidence.
+  const selectedUpsells: string[] = []
   const [isAdmin, setIsAdmin] = useState(false)
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -68,23 +70,6 @@ function ReportPageContent() {
     setSuggestions([])
     setShowSuggestions(false)
   }
-
-  const UPSELLS = [
-    {
-      id: 'environmental',
-      name: 'Environmental Risk Add-On',
-      price: 9,
-      description: 'Flood zones, wetlands, soil type, and environmental hazards',
-      icon: Shield,
-    },
-    {
-      id: 'well',
-      name: 'Well & Groundwater Risk Add-On',
-      price: 29,
-      description: 'Well locations, water table depth, contamination risk, and aquifer data',
-      icon: Droplet,
-    },
-  ]
 
   useEffect(() => {
     if (searchParams?.get('address')) {
@@ -142,22 +127,7 @@ function ReportPageContent() {
     }
   }
 
-  const toggleUpsell = (upsellId: string) => {
-    setSelectedUpsells((prev) =>
-      prev.includes(upsellId)
-        ? prev.filter((id) => id !== upsellId)
-        : [...prev, upsellId]
-    )
-  }
-
-  const calculateTotal = () => {
-    const basePrice = 29
-    const upsellTotal = selectedUpsells.reduce((sum, id) => {
-      const upsell = UPSELLS.find((u) => u.id === id)
-      return sum + (upsell?.price || 0)
-    }, 0)
-    return basePrice + upsellTotal
-  }
+  const calculateTotal = () => 29
 
   const handlePurchase = async () => {
     if (!preview) return
@@ -278,6 +248,13 @@ function ReportPageContent() {
               </div>
             )}
           </Card>
+          <p className="text-sm text-gray-600 mt-4">
+            Not sure what you&apos;ll get?{' '}
+            <Link href="/sample-report" className="text-emerald-700 underline hover:text-emerald-900">
+              See a full sample report
+            </Link>
+            {' '}• $29 • No record found? Automatic full refund
+          </p>
         </div>
 
         {/* Preview Section */}
@@ -365,6 +342,12 @@ function ReportPageContent() {
                   <p className="text-gray-600 mb-4">
                     See exact GPS coordinates, interactive map, system details, and more
                   </p>
+                  <Link
+                    href="/sample-report"
+                    className="text-sm text-emerald-700 underline hover:text-emerald-900"
+                  >
+                    Preview a sample report first →
+                  </Link>
                 </div>
               </div>
               <div className="blur-sm">
@@ -373,39 +356,6 @@ function ReportPageContent() {
                 </div>
               </div>
             </Card>
-
-            {/* Upsells */}
-            <div>
-              <h3 className="text-xl font-bold mb-4">Add More Insights (Optional)</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                {UPSELLS.map((upsell) => {
-                  const Icon = upsell.icon
-                  return (
-                    <Card
-                      key={upsell.id}
-                      className="p-4 bg-gray-50 border-gray-300 opacity-75 cursor-not-allowed"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-gray-300">
-                          <Icon className="w-6 h-6 text-gray-500" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-bold text-gray-700">{upsell.name}</h4>
-                              <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-semibold">Coming Soon</span>
-                            </div>
-                            <span className="font-bold text-gray-400">${upsell.price}</span>
-                          </div>
-                          <p className="text-sm text-gray-500">{upsell.description}</p>
-                          <p className="text-xs text-gray-500 mt-2 italic">We're integrating with government databases to provide this data. Check back soon!</p>
-                        </div>
-                      </div>
-                    </Card>
-                  )
-                })}
-              </div>
-            </div>
 
             {/* Purchase CTA */}
             <Card className="p-8 bg-gradient-to-r from-green-600 to-blue-600 text-white">
