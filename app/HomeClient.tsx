@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import SewerOrSepticWidget from '@/components/SewerOrSepticWidget'
 import { SiteHeader } from '@/components/SiteHeader'
+import { SiteFooter } from '@/components/SiteFooter'
 
 const COVERAGE_STATES = [
   {
@@ -52,7 +53,25 @@ export default function HomePage() {
         <p className="text-lg text-gray-600 mb-8 max-w-4xl mx-auto">
           Whether you're a contractor, home inspector, or homeowner asking <strong>"where is my septic tank?"</strong>, we provide instant GPS coordinates from government permit records. Find your septic tank location in seconds with transparent data quality indicators.
         </p>
-        <div className="flex items-center justify-center gap-8 text-sm text-gray-600 mb-12">
+        {/* Primary hero CTAs — the hero previously had no call to action at all */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+          <Link href="/report">
+            <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white px-10 text-lg">
+              Find My Septic Tank
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
+          <Link href="/sample-report">
+            <Button size="lg" variant="outline" className="px-8 text-lg">
+              See a Sample Report
+            </Button>
+          </Link>
+        </div>
+        <p className="text-sm text-gray-600 mb-10">
+          $29 per report • No record found? Automatic full refund
+        </p>
+
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-600 mb-12">
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
             <span>2.3M+ Tanks Mapped</span>
@@ -60,6 +79,10 @@ export default function HomePage() {
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
             <span>12 States Covered</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span>Government Permit Records</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
@@ -317,44 +340,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t bg-white mt-16">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><Link href="/coverage" className="text-gray-600 hover:text-gray-900">Coverage</Link></li>
-                <li><Link href="/pricing-pro" className="text-gray-600 hover:text-gray-900">Pro Pricing</Link></li>
-                <li><Link href="/report" className="text-gray-600 hover:text-gray-900">Property Reports</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><Link href="/faq" className="text-gray-600 hover:text-gray-900">FAQ</Link></li>
-                <li><Link href="/privacy" className="text-gray-600 hover:text-gray-900">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="text-gray-600 hover:text-gray-900">Terms & Conditions</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Support</h3>
-              <ul className="space-y-2">
-                <li><a href="mailto:support@tankfindr.com" className="text-gray-600 hover:text-gray-900">Contact Us</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">TankFindr</h3>
-              <p className="text-gray-600 text-sm">
-                GPS-accurate septic tank locations powered by government records and geospatial intelligence.
-              </p>
-            </div>
-          </div>
-          <div className="border-t pt-8 text-center text-gray-600 text-sm">
-            © {new Date().getFullYear()} TankFindr. All rights reserved.
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
