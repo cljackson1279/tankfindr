@@ -40,8 +40,16 @@ export default function ProDashboard() {
 
     setUser(user)
 
-    // Admin bypass - skip subscription check for admin
-    const isAdmin = user.email === 'cljackson79@gmail.com'
+    // Admin bypass - skip subscription check for admin (verified server-side;
+    // no admin emails in the client bundle)
+    let isAdmin = false
+    try {
+      const adminRes = await fetch('/api/auth/is-admin')
+      const adminData = await adminRes.json()
+      isAdmin = Boolean(adminData.isAdmin)
+    } catch {
+      isAdmin = false
+    }
 
     if (isAdmin) {
       // Admin has full access without subscription

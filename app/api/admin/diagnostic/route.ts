@@ -1,17 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { createClient as createServerSupabase } from '@/lib/supabase/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'cljackson79@gmail.com')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
 export async function GET(request: NextRequest) {
   try {
-    // Check admin access
-    const { data: { user } } = await supabase.auth.getUser();
-    const isAdmin = user?.email === 'cljackson79@gmail.com';
-    
+    // Check admin access from the caller's session cookie.
+    // (Previously this called auth.getUser() on the service-role client,
+    // which has no user context — so it always returned 403, even for admins.)
+    const supabaseAuth = await createServerSupabase();
+    const { data: { user } } = await supabaseAuth.auth.getUser();
+    const isAdmin = Boolean(user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase()));
+
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Unauthorized - Admin only' },

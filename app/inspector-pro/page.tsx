@@ -80,11 +80,11 @@ export default function InspectorProPage() {
           <Card className="p-8 border-2 border-blue-500 shadow-xl">
             <div className="text-center mb-6">
               <div className="text-5xl font-bold text-gray-900 mb-2">
-                $79
+                $69
                 <span className="text-2xl text-gray-600 font-normal">/month</span>
               </div>
               <p className="text-blue-600 font-semibold mb-1">7-Day Free Trial</p>
-              <p className="text-gray-600 text-sm">Then $79/month • Unlimited Reports • Cancel Anytime</p>
+              <p className="text-gray-600 text-sm">Then $69/month • Unlimited Reports • Cancel Anytime</p>
             </div>
 
             <Button

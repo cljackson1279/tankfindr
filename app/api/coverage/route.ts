@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const lat = parseFloat(searchParams.get('lat') || '');
     const lng = parseFloat(searchParams.get('lng') || '');
+    const address = searchParams.get('address') || undefined;
 
     if (isNaN(lat) || isNaN(lng)) {
       return NextResponse.json(
@@ -26,7 +27,9 @@ export async function GET(request: NextRequest) {
       fromTables: ['septic_sources']
     });
 
-    const context = await getSepticContextForLocation(lat, lng);
+    // Pass the address through so FDEP address-matching can run
+    // (without it, septic homes in FDEP fallback areas get misclassified as likely_sewer)
+    const context = await getSepticContextForLocation(lat, lng, 200, address);
 
     console.log('COVERAGE_RESULT', {
       isCovered: context.isCovered,

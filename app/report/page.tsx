@@ -30,9 +30,14 @@ function ReportPageContent() {
   }, [])
 
   const checkAdmin = async () => {
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    setIsAdmin(user?.email === 'cljackson79@gmail.com')
+    // Admin status is determined server-side — no admin emails in the client bundle
+    try {
+      const response = await fetch('/api/auth/is-admin')
+      const data = await response.json()
+      setIsAdmin(Boolean(data.isAdmin))
+    } catch {
+      setIsAdmin(false)
+    }
   }
 
   const fetchSuggestions = async (query: string) => {
@@ -110,9 +115,10 @@ function ReportPageContent() {
         throw new Error('Could not find address. Please try a different format.')
       }
 
-      // Check coverage
+      // Check coverage — pass the address so record matching can run server-side
+      const resolvedAddress = geocodeData.formatted_address || address
       const coverageResponse = await fetch(
-        `/api/coverage?lat=${geocodeData.lat}&lng=${geocodeData.lng}`
+        `/api/coverage?lat=${geocodeData.lat}&lng=${geocodeData.lng}&address=${encodeURIComponent(resolvedAddress)}`
       )
       const coverageData = await coverageResponse.json()
 
@@ -121,7 +127,7 @@ function ReportPageContent() {
       }
 
       setPreview({
-        address: geocodeData.formatted_address || address,
+        address: resolvedAddress,
         lat: geocodeData.lat,
         lng: geocodeData.lng,
         isCovered: coverageData.isCovered,
@@ -145,7 +151,7 @@ function ReportPageContent() {
   }
 
   const calculateTotal = () => {
-    const basePrice = 19
+    const basePrice = 29
     const upsellTotal = selectedUpsells.reduce((sum, id) => {
       const upsell = UPSELLS.find((u) => u.id === id)
       return sum + (upsell?.price || 0)
@@ -289,27 +295,66 @@ function ReportPageContent() {
                   <p className="text-sm text-gray-600">Wastewater System</p>
                   <p className="text-lg font-bold">
                     {preview.classification === 'septic' ? (
-                      <span className="text-orange-600">🟠 Septic System</span>
+                      <span className="text-emerald-600">🟢 Septic System Found</span>
                     ) : preview.classification === 'likely_septic' ? (
-                      <span className="text-yellow-600">🟡 Likely Septic System</span>
+                      <span className="text-amber-600">🟡 Likely Septic System</span>
                     ) : preview.classification === 'sewer' ? (
                       <span className="text-blue-600">🔵 Public Sewer</span>
+                    ) : preview.classification === 'likely_sewer' ? (
+                      <span className="text-blue-600">🔵 Likely Public Sewer</span>
                     ) : (
                       <span className="text-gray-600">⚪ Unknown</span>
                     )}
                   </p>
                 </div>
-                {preview.isCovered && (
+                {preview.isCovered && (preview.classification === 'septic' || preview.classification === 'likely_septic') && (
                   <div>
                     <p className="text-sm text-gray-600">Data Available</p>
                     <p className="text-lg font-medium text-green-600 flex items-center gap-2">
                       <CheckCircle className="w-5 h-5" />
-                      County records available for this property
+                      Septic record indicators found — full details in your report
                     </p>
+                    {preview.confidence && (
+                      <p className="text-sm text-gray-600 mt-1">
+                        Match confidence: <span className="font-semibold capitalize">{preview.confidence}</span>
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
             </Card>
+
+            {/* Coverage / classification warnings — shown BEFORE the paywall */}
+            {!preview.isCovered && (
+              <Card className="p-6 border-amber-300 bg-amber-50">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-bold text-amber-900 mb-1">Limited data for this area</h3>
+                    <p className="text-sm text-amber-900">
+                      We don&apos;t yet have septic records for this location, so a report would likely
+                      come back with no record found. We don&apos;t recommend purchasing a report here —
+                      but if you do, our guarantee applies: <strong>no record found, automatic full refund.</strong>
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
+            {preview.isCovered && (preview.classification === 'sewer' || preview.classification === 'likely_sewer') && (
+              <Card className="p-6 border-blue-300 bg-blue-50">
+                <div className="flex items-start gap-3">
+                  <CheckCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-bold text-blue-900 mb-1">This property looks like it&apos;s on public sewer</h3>
+                    <p className="text-sm text-blue-900">
+                      Records for this area exist, but none match this property — it&apos;s most likely
+                      connected to municipal sewer. A report will document that finding. If you believe
+                      the property is on septic, the full report includes our deeper record search.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            )}
 
             {/* Blurred Map Preview */}
             <Card className="p-6 relative">
@@ -410,6 +455,10 @@ function ReportPageContent() {
                       </>
                     )}
                   </Button>
+                  <p className="text-xs text-green-100 mt-3 flex items-center justify-end gap-1">
+                    <Shield className="w-4 h-4" />
+                    No record found? Automatic full refund.
+                  </p>
                 </div>
               </div>
             </Card>

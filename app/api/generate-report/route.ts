@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { createClient as createServerSupabase } from '@/lib/supabase/server';
 import { getSepticContextForLocation } from '@/lib/septicLookup';
 import { getEnvironmentalRisk } from '@/lib/environmental';
 import { getGroundwaterRisk } from '@/lib/groundwater';
@@ -14,9 +15,15 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// Server-side admin allowlist. Configure via ADMIN_EMAILS env var (comma-separated).
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'cljackson79@gmail.com')
+  .split(',')
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
 export async function POST(request: NextRequest) {
   try {
-    const { sessionId, address, lat, lng, adminEmail, upsells: adminUpsells } = await request.json();
+    const { sessionId, address, lat, lng, upsells: requestedUpsells } = await request.json();
 
     if (!sessionId || !address || !lat || !lng) {
       return NextResponse.json(
@@ -25,40 +32,85 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Admin bypass - skip payment verification
-    const isAdminBypass = adminEmail === 'cljackson79@gmail.com' && sessionId === 'admin_bypass';
+    let isAdminBypass = false;
     let customerEmail = 'unknown';
+    let upsells: string[] = [];
+    let paidSession: Stripe.Checkout.Session | null = null;
 
-    if (isAdminBypass) {
+    if (sessionId === 'admin_bypass') {
+      // SECURITY: admin status is verified server-side from the Supabase session
+      // cookie. Never trust emails or flags sent in the request body/headers.
+      const supabaseAuth = await createServerSupabase();
+      const { data: { user } } = await supabaseAuth.auth.getUser();
+
+      if (!user?.email || !ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+        return NextResponse.json(
+          { error: 'Unauthorized' },
+          { status: 403 }
+        );
+      }
+
+      isAdminBypass = true;
+      customerEmail = user.email;
+      upsells = Array.isArray(requestedUpsells) ? requestedUpsells : [];
+
       console.log('ADMIN_BYPASS_REPORT', {
-        adminEmail,
+        adminEmail: customerEmail,
         address,
-        skipPaymentVerification: true,
-        dataSource: 'supabase'
+        verifiedVia: 'supabase_session',
       });
-      customerEmail = adminEmail;
     } else {
-      // Verify payment session for non-admin users
-      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      // Verify payment session (retrieve exactly once)
+      paidSession = await stripe.checkout.sessions.retrieve(sessionId);
 
-      if (session.payment_status !== 'paid') {
+      if (paidSession.payment_status !== 'paid') {
         return NextResponse.json(
           { error: 'Payment not completed' },
           { status: 400 }
         );
       }
-      customerEmail = session.customer_details?.email || 'unknown';
+
+      // SECURITY: bind the session to the property it was purchased for.
+      // Without this, one paid session could be replayed with different
+      // addresses to generate unlimited reports.
+      const mLat = parseFloat(paidSession.metadata?.lat || '');
+      const mLng = parseFloat(paidSession.metadata?.lng || '');
+      const latOk = !isNaN(mLat) && Math.abs(mLat - Number(lat)) < 0.001;
+      const lngOk = !isNaN(mLng) && Math.abs(mLng - Number(lng)) < 0.001;
+
+      if (paidSession.metadata?.type !== 'property_report' || !latOk || !lngOk) {
+        return NextResponse.json(
+          { error: 'This payment session does not match the requested property' },
+          { status: 403 }
+        );
+      }
+
+      customerEmail = paidSession.customer_details?.email || 'unknown';
+
+      if (paidSession.metadata?.upsells) {
+        try {
+          upsells = JSON.parse(paidSession.metadata.upsells);
+        } catch (e) {
+          console.error('Failed to parse upsells:', e);
+        }
+      }
+
+      // Idempotency: if this payment already generated a report, return the
+      // saved copy (lets the customer refresh their report page safely).
+      const { data: existingRows } = await supabase
+        .from('property_reports')
+        .select('report_data')
+        .eq('stripe_payment_id', paidSession.payment_intent as string)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (existingRows && existingRows.length > 0 && existingRows[0].report_data) {
+        return NextResponse.json(existingRows[0].report_data);
+      }
     }
 
-    // Get septic context from REAL Supabase data
-    console.log('FETCHING_SEPTIC_DATA', {
-      lat,
-      lng,
-      dataSource: 'supabase',
-      fromTables: ['septic_sources', 'septic_tanks']
-    });
-
-    const context = await getSepticContextForLocation(lat, lng);
+    // Get septic context from Supabase + FDEP (address enables record matching)
+    const context = await getSepticContextForLocation(lat, lng, 200, address);
 
     console.log('SEPTIC_DATA_FETCHED', {
       classification: context.classification,
@@ -66,7 +118,7 @@ export async function POST(request: NextRequest) {
       isCovered: context.isCovered,
       hasTankPoint: !!context.tankPoint,
       sourcesCount: context.coverageSources?.length || 0,
-      featuresCount: context.nearestFeatures?.length || 0
+      featuresCount: context.nearestFeatures?.length || 0,
     });
 
     // Calculate distance if we have a tank point
@@ -78,23 +130,6 @@ export async function POST(request: NextRequest) {
         context.tankPoint.lat,
         context.tankPoint.lng
       );
-    }
-
-    // Check if this is a paid session with upsells or admin bypass with upsells
-    let upsells: string[] = [];
-    if (isAdminBypass) {
-      // Admin bypass - use upsells passed directly
-      upsells = adminUpsells || [];
-    } else {
-      // Paid session - get upsells from Stripe metadata
-      const session = await stripe.checkout.sessions.retrieve(sessionId);
-      if (session.metadata?.upsells) {
-        try {
-          upsells = JSON.parse(session.metadata.upsells);
-        } catch (e) {
-          console.error('Failed to parse upsells:', e);
-        }
-      }
     }
 
     // Build report data
@@ -110,51 +145,37 @@ export async function POST(request: NextRequest) {
       systemInfo: context.systemInfo,
       riskLevel: context.riskLevel,
       sources: context.coverageSources,
+      dataQuality: context.dataQuality,
+      qualitySource: context.qualitySource,
       generatedAt: new Date().toISOString(),
-      dataSource: 'supabase', // Debug indicator
-      tablesUsed: ['septic_sources', 'septic_tanks'], // Debug indicator
     };
 
     // Extract county and state from context for add-on APIs
     const county = context.nearestFeatures?.[0]?.county || undefined;
     const state = context.nearestFeatures?.[0]?.state || undefined;
 
-    // Add Environmental Risk data ONLY if user selected it (or pass upsells for admin testing)
+    // Add Environmental Risk data ONLY if purchased
     if (upsells.includes('environmental')) {
-      console.log('FETCHING_ENVIRONMENTAL_DATA', { lat, lng, county, state, userPaid: true });
       reportData.environmentalRisk = await getEnvironmentalRiskData(lat, lng, county, state);
     }
 
-    // Add Well & Groundwater Risk data ONLY if user selected it
+    // Add Well & Groundwater Risk data ONLY if purchased
     if (upsells.includes('well')) {
-      console.log('FETCHING_WELL_DATA', { lat, lng, county, state, userPaid: true });
       reportData.groundwaterRisk = await getGroundwaterRiskData(lat, lng, county, state);
     }
 
-    // Save report to database (skip for admin bypass or save with admin flag)
-    if (!isAdminBypass) {
-      const session = await stripe.checkout.sessions.retrieve(sessionId);
-      await supabase.from('property_reports').insert({
-        email: customerEmail,
-        address,
-        lat,
-        lng,
-        report_data: reportData,
-        stripe_payment_id: session.payment_intent as string,
-        amount_paid: session.amount_total,
-      });
-    } else {
-      // Still log admin reports for audit purposes
-      await supabase.from('property_reports').insert({
-        email: customerEmail,
-        address,
-        lat,
-        lng,
-        report_data: reportData,
-        stripe_payment_id: 'admin_bypass',
-        amount_paid: 0,
-      });
-    }
+    // Save report to database
+    await supabase.from('property_reports').insert({
+      email: customerEmail,
+      address,
+      lat,
+      lng,
+      report_data: reportData,
+      stripe_payment_id: isAdminBypass
+        ? 'admin_bypass'
+        : (paidSession!.payment_intent as string),
+      amount_paid: isAdminBypass ? 0 : paidSession!.amount_total,
+    });
 
     return NextResponse.json(reportData);
   } catch (error: any) {
@@ -184,11 +205,8 @@ function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
 
 // Fetch environmental risk data (flood zones, wetlands, soil type)
 async function getEnvironmentalRiskData(lat: number, lng: number, county?: string, state?: string) {
-  console.log('FETCHING_REAL_ENVIRONMENTAL_DATA', { lat, lng, county, state });
-  
   try {
     const data = await getEnvironmentalRisk(lat, lng, county, state);
-    console.log('ENVIRONMENTAL_DATA_FETCHED', { success: true, dataSource: data.dataSource });
     return data;
   } catch (error: any) {
     console.error('ENVIRONMENTAL_DATA_ERROR', error);
@@ -198,11 +216,8 @@ async function getEnvironmentalRiskData(lat: number, lng: number, county?: strin
 
 // Fetch well and groundwater risk data
 async function getGroundwaterRiskData(lat: number, lng: number, county?: string, state?: string) {
-  console.log('FETCHING_REAL_GROUNDWATER_DATA', { lat, lng, county, state });
-  
   try {
     const data = await getGroundwaterRisk(lat, lng, county, state);
-    console.log('GROUNDWATER_DATA_FETCHED', { success: true, dataSource: data.dataSource });
     return data;
   } catch (error: any) {
     console.error('GROUNDWATER_DATA_ERROR', error);
