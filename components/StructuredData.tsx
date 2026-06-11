@@ -29,7 +29,7 @@ export function StructuredData() {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: 'https://tankfindr.com',
-    description: 'Professional septic tank locator tool - Find septic tanks instantly with GPS coordinates. Access 2.3M+ verified septic system records across 12 states. Trusted by 10,000+ contractors and home inspectors.',
+    description: 'Professional septic tank locator tool - Find septic tanks instantly with GPS coordinates. Access 2.3M+ septic system records across 12 states, sourced from government permit databases with transparent data quality labels.',
     offers: [
       {
         '@type': 'Offer',
@@ -72,14 +72,9 @@ export function StructuredData() {
         url: 'https://tankfindr.com/inspector-pro'
       },
     ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      ratingCount: '247',
-      bestRating: '5',
-      worstRating: '1',
-      reviewCount: '189'
-    },
+    // NOTE: aggregateRating removed — only add this back once real, verifiable
+    // customer reviews are collected and displayed on-page (Google policy
+    // requires visible reviews backing any rating markup).
     author: {
       '@type': 'Organization',
       name: 'TankFindr',

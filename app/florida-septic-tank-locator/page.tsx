@@ -63,12 +63,12 @@ export default function FloridaSepticPage() {
           <div className="flex gap-4 justify-center">
             <Link href="/report">
               <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                Get Property Report ($19)
+                Get Property Report ($29)
               </Button>
             </Link>
             <Link href="/inspector-pro">
               <Button size="lg" variant="outline">
-                For Inspectors ($79/mo)
+                For Inspectors ($69/mo)
               </Button>
             </Link>
           </div>
@@ -159,7 +159,7 @@ export default function FloridaSepticPage() {
           <div className="flex gap-4 justify-center">
             <Link href="/report">
               <Button size="lg" className="bg-green-600 hover:bg-green-700">
-                Get Started - $19
+                Get Started - $29
               </Button>
             </Link>
             <Link href="/coverage">

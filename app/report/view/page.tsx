@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Calendar, Hash } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -36,13 +35,10 @@ function ReportViewContent() {
       const lat = parseFloat(searchParams?.get('lat') || '')
       const lng = parseFloat(searchParams?.get('lng') || '')
 
-      // Check if admin bypass
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      const isAdmin = user?.email === 'cljackson79@gmail.com'
-
-      // Admin bypass - generate report without payment using REAL Supabase data
-      if (isAdmin && reportId?.startsWith('admin_')) {
+      // Admin path — authorization is verified SERVER-SIDE inside
+      // /api/generate-report from the session cookie. No admin emails or
+      // bypass flags live in the client bundle anymore.
+      if (reportId?.startsWith('admin_')) {
         if (!address || isNaN(lat) || isNaN(lng)) {
           throw new Error('Invalid report parameters')
         }
@@ -59,29 +55,15 @@ function ReportViewContent() {
         }
         setUpsells(parsedUpsells)
 
-        console.log('ADMIN_REPORT_GENERATION', {
-          userEmail: user.email,
-          address,
-          lat,
-          lng,
-          dataSource: 'supabase',
-          bypassedPayment: true,
-          upsells: parsedUpsells
-        })
-
-        // Call the same report generation endpoint but with admin flag and upsells
+        // The server validates the caller's session before honoring this
         const response = await fetch('/api/generate-report', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Admin-Bypass': 'true' // Signal to skip payment verification
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             sessionId: 'admin_bypass',
             address,
             lat,
             lng,
-            adminEmail: user.email,
             upsells: parsedUpsells
           }),
         })
@@ -295,9 +277,11 @@ function ReportViewContent() {
               'This property has a septic system based on official county records. The tank location and system details are included in this report.'}
             {report.classification === 'likely_septic' && 
               'This property likely has a septic system based on proximity to known septic tanks, but exact data is limited. Consider a professional inspection for confirmation.'}
-            {report.classification === 'sewer' && 
+            {report.classification === 'sewer' &&
               'This property appears to be connected to municipal sewer. No septic system records were found in the county database, which typically indicates sewer service availability.'}
-            {report.classification === 'unknown' && 
+            {report.classification === 'likely_sewer' &&
+              'Septic records exist for this area, but none match this property — it is most likely connected to municipal sewer. If you believe the property is on septic, a professional inspection can confirm.'}
+            {report.classification === 'unknown' &&
               'Unable to determine wastewater system type. This area may not have complete data coverage, or records may not be available.'}
           </p>
         </Card>

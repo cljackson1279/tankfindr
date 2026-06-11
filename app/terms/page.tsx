@@ -24,7 +24,7 @@ export default function TermsPage() {
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-2">
             <li><strong>Free Widget:</strong> Basic septic system classification checks</li>
-            <li><strong>Property Reports:</strong> Detailed one-time reports with GPS coordinates and system information ($19)</li>
+            <li><strong>Property Reports:</strong> Detailed one-time reports with GPS coordinates and system information ($29, with a no-record full-refund guarantee)</li>
             <li><strong>Inspector Pro:</strong> Unlimited septic system reports for home inspectors ($69/month)</li>
             <li><strong>TankFindr Pro Subscriptions:</strong> Recurring access for septic professionals with job history tracking (Starter, Pro, Enterprise tiers)</li>
             <li><strong>Coverage Information:</strong> Transparency about data availability by county and state</li>

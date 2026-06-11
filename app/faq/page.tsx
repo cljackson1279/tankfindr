@@ -75,7 +75,7 @@ const faqs: FAQItem[] = [
     answer: [
       'We offer several options:',
       '• Free Widget: Basic "Sewer or Septic?" check on our homepage',
-      '• Property Reports: $19 one-time purchase for detailed reports',
+      '• Property Reports: $29 one-time purchase for detailed reports (no record found = full refund)',
       '• Inspector Pro: $69/month for unlimited septic reports (for home inspectors)',
       '• TankFindr Pro - Starter: $79/month for 100 lookups',
       '• TankFindr Pro - Pro: $159/month for 300 lookups (most popular)',
@@ -84,7 +84,7 @@ const faqs: FAQItem[] = [
   },
   {
     category: 'Pricing',
-    question: 'What\'s included in a $19 Property Report?',
+    question: 'What\'s included in a $29 Property Report?',
     answer: [
       'Each property report includes:',
       '• Septic system classification (septic vs. sewer)',
@@ -179,7 +179,7 @@ const faqs: FAQItem[] = [
   {
     category: 'Business',
     question: 'Can real estate agents use TankFindr?',
-    answer: 'Yes! Real estate agents use TankFindr to quickly determine if properties have septic systems, provide disclosure information to buyers, answer buyer questions during showings, and order detailed reports for property listings. The $19 property reports are perfect for occasional use.',
+    answer: 'Yes! Real estate agents use TankFindr to quickly determine if properties have septic systems, provide disclosure information to buyers, answer buyer questions during showings, and order detailed reports for property listings. The $29 property reports are perfect for occasional use.',
   },
   {
     category: 'Business',
@@ -240,7 +240,7 @@ const faqs: FAQItem[] = [
     answer: [
       'Getting started is easy:',
       '1. Try our free widget on the homepage to check if a property has a septic system',
-      '2. If you need detailed information, purchase a $19 property report',
+      '2. If you need detailed information, purchase a $29 property report',
       '3. For professional use, sign up for a Pro subscription',
       '4. Create an account to track your searches and access reports',
       'No credit card required for the free widget!',
@@ -249,7 +249,7 @@ const faqs: FAQItem[] = [
   {
     category: 'Getting Started',
     question: 'Do you offer a free trial?',
-    answer: 'We don\'t currently offer free trials for Pro subscriptions, but you can try our free "Sewer or Septic?" widget without creating an account. You can also purchase a single $19 property report to test our data quality before committing to a subscription.',
+    answer: 'We don\'t currently offer free trials for Pro subscriptions, but you can try our free "Sewer or Septic?" widget without creating an account. You can also purchase a single $29 property report to test our data quality before committing to a subscription.',
   },
 ]
 

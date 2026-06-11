@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: 'Septic Tank Locator | Find Your Septic Tank in Seconds | 2.3M+ Records',
     template: '%s | TankFindr',
   },
-  description: 'Find your septic tank instantly with GPS-accurate locations. Access 2.3M+ verified septic system records across 12 states. Trusted by 10,000+ contractors, inspectors & homeowners. Free coverage check. Where is my septic tank? Find out now.',
+  description: 'Find your septic tank instantly with GPS-accurate locations from government permit records. Access 2.3M+ septic system records across 12 states with transparent data quality labels. Free coverage check. Where is my septic tank? Find out now.',
   keywords: [
     // Primary keywords (high volume, high intent)
     'septic tank locator',
@@ -51,36 +51,24 @@ export const metadata: Metadata = {
   creator: 'TankFindr',
   publisher: 'TankFindr',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tankfindr.com'),
-  alternates: {
-    canonical: 'https://tankfindr.com',
-  },
+  // NOTE: no root-level canonical. A canonical here is inherited by EVERY page,
+  // telling Google all pages (FAQ, blog, pricing…) are duplicates of the
+  // homepage. Per-page canonicals are set in each route's metadata.
   openGraph: {
     title: 'Septic Tank Locator | Find Your Septic Tank in Seconds',
-    description: '🎯 Find your septic tank instantly with GPS coordinates. 2.3M+ verified records. Trusted by 10,000+ professionals. Free coverage check. Where is my septic tank? Find out now.',
+    description: '🎯 Find your septic tank instantly with GPS coordinates from government permit records. 2.3M+ records across 12 states. Free coverage check.',
     type: 'website',
     url: 'https://tankfindr.com',
     siteName: 'TankFindr - Septic Tank Locator',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'TankFindr - Find Your Septic Tank Instantly'
-      },
-      {
-        url: '/icon-512.png',
-        width: 512,
-        height: 512,
-        alt: 'TankFindr Logo'
-      }
-    ],
+    // og:image comes from app/opengraph-image.png via the Next.js file
+    // convention (the previous explicit /og-image.png reference was a 404).
     locale: 'en_US'
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Find Your Septic Tank in Seconds | TankFindr',
-    description: '🎯 GPS-accurate septic tank locations. 2.3M+ records across 12 states. Trusted by 10,000+ professionals.',
-    images: ['/og-image.png'],
+    description: '🎯 GPS-accurate septic tank locations from government records. 2.3M+ records across 12 states.',
+    // twitter:image comes from app/twitter-image.png via the file convention.
     creator: '@tankfindr'
   },
   robots: {
@@ -108,10 +96,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <StructuredData />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        {/* Inter is self-hosted via next/font — the old Google Fonts <link>
+            double-loaded the same family on every page. */}
         <link
           href="https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css"
           rel="stylesheet"
@@ -128,8 +114,6 @@ export default function RootLayout({
         <meta name="rating" content="General" />
         
         {/* Preconnect to external domains */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://api.mapbox.com" />
       </head>
       <body className={inter.className}>

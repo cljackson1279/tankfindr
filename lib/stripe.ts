@@ -29,7 +29,10 @@ export const TIERS = {
   },
   inspector: {
     name: 'Inspector Pro',
-    price: 79,
+    // IMPORTANT: display price — verify STRIPE_PRICE_INSPECTOR in the Stripe
+    // dashboard actually charges $69/mo. If it is still $79, create a new $69
+    // price in Stripe and update the env var.
+    price: 69,
     locates: -1, // Unlimited reports
     priceId: process.env.STRIPE_PRICE_INSPECTOR!,
     overage: 0 // No overage for unlimited plan
