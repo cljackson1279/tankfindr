@@ -10,8 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/api/',
-          '/auth/update-password',
-          '/auth/error',
+          '/auth/',
           '/pro/',
           '/inspector-pro/dashboard/',
           '/inspector-pro/report/',

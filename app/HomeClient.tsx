@@ -48,7 +48,7 @@ export default function HomePage() {
           </span>
         </h1>
         <p className="text-xl text-gray-600 mb-4 max-w-4xl mx-auto">
-          Looking for a <strong>septic tank locator</strong>? TankFindr is the #1 septic tank finder tool with 2.3M+ verified septic system locations across 12 states. 
+          Looking for a <strong>septic tank locator</strong>? TankFindr is the #1 septic tank finder tool with 2.5M+ septic system locations across 20 states. 
         </p>
         <p className="text-lg text-gray-600 mb-8 max-w-4xl mx-auto">
           Whether you're a contractor, home inspector, or homeowner asking <strong>"where is my septic tank?"</strong>, we provide instant GPS coordinates from government permit records. Find your septic tank location in seconds with transparent data quality indicators.
@@ -74,11 +74,11 @@ export default function HomePage() {
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-600 mb-12">
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            <span>2.3M+ Tanks Mapped</span>
+            <span>2.5M+ Tanks Mapped</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
-            <span>12 States Covered</span>
+            <span>20 States Covered</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="w-5 h-5 text-green-600" />
