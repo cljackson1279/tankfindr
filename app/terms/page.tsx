@@ -24,7 +24,7 @@ export default function TermsPage() {
           </p>
           <ul className="list-disc list-inside text-gray-700 space-y-2">
             <li><strong>Free Widget:</strong> Basic septic system classification checks</li>
-            <li><strong>Property Reports:</strong> Detailed one-time reports with GPS coordinates and system information ($29, with a no-record full-refund guarantee)</li>
+            <li><strong>Property Reports:</strong> Detailed one-time reports with GPS coordinates and system information ($29)</li>
             <li><strong>Inspector Pro:</strong> Unlimited septic system reports for home inspectors ($69/month)</li>
             <li><strong>TankFindr Pro Subscriptions:</strong> Recurring access for septic professionals with job history tracking (Starter, Pro, Enterprise tiers)</li>
             <li><strong>Coverage Information:</strong> Transparency about data availability by county and state</li>
@@ -97,6 +97,12 @@ export default function TermsPage() {
             <li>Your job history will be retained for 90 days after cancellation</li>
             <li>You may reactivate your subscription at any time</li>
           </ul>
+          <p className="text-gray-700 mt-4">
+            One-time property report purchases are generally final. If a report returns no
+            record for your property, contact{' '}
+            <a href="mailto:support@tankfindr.com" className="text-emerald-700 underline">support@tankfindr.com</a>{' '}
+            within 14 days and we&apos;ll review your purchase on a case-by-case basis.
+          </p>
         </Card>
 
         <Card className="p-8 mb-6">

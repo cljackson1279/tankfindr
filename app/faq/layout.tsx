@@ -4,7 +4,7 @@ import { faqs } from './faqData'
 export const metadata: Metadata = {
   title: 'Frequently Asked Questions',
   description:
-    'Answers about TankFindr: how to find your septic tank, data accuracy and confidence tiers, pricing and the no-record refund guarantee, coverage by state, and how reports are delivered.',
+    'Answers about TankFindr: how to find your septic tank, data accuracy and confidence tiers, pricing, coverage by state, and how reports are delivered.',
   // CRITICAL FIX: this page previously had no metadata, so it inherited the
   // root layout's homepage canonical — telling Google /faq was a duplicate of
   // the homepage. It now has its own self-canonical.

@@ -134,9 +134,9 @@ export default function AboutPage() {
               </div>
             </div>
             <p>
-              Every report tells you which tier each data point belongs to. And if we find no
-              record at all for a property you paid to check,{' '}
-              <strong>you get an automatic full refund</strong> — that&apos;s the deal.
+              Every report tells you which tier each data point belongs to — and our free
+              preview shows you whether we have records for your address{' '}
+              <strong>before you pay</strong>, so you always know what you&apos;re getting.
             </p>
           </div>
         </Card>
@@ -184,7 +184,7 @@ export default function AboutPage() {
         </div>
         <p className="text-sm text-gray-500 mt-4 flex items-center justify-center gap-1">
           <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          $29 per report • No record found? Automatic full refund
+          $29 per report • Instant access • Downloadable PDF
         </p>
       </section>
 

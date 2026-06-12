@@ -68,7 +68,7 @@ export default function HomePage() {
           </Link>
         </div>
         <p className="text-sm text-gray-600 mb-10">
-          $29 per report • No record found? Automatic full refund
+          $29 per report • Instant access • No account required
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-600 mb-12">
@@ -234,7 +234,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <p className="text-center text-sm text-gray-600 mt-4">
-              No record found? Full refund • No account required • Instant access
+              Instant access • No account required • Downloadable PDF
             </p>
           </Card>
         </div>

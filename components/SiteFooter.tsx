@@ -37,7 +37,7 @@ export function SiteFooter() {
             </ul>
             <div className="mt-4 flex items-start gap-2 text-sm text-gray-600">
               <ShieldCheck className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-              <span>No record found? Automatic full refund on property reports.</span>
+              <span>Sourced from official government permit records, labeled by confidence.</span>
             </div>
           </div>
           <div>

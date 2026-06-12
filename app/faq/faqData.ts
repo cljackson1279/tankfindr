@@ -73,7 +73,7 @@ export const faqs: FAQItem[] = [
     answer: [
       'We offer several options:',
       '• Free Widget: Basic "Sewer or Septic?" check on our homepage',
-      '• Property Reports: $29 one-time purchase for detailed reports (no record found = full refund)',
+      '• Property Reports: $29 one-time purchase for detailed reports',
       '• Inspector Pro: $69/month for unlimited septic reports (for home inspectors)',
       '• TankFindr Pro - Starter: $79/month for 100 lookups',
       '• TankFindr Pro - Pro: $159/month for 300 lookups (most popular)',
