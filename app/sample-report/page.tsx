@@ -35,8 +35,8 @@ export default function SampleReportPage() {
         <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
           <Eye className="w-5 h-5 flex-shrink-0" />
           <p className="text-sm font-medium">
-            This is a sample report with example data, showing exactly what every $29 TankFindr
-            report includes.
+            Sample report with example data — shown for a verified-permit property. The exact
+            fields depend on the government record for your address.
           </p>
         </div>
       </div>
@@ -172,6 +172,11 @@ export default function SampleReportPage() {
                 </div>
               </div>
             </div>
+            <p className="text-xs text-gray-500 mt-4">
+              This example reflects a verified-permit record. Some properties have fewer fields
+              available (for example, location and septic/sewer status without a permit number) —
+              your report shows everything on file for your address, clearly labeled by confidence.
+            </p>
           </Card>
 
           {/* Risk Assessment */}

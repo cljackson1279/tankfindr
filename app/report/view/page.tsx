@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Calendar, Hash } from 'lucide-react'
+import { Loader2, MapPin, FileText, Download, AlertTriangle, CheckCircle, Calendar, Hash, Gauge, Ruler, Droplets, Home, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
@@ -15,6 +15,55 @@ const MapComponent = dynamic(() => import('@/components/MapComponent'), {
   ssr: false,
   loading: () => <div className="w-full h-96 bg-gray-100 rounded-lg flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>
 })
+
+// --- Report helpers (shared, consistent across every report) ---
+
+// Friendly, customer-facing data-quality tier. dataQuality comes from the
+// lookup pipeline ('verified_permit' | 'estimated_inventory' | 'unknown').
+function tierInfo(dataQuality?: string): { label: string; cls: string; desc: string } {
+  switch (dataQuality) {
+    case 'verified_permit':
+      return { label: 'Verified Permit', cls: 'bg-emerald-50 border-emerald-200', desc: 'Backed by an official government permit record.' }
+    case 'estimated_inventory':
+      return { label: 'Government Inventory', cls: 'bg-amber-50 border-amber-200', desc: 'From a state/county septic inventory — a strong signal at location-level precision.' }
+    default:
+      return { label: 'Location Record', cls: 'bg-gray-50 border-gray-200', desc: 'Confirmed location and status from government GIS data; no detailed permit on file for this property.' }
+  }
+}
+
+// Cardinal direction from the searched address to the tank point.
+function cardinalDirection(fromLat: number, fromLng: number, toLat: number, toLng: number): string | null {
+  if ([fromLat, fromLng, toLat, toLng].some((v) => typeof v !== 'number' || isNaN(v))) return null
+  const dLat = toLat - fromLat
+  const dLng = (toLng - fromLng) * Math.cos((fromLat * Math.PI) / 180)
+  if (dLat === 0 && dLng === 0) return null
+  const ang = (Math.atan2(dLng, dLat) * 180) / Math.PI // 0 = North, clockwise
+  const dirs = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest']
+  return dirs[Math.round((((ang % 360) + 360) % 360) / 45) % 8]
+}
+
+const TIER_BADGE: Record<string, { text: string; cls: string }> = {
+  verified: { text: '✓ Verified', cls: 'text-emerald-700' },
+  inferred: { text: '~ Inferred', cls: 'text-amber-700' },
+  reported: { text: '• Reported', cls: 'text-gray-500' },
+}
+
+// One labeled system-info field. Renders nothing if the value is absent, so the
+// report degrades gracefully when the government record lacks a field.
+function InfoRow({ icon: Icon, label, value, tier }: { icon: any; label: string; value?: string | number | null; tier?: 'verified' | 'inferred' | 'reported' }) {
+  if (value === undefined || value === null || value === '') return null
+  const badge = tier ? TIER_BADGE[tier] : null
+  return (
+    <div className="flex items-start gap-3">
+      <Icon className="w-5 h-5 text-gray-600 mt-0.5 flex-shrink-0" />
+      <div>
+        <p className="text-sm text-gray-600">{label}</p>
+        <p className="font-semibold">{value}</p>
+        {badge && <span className={`text-xs font-medium ${badge.cls}`}>{badge.text}</span>}
+      </div>
+    </div>
+  )
+}
 
 function ReportViewContent() {
   const searchParams = useSearchParams()
@@ -252,26 +301,32 @@ function ReportViewContent() {
         {/* Classification */}
         <Card className="p-6 mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Septic Status</h2>
-          <div className="flex items-center gap-4 mb-4">
-            <div className={`flex-1 p-4 rounded-lg border ${
-              report.classification === 'septic' ? 'bg-emerald-50 border-emerald-200' : 
-              report.classification === 'sewer' ? 'bg-blue-50 border-blue-200' : 
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            <div className={`p-4 rounded-lg border ${
+              report.classification === 'septic' ? 'bg-emerald-50 border-emerald-200' :
+              report.classification === 'sewer' || report.classification === 'likely_sewer' ? 'bg-blue-50 border-blue-200' :
+              report.classification === 'likely_septic' ? 'bg-emerald-50 border-emerald-200' :
               'bg-gray-50 border-gray-200'
             }`}>
               <p className="text-sm text-gray-600 mb-1">Classification</p>
               <p className="text-xl font-bold capitalize">
-                {report.classification?.replace('_', ' ') || 'Unknown'}
+                {report.classification?.replace(/_/g, ' ') || 'Unknown'}
               </p>
             </div>
-            <div className={`flex-1 p-4 rounded-lg border ${
-              report.confidence === 'high' ? 'bg-emerald-50 border-emerald-200' : 
-              report.confidence === 'medium' ? 'bg-amber-50 border-amber-200' : 
+            <div className={`p-4 rounded-lg border ${
+              report.confidence === 'high' ? 'bg-emerald-50 border-emerald-200' :
+              report.confidence === 'medium' ? 'bg-amber-50 border-amber-200' :
               'bg-gray-50 border-gray-200'
             }`}>
               <p className="text-sm text-gray-600 mb-1">Confidence</p>
-              <p className="text-xl font-bold capitalize">{report.confidence}</p>
+              <p className="text-xl font-bold capitalize">{report.confidence || 'Low'}</p>
+            </div>
+            <div className={`p-4 rounded-lg border ${tierInfo(report.dataQuality).cls}`}>
+              <p className="text-sm text-gray-600 mb-1">Data Quality</p>
+              <p className="text-xl font-bold">{tierInfo(report.dataQuality).label}</p>
             </div>
           </div>
+          <p className="text-sm text-gray-500 mb-4">{tierInfo(report.dataQuality).desc}</p>
           <p className="text-gray-700">
             {report.classification === 'septic' && 
               'This property has a septic system based on official county records. The tank location and system details are included in this report.'}
@@ -300,9 +355,18 @@ function ReportViewContent() {
                 <p className="font-mono text-lg">{report.tankPoint.lng.toFixed(6)}</p>
               </div>
             </div>
-            {report.distance && (
+            {(report.systemInfo?.county || report.systemInfo?.state) && (
+              <p className="text-sm text-gray-600 mb-1">
+                Location: {[report.systemInfo?.county && `${report.systemInfo.county} County`, report.systemInfo?.state].filter(Boolean).join(', ')}
+              </p>
+            )}
+            {typeof report.distance === 'number' && (
               <p className="text-sm text-gray-600 mb-4">
-                Distance from address: {report.distance.toFixed(1)} meters
+                Distance from address: {report.distance.toFixed(1)} m (≈ {Math.round(report.distance * 3.28084)} ft)
+                {(() => {
+                  const dir = cardinalDirection(report.lat, report.lng, report.tankPoint.lat, report.tankPoint.lng)
+                  return dir ? `, ${dir} of the address` : ''
+                })()}
               </p>
             )}
             <div className="print:hidden">
@@ -317,51 +381,56 @@ function ReportViewContent() {
         )}
 
         {/* System Information */}
-        {report.systemInfo && (
-          <Card className="p-6 mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">System Information</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              {report.systemInfo.type && (
-                <div className="flex items-start gap-3">
-                  <FileText className="w-5 h-5 text-gray-600 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-600">System Type</p>
-                    <p className="font-semibold">{report.systemInfo.type}</p>
+        {(() => {
+          const si = report.systemInfo || {}
+          const hasDetail = Boolean(
+            si.type || si.permitNumber || si.permitDate || si.finalInspectionDate ||
+            si.capacity || si.estimatedTankSize || si.ageEstimate || si.lotSize ||
+            si.propertyType || si.waterSupply || si.approvalStatus || si.taxFolio
+          )
+          return (
+            <Card className="p-6 mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">System Information</h2>
+              {hasDetail ? (
+                <>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <InfoRow icon={FileText} label="System Type" value={si.type} tier={si.systemTypeVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Hash} label="Permit Number" value={si.permitNumber} tier={si.permitNumberVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Calendar} label="Permit / Approval Date" value={si.permitDate} tier={si.permitDateVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={CheckCircle} label="Final Inspection" value={si.finalInspectionDate} tier="verified" />
+                    <InfoRow icon={Gauge} label="Permitted Capacity" value={si.capacity} tier={si.capacityVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Ruler} label="Estimated Tank Size" value={si.estimatedTankSize} tier="inferred" />
+                    <InfoRow icon={Calendar} label="System Age" value={si.ageEstimate} tier="inferred" />
+                    <InfoRow icon={Ruler} label="Lot Size" value={si.lotSize} tier={si.lotSizeVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Home} label="Property Type" value={si.propertyType} tier={si.propertyTypeVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Droplets} label="Water Supply" value={si.waterSupply} tier={si.waterSupplyVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={CheckCircle} label="Approval Status" value={si.approvalStatus} tier={si.approvalStatusVerified ? 'verified' : 'reported'} />
+                    <InfoRow icon={Hash} label="Tax Folio / Parcel" value={si.taxFolio} tier="verified" />
                   </div>
-                </div>
-              )}
-              {report.systemInfo.permitNumber && (
-                <div className="flex items-start gap-3">
-                  <Hash className="w-5 h-5 text-gray-600 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-600">Permit Number</p>
-                    <p className="font-semibold">{report.systemInfo.permitNumber}</p>
-                  </div>
-                </div>
-              )}
-              {report.systemInfo.permitDate && (
-                <div className="flex items-start gap-3">
-                  <Calendar className="w-5 h-5 text-gray-600 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-600">Permit Date</p>
-                    <p className="font-semibold">
-                      {new Date(report.systemInfo.permitDate).toLocaleDateString()}
+                  <p className="text-xs text-gray-500 mt-4 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    Fields are labeled by confidence: <span className="text-emerald-700 font-medium">Verified</span> (from the permit record),
+                    <span className="text-amber-700 font-medium"> Inferred</span> (calculated), and
+                    <span className="text-gray-500 font-medium"> Reported</span> (from the source dataset).
+                  </p>
+                </>
+              ) : (
+                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                  <FileText className="w-5 h-5 text-gray-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-gray-700">
+                    <p className="font-semibold mb-1">Confirmed location &amp; status for this property.</p>
+                    <p>
+                      Detailed permit information (permit number, system type, capacity) isn&apos;t available
+                      in the government dataset for this address — common for older systems and areas where
+                      only location data has been digitized. The septic/sewer status, location, and data
+                      sources above still apply.
                     </p>
                   </div>
                 </div>
               )}
-              {report.systemInfo.ageEstimate && (
-                <div className="flex items-start gap-3">
-                  <Calendar className="w-5 h-5 text-gray-600 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-gray-600">Age Estimate</p>
-                    <p className="font-semibold">{report.systemInfo.ageEstimate}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </Card>
-        )}
+            </Card>
+          )
+        })()}
 
         {/* Risk Assessment */}
         {report.riskLevel && (
@@ -471,6 +540,30 @@ function ReportViewContent() {
             </div>
           </Card>
         )}
+
+        {/* Recommendations / Next Steps — shown on EVERY report for consistent value */}
+        <Card className="p-6 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Recommended Next Steps</h2>
+          <ul className="space-y-3 text-gray-700">
+            {(report.classification === 'septic' || report.classification === 'likely_septic') && (
+              <>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" /><span>Use the GPS location above as your starting point, then confirm the exact lid with a probe or a professional locate before any digging.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" /><span>Have the tank pumped and inspected every 3–5 years; if you&apos;re buying this home, schedule a septic inspection before closing.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" /><span>Watch for warning signs: slow drains, odors, or unusually lush grass over the drain field.</span></li>
+              </>
+            )}
+            {(report.classification === 'sewer' || report.classification === 'likely_sewer') && (
+              <>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" /><span>This property appears to be on municipal sewer, so routine septic maintenance shouldn&apos;t be needed.</span></li>
+                <li className="flex items-start gap-2"><CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" /><span>If you have reason to believe there&apos;s a septic system (older home, rural area), confirm with your county health department.</span></li>
+              </>
+            )}
+            {report.classification === 'unknown' && (
+              <li className="flex items-start gap-2"><AlertTriangle className="w-5 h-5 text-gray-500 mt-0.5 flex-shrink-0" /><span>We couldn&apos;t determine the system type from available records. Contact your county health department for historical permits, or hire a professional locator.</span></li>
+            )}
+            <li className="flex items-start gap-2"><AlertTriangle className="w-5 h-5 text-gray-500 mt-0.5 flex-shrink-0" /><span>Always call 811 (&ldquo;Call Before You Dig&rdquo;) before any excavation, regardless of what this report shows.</span></li>
+          </ul>
+        </Card>
 
         {/* Data Sources */}
         {report.sources && report.sources.length > 0 && (
