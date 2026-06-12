@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { MapPin, CheckCircle, FileText, Scale, DollarSign, ArrowRight, ShieldCheck, ExternalLink } from 'lucide-react'
+import { MapPin, FileText, Scale, DollarSign, ArrowRight, ShieldCheck, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { SiteHeader } from '@/components/SiteHeader'
