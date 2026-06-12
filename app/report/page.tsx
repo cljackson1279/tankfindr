@@ -253,7 +253,7 @@ function ReportPageContent() {
             <Link href="/sample-report" className="text-emerald-700 underline hover:text-emerald-900">
               See a full sample report
             </Link>
-            {' '}• $29 • No record found? Automatic full refund
+            {' '}• $29 • Instant access
           </p>
         </div>
 
@@ -309,9 +309,9 @@ function ReportPageContent() {
                   <div>
                     <h3 className="font-bold text-amber-900 mb-1">Limited data for this area</h3>
                     <p className="text-sm text-amber-900">
-                      We don&apos;t yet have septic records for this location, so a report would likely
-                      come back with no record found. We don&apos;t recommend purchasing a report here —
-                      but if you do, our guarantee applies: <strong>no record found, automatic full refund.</strong>
+                      We don&apos;t yet have septic records for this area, so a report for this address
+                      would likely come back empty. We don&apos;t recommend purchasing for this
+                      location — our coverage is expanding, so it&apos;s worth checking back soon.
                     </p>
                   </div>
                 </div>
@@ -407,7 +407,7 @@ function ReportPageContent() {
                   </Button>
                   <p className="text-xs text-green-100 mt-3 flex items-center justify-end gap-1">
                     <Shield className="w-4 h-4" />
-                    No record found? Automatic full refund.
+                    Secure checkout • Instant access
                   </p>
                 </div>
               </div>

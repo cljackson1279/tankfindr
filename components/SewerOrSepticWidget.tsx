@@ -148,7 +148,7 @@ export default function SewerOrSepticWidget() {
             </p>
             <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              No record found? Automatic full refund.
+              See your full report instantly — no account needed.
             </p>
           </div>
         )}

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
           currency: 'usd',
           product_data: {
             name: 'TankFindr Property Report',
-            description: `Septic tank location report for ${address}. No record found? Automatic full refund.`,
+            description: `Septic tank location report for ${address}.`,
           },
           unit_amount: 2900, // $29.00
         },

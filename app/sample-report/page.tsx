@@ -227,7 +227,7 @@ export default function SampleReportPage() {
             <h2 className="text-3xl font-bold mb-3">Get this report for your property</h2>
             <p className="text-emerald-50 mb-6 max-w-xl mx-auto">
               Instant results, downloadable PDF, no account required. Every data point labeled by
-              confidence — and if we find no record, you automatically get a full refund.
+              confidence, so you know exactly what you&apos;re getting.
             </p>
             <Link href="/report">
               <Button size="lg" className="bg-white text-emerald-700 hover:bg-gray-100 font-semibold px-10">
@@ -236,7 +236,7 @@ export default function SampleReportPage() {
             </Link>
             <p className="text-sm text-emerald-100 mt-4 flex items-center justify-center gap-1">
               <ShieldCheck className="w-4 h-4" />
-              No record found? Automatic full refund.
+              Secure checkout • Instant access
             </p>
           </Card>
         </div>
