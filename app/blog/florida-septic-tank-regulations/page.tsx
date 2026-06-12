@@ -75,7 +75,7 @@ export default function BlogPost() {
               <div>
                 <h3 className="font-bold text-lg">Finding Your Permit</h3>
                 <p className="text-gray-700">
-                  You can find your property's septic permit through your county health department or by using an online database like <Link href="/florida-septic-tank-locator">TankFindr's Florida Locator</Link>, which has over 2.1 million DEP records.
+                  You can find your property's septic permit through your county health department or by using an online database like <Link href="/septic-records/florida">TankFindr's Florida Locator</Link>, which has over 2.1 million DEP records.
                 </p>
               </div>
             </div>
