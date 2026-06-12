@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: 'https://tankfindr.com/:path*',
         permanent: true,
       },
+      // Old flat state slugs -> new /septic-records/[state] hierarchy (301).
+      // Florida had a real page (preserve its equity); CA/VA were 404s.
+      { source: '/florida-septic-tank-locator', destination: '/septic-records/florida', permanent: true },
+      { source: '/california-septic-tank-locator', destination: '/septic-records/california', permanent: true },
+      { source: '/virginia-septic-tank-locator', destination: '/septic-records/virginia', permanent: true },
     ];
   },
 };

@@ -1,10 +1,28 @@
 import { MetadataRoute } from 'next'
+import { STATES } from '@/lib/stateData'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tankfindr.com'
   const currentDate = new Date()
 
+  // Programmatic state coverage pages (the hub + one page per featured state).
+  const stateEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/septic-records`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    ...STATES.map((s) => ({
+      url: `${baseUrl}/septic-records/${s.slug}`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
+  ]
+
   return [
+    ...stateEntries,
     // Homepage - Highest priority
     {
       url: baseUrl,
@@ -41,26 +59,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     
-    // State Landing Pages - High Priority for Local SEO
-    {
-      url: `${baseUrl}/florida-septic-tank-locator`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/california-septic-tank-locator`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    },
-    {
-      url: `${baseUrl}/virginia-septic-tank-locator`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.85,
-    },
-    
+    // NOTE: the old flat state slugs (/florida-septic-tank-locator, etc.) were
+    // removed — California/Virginia never existed (404s) and Florida now lives
+    // at /septic-records/florida. The flat slugs 301-redirect there (next.config).
+
     // Information Pages - Medium-High Priority
     {
       url: `${baseUrl}/coverage`,

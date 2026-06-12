@@ -10,6 +10,7 @@ export function SiteFooter() {
             <h3 className="font-bold mb-4">Product</h3>
             <ul className="space-y-2">
               <li><Link href="/coverage" className="text-gray-600 hover:text-gray-900">Coverage Map</Link></li>
+              <li><Link href="/septic-records" className="text-gray-600 hover:text-gray-900">Septic Records by State</Link></li>
               <li><Link href="/report" className="text-gray-600 hover:text-gray-900">Property Reports</Link></li>
               <li><Link href="/sample-report" className="text-gray-600 hover:text-gray-900">Sample Report</Link></li>
               <li><Link href="/pricing-pro" className="text-gray-600 hover:text-gray-900">For Septic Companies</Link></li>
