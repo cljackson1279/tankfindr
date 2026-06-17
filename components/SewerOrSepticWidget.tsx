@@ -140,7 +140,7 @@ export default function SewerOrSepticWidget() {
           <div className="space-y-3 mt-6">
             <Link href={`/report?address=${encodeURIComponent(result.address)}`}>
               <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                View Full Septic Report - $29
+                View Full Septic Report - $19
               </Button>
             </Link>
             <p className="text-sm text-gray-600">
@@ -161,7 +161,7 @@ export default function SewerOrSepticWidget() {
             </p>
             <Link href={`/report?address=${encodeURIComponent(result.address)}`}>
               <Button variant="outline" className="w-full">
-                Get the Full Report - $29
+                Get the Full Report - $19
               </Button>
             </Link>
           </div>

@@ -17,7 +17,7 @@ import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'Sample Septic Report - See Exactly What You Get for $29',
+  title: 'Sample Septic Report - See Exactly What You Get for $19',
   description:
     'Preview a real TankFindr property septic report: GPS tank coordinates, system type, permit number, capacity, age estimate, risk assessment, and data sources — every field labeled by confidence.',
   alternates: {
@@ -236,7 +236,7 @@ export default function SampleReportPage() {
             </p>
             <Link href="/report">
               <Button size="lg" className="bg-white text-emerald-700 hover:bg-gray-100 font-semibold px-10">
-                Check My Address — $29
+                Check My Address — $19
               </Button>
             </Link>
             <p className="text-sm text-emerald-100 mt-4 flex items-center justify-center gap-1">

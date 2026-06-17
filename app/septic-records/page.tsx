@@ -46,7 +46,7 @@ export default function SepticRecordsHub() {
             Find My Septic Tank <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </Link>
-        <p className="text-sm text-gray-500 mt-3">$29 per report • Instant access • No account required</p>
+        <p className="text-sm text-gray-500 mt-3">$19 per report • Instant access • No account required</p>
       </section>
 
       <section className="container mx-auto px-4 pb-16 max-w-5xl">

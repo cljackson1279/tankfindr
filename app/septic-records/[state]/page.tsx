@@ -128,7 +128,7 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
             <Button size="lg" variant="outline">See a Sample Report</Button>
           </Link>
         </div>
-        <p className="text-sm text-gray-500">$29 per report • Instant access • No account required</p>
+        <p className="text-sm text-gray-500">$19 per report • Instant access • No account required</p>
       </section>
 
       {/* Coverage stats */}
@@ -257,7 +257,7 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
           <p className="text-emerald-50 mb-6">Instant report with GPS location, system status, and any records on file.</p>
           <Link href="/report">
             <Button size="lg" className="bg-white text-emerald-700 hover:bg-gray-100 font-semibold px-10">
-              Check My Address — $29
+              Check My Address — $19
             </Button>
           </Link>
         </Card>

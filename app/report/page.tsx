@@ -127,7 +127,7 @@ function ReportPageContent() {
     }
   }
 
-  const calculateTotal = () => 29
+  const calculateTotal = () => 19
 
   const handlePurchase = async () => {
     if (!preview) return
@@ -253,7 +253,7 @@ function ReportPageContent() {
             <Link href="/sample-report" className="text-emerald-700 underline hover:text-emerald-900">
               See a full sample report
             </Link>
-            {' '}• $29 • Instant access
+            {' '}• $19 • Instant access
           </p>
         </div>
 
