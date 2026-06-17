@@ -68,7 +68,7 @@ export default function HomePage() {
           </Link>
         </div>
         <p className="text-sm text-gray-600 mb-10">
-          $29 per report • Instant access • No account required
+          $19 per report • Instant access • No account required
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-600 mb-12">
@@ -229,7 +229,7 @@ export default function HomePage() {
 
             <Link href="/report">
               <Button className="w-full bg-green-600 hover:bg-green-700" size="lg">
-                Get Property Report ($29)
+                Get Property Report ($19)
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>

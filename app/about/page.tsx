@@ -184,7 +184,7 @@ export default function AboutPage() {
         </div>
         <p className="text-sm text-gray-500 mt-4 flex items-center justify-center gap-1">
           <ShieldCheck className="w-4 h-4 text-emerald-600" />
-          $29 per report • Instant access • Downloadable PDF
+          $19 per report • Instant access • Downloadable PDF
         </p>
       </section>
 
