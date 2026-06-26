@@ -42,8 +42,8 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
 
   // Get user profile with subscription info
   const { data: profile, error } = await supabase
-    .from('users')
-    .select('subscription_tier, subscription_status, lookups_remaining, subscription_end_date')
+    .from('profiles')
+    .select('subscription_tier, subscription_status, lookups_used, current_period_end')
     .eq('id', userId)
     .single();
 
@@ -60,7 +60,8 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
   }
 
   const tier = profile.subscription_tier as 'starter' | 'pro' | 'enterprise' | 'inspector' | null;
-  const isActive = profile.subscription_status === 'active';
+  // Treat trialing (and canceling-but-not-yet-ended) as active access.
+  const isActive = ['active', 'trialing', 'canceling'].includes(profile.subscription_status);
   
   // Handle inspector tier separately
   if (tier === 'inspector') {
@@ -71,10 +72,10 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
       lookupsLimit: -1,
       isUnlimited: true,
       billingPeriodStart: null,
-      billingPeriodEnd: profile.subscription_end_date,
+      billingPeriodEnd: profile.current_period_end,
     };
   }
-  
+
   if (!isActive || !tier) {
     return {
       isActive: false,
@@ -90,8 +91,7 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
   const tierConfig = SUBSCRIPTION_TIERS[tier];
   const isUnlimited = tierConfig.lookups === -1;
   const lookupsLimit = isUnlimited ? -1 : tierConfig.lookups;
-  const lookupsRemaining = profile.lookups_remaining || 0;
-  const lookupsUsed = isUnlimited ? 0 : Math.max(0, lookupsLimit - lookupsRemaining);
+  const lookupsUsed = isUnlimited ? 0 : (profile.lookups_used || 0);
 
   return {
     isActive: true,
@@ -100,7 +100,7 @@ export async function checkSubscription(userId: string): Promise<SubscriptionSta
     lookupsLimit,
     isUnlimited,
     billingPeriodStart: null,
-    billingPeriodEnd: profile.subscription_end_date,
+    billingPeriodEnd: profile.current_period_end,
   };
 }
 
