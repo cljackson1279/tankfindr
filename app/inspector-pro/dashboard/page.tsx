@@ -46,8 +46,8 @@ export default function InspectorDashboard() {
       .eq('id', user.id)
       .single()
 
-    if (!profile || profile.subscription_tier !== 'inspector' || profile.subscription_status !== 'active') {
-      // Not subscribed to Inspector Pro
+    if (!profile || profile.subscription_tier !== 'inspector' || !['active', 'trialing', 'canceling'].includes(profile.subscription_status)) {
+      // Not subscribed to Inspector Pro (trialing counts as active access)
       router.push('/inspector-pro')
       return
     }

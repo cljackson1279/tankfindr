@@ -52,7 +52,7 @@ export default function InspectorReport() {
       .eq('id', user.id)
       .single()
 
-    if (!profile || profile.subscription_tier !== 'inspector' || profile.subscription_status !== 'active') {
+    if (!profile || profile.subscription_tier !== 'inspector' || !['active', 'trialing', 'canceling'].includes(profile.subscription_status)) {
       router.push('/inspector-pro')
       return
     }

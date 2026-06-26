@@ -212,7 +212,7 @@ export async function POST(request: NextRequest) {
     console.log('Profile lookup:', { userId, profile, profileError });
 
     if (!isAdmin) {
-      if (profile?.subscription_status !== 'active') {
+      if (!profile || !['active', 'trialing', 'canceling'].includes(profile.subscription_status)) {
         return NextResponse.json(
           { error: 'No active subscription. Please subscribe to TankFindr Pro to access the locator.' },
           { status: 403 }

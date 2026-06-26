@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     // Get user's subscription from database
     const { data: user, error: subError } = await supabase
-      .from('users')
+      .from('profiles')
       .select('stripe_subscription_id, stripe_customer_id, subscription_status')
       .eq('id', userId)
       .single();
@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-    
-    if (user.subscription_status !== 'active') {
+
+    if (!['active', 'trialing'].includes(user.subscription_status)) {
       return NextResponse.json(
         { error: 'Subscription is not active' },
         { status: 400 }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
 
     // Update subscription status in database
     await supabase
-      .from('users')
+      .from('profiles')
       .update({
         subscription_status: 'canceling', // Mark as canceling but still active until period end
         updated_at: new Date().toISOString(),
