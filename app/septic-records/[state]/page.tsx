@@ -16,7 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ state: st
   const { state: slug } = await params
   const s = getState(slug)
   if (!s) return { title: 'Septic Records' }
-  const title = `${s.name} Septic Tank Locator — Find Septic Records by Address`
+  // Keep the title short enough to avoid SERP truncation: the root layout
+  // appends " | TankFindr", so "<State> Septic Tank Locator | TankFindr" stays
+  // well under ~60 chars and leads with the exact-match keyword.
+  const title = `${s.name} Septic Tank Locator`
   const description = `Find septic tank locations and records in ${s.name}. ${s.coverageNote} Search ${s.displayLocations} mapped septic locations from government data. Instant property reports.`
   return {
     title,

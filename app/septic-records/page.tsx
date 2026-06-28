@@ -8,7 +8,7 @@ import { SiteFooter } from '@/components/SiteFooter'
 import { STATES, TOTAL_DISPLAY_LOCATIONS, TOTAL_STATES } from '@/lib/stateData'
 
 export const metadata: Metadata = {
-  title: 'Septic Records by State — Find Septic Tanks Across the U.S.',
+  title: 'Septic Records by State',
   description: `Browse septic tank records and coverage by state. TankFindr maps ${TOTAL_DISPLAY_LOCATIONS} septic locations across ${TOTAL_STATES} states from government data. Find your septic tank by address.`,
   alternates: { canonical: '/septic-records' },
   openGraph: {
