@@ -8,10 +8,6 @@ export const metadata: Metadata = {
   title: 'Your Account',
 }
 
-export default function ProtectedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
+export default function AccountLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
 }

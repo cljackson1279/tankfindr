@@ -1,3 +1,19 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Terms and Conditions',
+  description: "The terms governing your access to and use of TankFindr's septic tank locator service, reports, and subscriptions.",
+  alternates: {
+    canonical: 'https://tankfindr.com/terms',
+  },
+  openGraph: {
+    title: 'Terms and Conditions | TankFindr',
+    description: "The terms governing your access to and use of TankFindr's septic tank locator service, reports, and subscriptions.",
+    type: 'website',
+    url: 'https://tankfindr.com/terms',
+  },
+}
+
 import { Card } from '@/components/ui/card'
 
 export default function TermsPage() {

@@ -5,13 +5,9 @@ import { noindexMetadata } from '@/lib/seo/noindex'
 // then excluded from the index. See app/robots.ts for the full rationale.
 export const metadata: Metadata = {
   ...noindexMetadata,
-  title: 'Your Account',
+  title: 'Inspector Report',
 }
 
-export default function ProtectedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return <>{children}</>;
+export default function InspectorProReportLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
 }

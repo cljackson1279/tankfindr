@@ -1,3 +1,19 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description: 'How TankFindr collects, uses, and protects your information when you use our septic tank locator service. Read our full privacy policy.',
+  alternates: {
+    canonical: 'https://tankfindr.com/privacy',
+  },
+  openGraph: {
+    title: 'Privacy Policy | TankFindr',
+    description: 'How TankFindr collects, uses, and protects your information when you use our septic tank locator service. Read our full privacy policy.',
+    type: 'website',
+    url: 'https://tankfindr.com/privacy',
+  },
+}
+
 import { Card } from '@/components/ui/card'
 
 export default function PrivacyPage() {

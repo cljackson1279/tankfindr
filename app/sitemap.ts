@@ -32,12 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     
     // Core Product Pages - Very High Priority
-    {
-      url: `${baseUrl}/pro`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly',
-      priority: 0.95,
-    },
+    //
+    // NOTE: /pro was removed from this sitemap. It is not a marketing page —
+    // it is the logged-in Pro dashboard, which redirects unauthenticated
+    // visitors to /auth/login. Listing it here asked Google to prioritise a
+    // URL it could only ever see as a login redirect, while robots.txt
+    // simultaneously disallowed crawling it: a sitemap-vs-robots
+    // contradiction. The public page selling the same product is /pricing-pro,
+    // listed below. /pro now carries noindex via app/pro/layout.tsx.
     {
       url: `${baseUrl}/report`,
       lastModified: currentDate,
@@ -135,8 +137,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     
     // NOTE: auth pages (/auth/login, /auth/sign-up) intentionally excluded —
-    // they have no crawl value and were diluting the sitemap. They are also
-    // disallowed in robots.ts and carry noindex.
+    // they have no crawl value and were diluting the sitemap. They now carry a
+    // real `noindex, follow` directive via app/auth/layout.tsx.
+    //
+    // (An earlier version of this comment claimed they already carried
+    // noindex. They did not — nothing in the codebase emitted noindex, which
+    // is why /auth/login was indexed as a bare URL. Fixed.)
 
     // Legal Pages - Low Priority
     {
