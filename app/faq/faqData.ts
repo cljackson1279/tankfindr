@@ -1,3 +1,5 @@
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
+
 // Shared FAQ data — imported by both the client page (app/faq/page.tsx) and
 // the server layout (app/faq/layout.tsx) so the visible Q&A and the FAQPage
 // JSON-LD schema always stay in sync.
@@ -13,7 +15,7 @@ export const faqs: FAQItem[] = [
   {
     category: 'General',
     question: 'What is TankFindr?',
-    answer: 'TankFindr is a septic tank location service that helps homeowners, real estate professionals, and septic contractors quickly find septic system locations using real government permit and GIS data. We aggregate publicly available government records covering 2.5+ million septic systems across 20 states, with the deepest coverage in Florida (all 67 counties).',
+    answer: `TankFindr is a septic tank location service that helps homeowners, real estate professionals, and septic contractors quickly find septic system locations using real government permit and GIS data. We aggregate publicly available government records covering ${TOTAL_RECORDS_DISPLAY} septic systems, with in-depth coverage in ${FEATURED_STATE_COUNT} states and the deepest coverage in Florida (all 67 counties).`,
   },
   {
     category: 'General',
@@ -58,7 +60,7 @@ export const faqs: FAQItem[] = [
   {
     category: 'General',
     question: 'What areas does TankFindr cover?',
-    answer: 'We currently have records across 20 states, with the deepest coverage in Florida (all 67 counties), New Mexico, California, Virginia, and Vermont, plus growing coverage in Pennsylvania, North Carolina, Maryland, Iowa, Indiana, and more. Coverage depth varies by state — visit our Coverage page for the full, current list with record counts by area.',
+    answer: `We have in-depth coverage in ${FEATURED_STATE_COUNT} states — Florida (all 67 counties), New Mexico, Virginia, Vermont, California, Maryland, Iowa, North Carolina, Ohio and Indiana — plus smaller datasets in several more. Coverage depth varies by state and county; visit our Coverage page for the current list with record counts by area.`,
   },
   {
     category: 'General',

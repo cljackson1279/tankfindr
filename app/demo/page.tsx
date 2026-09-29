@@ -17,6 +17,7 @@ import { MapPin, Clock, CheckCircle, AlertCircle, ExternalLink } from 'lucide-re
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import Link from 'next/link'
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
 
 export default function DemoPage() {
   const [selectedExample, setSelectedExample] = useState<ProofExample | null>(
@@ -66,7 +67,7 @@ export default function DemoPage() {
         {/* Stats Banner */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <Card className="p-6 text-center bg-white">
-            <div className="text-4xl font-bold text-emerald-600 mb-2">2.5M+</div>
+            <div className="text-4xl font-bold text-emerald-600 mb-2">{TOTAL_RECORDS_DISPLAY}</div>
             <div className="text-gray-600 font-medium">Florida Septic Records</div>
           </Card>
           <Card className="p-6 text-center bg-white">

@@ -36,7 +36,7 @@ export function SiteHeader() {
   return (
     <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-green-600 hover:text-green-700">
+        <Link href="/" className="text-xl font-semibold tracking-tight text-emerald-800 hover:text-emerald-900">
           TankFindr
         </Link>
 
@@ -48,8 +48,8 @@ export function SiteHeader() {
               href={link.href}
               className={
                 link.highlight
-                  ? 'text-purple-600 hover:text-purple-900 font-medium'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-slate-900 hover:text-emerald-800 font-medium'
+                  : 'text-slate-600 hover:text-slate-900'
               }
             >
               {link.label}
@@ -62,7 +62,7 @@ export function SiteHeader() {
           ) : (
             <>
               <Link href="/pro">
-                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <Button className="bg-emerald-700 hover:bg-emerald-800 text-white">
                   Dashboard
                 </Button>
               </Link>
@@ -100,8 +100,8 @@ export function SiteHeader() {
               onClick={() => setMobileOpen(false)}
               className={`block py-3 px-2 rounded-lg text-base ${
                 link.highlight
-                  ? 'text-purple-600 font-medium hover:bg-purple-50'
-                  : 'text-gray-700 hover:bg-gray-50'
+                  ? 'text-slate-900 font-medium hover:bg-slate-50'
+                  : 'text-slate-700 hover:bg-slate-50'
               }`}
             >
               {link.label}
@@ -115,7 +115,7 @@ export function SiteHeader() {
             ) : (
               <div className="space-y-2">
                 <Link href="/pro" onClick={() => setMobileOpen(false)}>
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                  <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white">
                     Dashboard
                   </Button>
                 </Link>

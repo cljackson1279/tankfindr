@@ -1,3 +1,5 @@
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
+
 export function StructuredData() {
   // Organization schema
   const organizationData = {
@@ -6,7 +8,7 @@ export function StructuredData() {
     name: 'TankFindr',
     url: 'https://tankfindr.com',
     logo: 'https://tankfindr.com/icon-512.png',
-    description: 'The #1 septic tank locator tool trusted by contractors, inspectors, and homeowners across America.',
+    description: 'Septic tank locator built on government permit records, used by septic contractors, home inspectors and homeowners.',
     foundingDate: '2024',
     sameAs: [
       'https://twitter.com/tankfindr',
@@ -29,7 +31,7 @@ export function StructuredData() {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     url: 'https://tankfindr.com',
-    description: 'Professional septic tank locator tool - Find septic tanks instantly with GPS coordinates. Access 2.5M+ septic system records across 20 states, sourced from government permit databases with transparent data quality labels.',
+    description: `Septic tank locator with GPS coordinates from government permit databases. ${COVERAGE_CLAIM_LONG}, each labeled by data quality.`,
     offers: [
       {
         '@type': 'Offer',
@@ -82,8 +84,8 @@ export function StructuredData() {
     },
     featureList: [
       'GPS-accurate septic tank locations',
-      '2.5M+ septic system records',
-      'Coverage across 20 states',
+      `${TOTAL_RECORDS_DISPLAY} septic system records`,
+      `In-depth coverage in ${FEATURED_STATE_COUNT} states`,
       'Instant septic tank lookup by address',
       'Septic vs sewer identification',
       'Government permit record access',
