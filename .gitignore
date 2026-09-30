@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Data pipeline working files (raw downloads, staged output)
+pipeline/data/

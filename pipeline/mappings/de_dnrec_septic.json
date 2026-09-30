@@ -1,0 +1,124 @@
+{
+  "name": "Delaware DNREC Septic Permits",
+  "state": "DE",
+  "data_quality": "verified_permit",
+  "_agent_notes": [
+    "Written from data/profile/de_dnrec_septic.json (88,171 rows; the source itself publishes 88,183 rows for only 76,339 unique OBJECTIDs, so duplicates are upstream).",
+    "Owner names/addresses are dropped at fetch time (sources.json drop_fields).",
+    "HorizontalMethod: 74% Parcel Centroid (medium), 20% photo-interpolated from orthophotos + 4% GIS high-accuracy (high: placed on the actual system), 2% address match (medium).",
+    "PermitStatus decides whether a system exists: Void/Revoked/Withdrawn/Denied/Returned/Suspended = never built (excluded). System Abandoned = likely converted to sewer (excluded from septic; useful later as sewer evidence). Pending/On Hold/Application Received = proposed (excluded). Expired = kept as septic_unconfirmed.",
+    "16,918 parcels have multiple permits (original + replacements); one_per_parcel keeps the newest so the tank size and system type are current.",
+    "SiteAddress is only 22% filled and lacks house numbers, so it is kept as a partial address; ZIP comes from the parcel centroid.",
+    "TreatmentTankCapacity 0 means not recorded, so it is mapped to null.",
+    "Review 1: of 622 out-of-state points, some are clearly bad (e.g. a Virginia point, rejected) and some sit within tens of meters of the PA/MD line; a 150 m border tolerance now keeps those with a near_boundary flag.",
+    "Review 2: 605 of the 606 remaining rejects share one sentinel point in Virginia (37.978, -77.693) \u2014 failed photo placements. Each has a valid parcel centroid, so fallback_coords recovers them as parcel_centroid (medium confidence) with a coords_recovered_from_fallback flag."
+  ],
+  "attr_coords": [
+    "Latitude",
+    "Longitude"
+  ],
+  "one_per_parcel": true,
+  "ignore_text_fields": [
+    "WATERCPCN",
+    "WASTEWATERCPCN",
+    "DocumentLink",
+    "Designer",
+    "ContractorName"
+  ],
+  "exclude_record_types": [
+    "not_installed",
+    "abandoned_septic",
+    "proposed_septic"
+  ],
+  "fields": {
+    "source_record_id": "OBJECTID",
+    "county": {
+      "first_of": [
+        "TaxParcelCounty",
+        "PiCounty",
+        "Parcel_COUNTY"
+      ]
+    },
+    "permit_number": "PermitNumber",
+    "permit_date": {
+      "first_of": [
+        "ApprovedDate",
+        "calcDecisionDate",
+        "StartDate",
+        "DateReceived"
+      ],
+      "date": true,
+      "formats": [
+        "%Y-%m-%d"
+      ]
+    },
+    "permit_status": "PermitStatus",
+    "system_type": "PermitType",
+    "tank_capacity_gal": {
+      "field": "TreatmentTankCapacity",
+      "number": true,
+      "map": {
+        "0": null,
+        "0.0": null
+      }
+    },
+    "record_type": {
+      "template": "{PermitStatus}|{SepticPropUse}",
+      "default": "septic_unclassified",
+      "rules": [
+        [
+          "^(Void|Revoked|Withdrawn|Denied|Application Returned|Suspended)\\|",
+          "not_installed"
+        ],
+        [
+          "^System Abandoned",
+          "abandoned_septic"
+        ],
+        [
+          "^(Pending|On Hold|Application Received|Call Notification Received)\\|",
+          "proposed_septic"
+        ],
+        [
+          "^Expired\\|",
+          "septic_unconfirmed"
+        ],
+        [
+          "\\|\\d-bedroom",
+          "residential_septic"
+        ]
+      ]
+    },
+    "location_method": {
+      "field": "HorizontalMethod",
+      "default": "unknown",
+      "rules": [
+        [
+          "^GPS",
+          "gps_permit"
+        ],
+        [
+          "PHOTO INTERPOLATION|HIGH ACCURACY",
+          "imagery_interpolation"
+        ],
+        [
+          "PARCEL CENTROID",
+          "parcel_centroid"
+        ],
+        [
+          "ADDRESS MATCH",
+          "address_geocode"
+        ]
+      ]
+    },
+    "address": "SiteAddress",
+    "city": null,
+    "zip": "ParcelCentroid_ZIPCODE",
+    "parcel_id": "TaxParcelNumber",
+    "source_url": "DocumentLink"
+  },
+  "fallback_coords": [
+    "ParcelCentroid_LATITUDE",
+    "ParcelCentroid_LONGITUDE",
+    "parcel_centroid"
+  ]
+}
