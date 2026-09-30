@@ -42,7 +42,9 @@ def identify(lon, lat, tolerance_px=0, geometry=False, half=0.002):
     q = urllib.parse.urlencode({
         "geometry": f"{lon},{lat}", "geometryType": "esriGeometryPoint", "sr": 4326, "layers": "all:0",
         "tolerance": tolerance_px, "mapExtent": f"{lon-half},{lat-half},{lon+half},{lat+half}",
-        "imageDisplay": "400,400,96", "returnGeometry": str(geometry).lower(), "f": "json"})
+        "imageDisplay": "400,400,96", "returnGeometry": str(geometry).lower(),
+        **({"maxAllowableOffset": 0.0001} if geometry else {}),  # ~10 m simplification: plenty for a centroid, far smaller payload
+        "f": "json"})
     for attempt in range(4):
         try:
             with urllib.request.urlopen(urllib.request.Request(f"{IDENTIFY}?{q}", headers=UA), timeout=60) as r:
@@ -92,17 +94,22 @@ def decide(rec, raw):
         return {"status": "verified", "parcel": p}
     street = (p["SITUS_ST_1"] or "").strip().upper()
     zip_ok = lambda c: not permit_zip or not c["SITUS_ZIP"] or c["SITUS_ZIP"] == permit_zip
-    # 1) Geocoder put the point on the right street but the wrong lot: same street, matching number, within ~250 m.
-    if street:
-        wide = identify(rec["longitude"], rec["latitude"], tolerance_px=115, geometry=True, half=0.004) or []
-        same = [c for c in wide if num(c["SITUS_NUM"]) == permit_no and (c["SITUS_ST_1"] or "").strip().upper() == street and "_cx" in c]
-        if len(same) == 1:
-            return {"status": "relocated", "parcel": same[0], "how": "same_street"}
-    # 2) Tight search (~60 m) for the matching number in the same ZIP.
+    same_street = lambda c: street and (c["SITUS_ST_1"] or "").strip().upper() == street
+    # 1) Tight search (~60 m): matching number on the same street, else in the same ZIP.
     near = identify(rec["longitude"], rec["latitude"], tolerance_px=55, geometry=True) or []
-    cands = [c for c in near if num(c["SITUS_NUM"]) == permit_no and zip_ok(c) and "_cx" in c]
+    hits_num = [c for c in near if num(c["SITUS_NUM"]) == permit_no and "_cx" in c]
+    same = [c for c in hits_num if same_street(c)]
+    if len(same) == 1:
+        return {"status": "relocated", "parcel": same[0], "how": "same_street"}
+    cands = [c for c in hits_num if zip_ok(c)]
     if len(cands) == 1:
         return {"status": "relocated", "parcel": cands[0], "how": "nearby_zip"}
+    # 2) Geocoder put the point on the right street but several lots off: same street + number within ~250 m.
+    if street:
+        wide = identify(rec["longitude"], rec["latitude"], tolerance_px=115, geometry=True, half=0.004) or []
+        same = [c for c in wide if num(c["SITUS_NUM"]) == permit_no and same_street(c) and "_cx" in c]
+        if len(same) == 1:
+            return {"status": "relocated", "parcel": same[0], "how": "same_street"}
     if not p["SITUS_NUM"]:
         return {"status": "parcel_unaddressed", "parcel": p}
     return {"status": "mismatch", "parcel": p}

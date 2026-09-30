@@ -217,30 +217,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ─── How it works ─────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-5 pt-16 pb-14 sm:px-8">
-        <h2 className="max-w-xl text-3xl font-semibold tracking-tight">
-          Where is my septic tank? Answered from the public record.
-        </h2>
-        <ol className="mt-12 grid gap-10 md:grid-cols-3">
-          {STEPS.map((s) => (
-            <li key={s.n} className="border-t border-slate-900 pt-5">
-              <span className="font-mono text-sm text-slate-400">{s.n}</span>
-              <h3 className="mt-3 text-lg font-semibold">{s.title}</h3>
-              <p className="mt-2 leading-relaxed text-slate-600">{s.body}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
       {/* ─── Plans ────────────────────────────────────────────── */}
-      <section id="plans" className="scroll-mt-20 border-t border-slate-200">
+      <section id="plans" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
           <h2 className="text-3xl font-semibold tracking-tight">Pick the plan that fits the job.</h2>
+          <p className="mt-3 max-w-2xl leading-relaxed text-slate-600">
+            Buying or selling a home? Get a one-time report. Inspecting or pumping tanks every week? Go unlimited.
+          </p>
           <div className="mt-12 grid overflow-hidden rounded-xl border border-slate-200 md:grid-cols-3 md:divide-x md:divide-slate-200">
             {PLANS.map((p) => (
               <div key={p.name} className={`flex flex-col border-b border-slate-200 p-8 last:border-b-0 md:border-b-0 ${p.featured ? 'bg-slate-50/70' : 'bg-white'}`}>
-                <p className="text-sm text-slate-500">{p.audience}</p>
+                <p className="flex items-center justify-between gap-2 text-sm text-slate-500">
+                  {p.audience}
+                  {p.featured && (
+                    <span className="rounded bg-emerald-700 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">
+                      Most popular
+                    </span>
+                  )}
+                </p>
                 <h3 className="mt-1 text-xl font-semibold">{p.name}</h3>
                 <p className="mt-6 flex items-baseline gap-2">
                   <span className="text-4xl font-semibold tracking-tight">{p.price}</span>
@@ -273,6 +267,22 @@ export default function HomePage() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* ─── How it works ─────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl border-t border-slate-200 px-5 pt-16 pb-14 sm:px-8">
+        <h2 className="max-w-xl text-3xl font-semibold tracking-tight">
+          Where is my septic tank? Answered from the public record.
+        </h2>
+        <ol className="mt-12 grid gap-10 md:grid-cols-3">
+          {STEPS.map((s) => (
+            <li key={s.n} className="border-t border-slate-900 pt-5">
+              <span className="font-mono text-sm text-slate-400">{s.n}</span>
+              <h3 className="mt-3 text-lg font-semibold">{s.title}</h3>
+              <p className="mt-2 leading-relaxed text-slate-600">{s.body}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       {/* ─── Data quality ─────────────────────────────────────── */}
