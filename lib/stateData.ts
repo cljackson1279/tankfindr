@@ -288,11 +288,42 @@ export const STATES: CoverageState[] = [
     coverageNote: 'Septic system location records for Allen County, Ohio.',
     coveredAreas: ['Allen County'],
   },
+  {
+    slug: 'texas',
+    name: 'Texas',
+    abbr: 'TX',
+    displayLocations: '105,000+',
+    distinctLocations: 105966,
+    coverageType: 'counties',
+    coverageNote:
+      'Permitted on-site sewage facility (OSSF) records for 16 Houston-region counties, each matched to its appraisal-district parcel so the address is confirmed by house number.',
+    coveredAreas: ['Harris County', 'Montgomery County', 'Brazoria County', 'Fort Bend County', 'Galveston County',
+      'Austin County', 'Waller County', 'Liberty County', 'Walker County', 'Chambers County', 'Wharton County',
+      'Matagorda County', 'Denton County', 'Colorado County', 'Grimes County', 'San Jacinto County'],
+    sources: [
+      { label: 'Houston-Galveston Area Council: Permitted OSSFs', url: 'https://gis.h-gac.com/arcgis/rest/services/OSSF/Permitted_OSSFs_by_Agent/MapServer' },
+      { label: 'Texas Geographic Information Office: StratMap Land Parcels', url: 'https://geographic.texas.gov/stratmap/land-parcels.html' },
+    ],
+  },
+  {
+    slug: 'delaware',
+    name: 'Delaware',
+    abbr: 'DE',
+    displayLocations: '60,000+',
+    distinctLocations: 60943,
+    coverageType: 'statewide',
+    coverageNote:
+      'Statewide DNREC septic permits for New Castle, Kent and Sussex counties, each verified to sit inside its own tax parcel. Includes permitted tank capacity where recorded.',
+    coveredAreas: ['Sussex County', 'Kent County', 'New Castle County'],
+    sources: [
+      { label: 'Delaware DNREC: Septic Permits (FirstMap)', url: 'https://enterprise.firstmap.delaware.gov/arcgis/rest/services/Environmental/DE_DNREC_Permits/MapServer' },
+      { label: 'Delaware FirstMap: State Parcels', url: 'https://enterprise.firstmap.delaware.gov/arcgis/rest/services/PlanningCadastre/DE_StateParcels/MapServer' },
+    ],
+  },
 ]
 
 export function getState(slug: string): CoverageState | undefined {
   return STATES.find((s) => s.slug === slug)
 }
 
-export const TOTAL_DISPLAY_LOCATIONS = '2.3M+'
-export const TOTAL_STATES = 20
+// Site-wide totals live in lib/coverage.ts (computed from the rows above).

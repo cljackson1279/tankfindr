@@ -5,15 +5,16 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
-import { STATES, TOTAL_DISPLAY_LOCATIONS, TOTAL_STATES } from '@/lib/stateData'
+import { STATES } from '@/lib/stateData'
+import { TOTAL_RECORDS_DISPLAY as TOTAL_DISPLAY_LOCATIONS, FEATURED_STATE_COUNT as TOTAL_STATES } from '@/lib/coverage'
 
 export const metadata: Metadata = {
   title: 'Septic Records by State — Find Septic Tanks Across the U.S.',
-  description: `Browse septic tank records and coverage by state. TankFindr maps ${TOTAL_DISPLAY_LOCATIONS} septic locations across ${TOTAL_STATES} states from government data. Find your septic tank by address.`,
+  description: `Browse septic tank records and coverage by state. TankFindr maps ${TOTAL_DISPLAY_LOCATIONS} septic locations with in-depth coverage in ${TOTAL_STATES} states, from government data. Find your septic tank by address.`,
   alternates: { canonical: '/septic-records' },
   openGraph: {
     title: 'Septic Records by State — TankFindr',
-    description: `Find septic tank locations and records by state. ${TOTAL_DISPLAY_LOCATIONS} mapped locations across ${TOTAL_STATES} states.`,
+    description: `Find septic tank locations and records by state. ${TOTAL_DISPLAY_LOCATIONS} mapped locations, in-depth coverage in ${TOTAL_STATES} states.`,
     type: 'website',
     url: 'https://tankfindr.com/septic-records',
   },

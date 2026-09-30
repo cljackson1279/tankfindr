@@ -159,7 +159,7 @@ function PricingProContent() {
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-green-600" />
-            <span>20 States Covered</span>
+            <span>{FEATURED_STATE_COUNT} States In Depth</span>
           </div>
           <div className="flex items-center gap-2">
             <Check className="w-5 h-5 text-green-600" />

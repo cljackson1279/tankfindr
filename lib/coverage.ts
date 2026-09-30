@@ -41,7 +41,13 @@ const FEATURED_DETAILS: Record<string, { quality: DataQuality; notes: string }> 
   'north-carolina': { quality: 'High', notes: 'Forsyth and Chatham County septic locations.' },
   ohio: { quality: 'Medium', notes: 'Allen County septic system records.' },
   indiana: { quality: 'Medium', notes: 'Hamilton County septic system locations.' },
+  texas: { quality: 'High', notes: 'County OSSF permits, each matched to its appraisal-district parcel and confirmed by house number.' },
+  delaware: { quality: 'High', notes: 'Statewide DNREC permits, each verified inside its own tax parcel; tank capacity where recorded.' },
 }
+
+/** Keeps long county lists readable in tables and cards: "A, B, C, D + 12 more counties". */
+const shortAreas = (areas: string[]) =>
+  areas.length <= 5 ? areas.join(', ') : `${areas.slice(0, 4).join(', ')} + ${areas.length - 4} more counties`
 
 /**
  * stateData entries whose "statewide" dataset turned out NOT to be residential
@@ -55,7 +61,7 @@ const NON_SEPTIC_DATASETS = new Set(['pennsylvania', 'kentucky'])
 export const FEATURED_COVERAGE: CoverageRow[] = STATES.filter((s) => !NON_SEPTIC_DATASETS.has(s.slug)).map((s) => ({
   state: s.name,
   abbr: s.abbr,
-  areas: s.coveredAreas.join(', '),
+  areas: shortAreas(s.coveredAreas),
   records: s.distinctLocations,
   quality: FEATURED_DETAILS[s.slug]?.quality ?? 'Medium',
   notes: FEATURED_DETAILS[s.slug]?.notes ?? s.coverageNote,
@@ -82,9 +88,10 @@ const sum = (rows: CoverageRow[]) => rows.reduce((n, r) => n + r.records, 0)
 export const TOTAL_RECORDS = sum(FEATURED_COVERAGE) + sum(PARTIAL_COVERAGE)
 export const FEATURED_STATE_COUNT = FEATURED_COVERAGE.length
 export const TOTAL_STATE_COUNT = FEATURED_COVERAGE.length + PARTIAL_COVERAGE.length
-export const COUNTY_DATASET_COUNT = new Set(
-  [...FEATURED_COVERAGE, ...PARTIAL_COVERAGE].flatMap((r) => r.areas.split(', '))
-).size
+export const COUNTY_DATASET_COUNT = new Set([
+  ...STATES.filter((s) => !NON_SEPTIC_DATASETS.has(s.slug)).flatMap((s) => s.coveredAreas.map((a) => `${s.abbr}:${a}`)),
+  ...PARTIAL_COVERAGE.map((r) => `${r.abbr}:${r.areas}`),
+]).size
 
 /** Rounded down to one decimal so the claim is always conservative, e.g. "2.3M+". */
 export const TOTAL_RECORDS_DISPLAY = `${Math.floor(TOTAL_RECORDS / 100_000) / 10}M+`
