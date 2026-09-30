@@ -22,8 +22,13 @@ SELECT
   s.longitude,
   s.source,
   s.data_quality,
-  'pipeline:' || s.source,
+  coalesce(s.source_name, 'pipeline:' || s.source),
   jsonb_strip_nulls(jsonb_build_object(
+    -- lib/septicLookup.ts reads these keys for the report (data quality, system info)
+    'data_quality', s.data_quality,
+    'quality_source', s.source_name,
+    'year_built', s.year_built,
+    'address_match', s.address_match,
     'record_type', s.record_type,
     'permit_number', s.permit_number,
     'permit_date', s.permit_date,

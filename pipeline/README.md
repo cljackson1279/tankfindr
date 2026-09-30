@@ -19,11 +19,29 @@ Standard library Python only. Data files live in `pipeline/data/` (git-ignored).
 | 2. Profile | `python3 pipeline/profile.py [source]` | `data/profile/<source>.json` |
 | 3. Map (agent) | Read the profile, write or revise `mappings/<source>.json` | repo |
 | 4. Validate | `python3 pipeline/validate.py [source]` | `data/clean`, `data/rejected`, `data/reports` |
+| 4b. Texas addresses | `python3 pipeline/enrich_tx_parcels.py` | rewrites `data/clean/tx_hgac_ossf.ndjson`, moves unconfirmed records to `data/held/` |
 | 5. Agent review | Read `data/reports/<source>.md` and a sample of `data/rejected/`, fix the mapping, re-run step 4 | repo |
 | 6. Load | `python3 pipeline/load.py <source> --confirm` (needs service-role key) | `septic_records_staging` |
 | 7. Promote | `sql/002_promote_to_septic_tanks.sql` with `src=<source>` | `septic_tanks` (live) |
 
 Run `sql/001_septic_records_staging.sql` once before the first load.
+
+## Texas addresses (enrich_tx_parcels.py)
+
+H-GAC permits have a house number but no street name, and TankFindr lookups
+start from the customer's typed address, so every Texas record is matched to
+its appraisal-district parcel through the free TxGIO statewide parcel service:
+
+- **verified**: the point is inside the parcel whose house number equals the permit's.
+- **relocated**: the point was a few lots off (usually a street-geocoding error); the
+  parcel with the same house number on the same street within ~250 m (or within
+  ~60 m in the same ZIP) is used, and the record moves to that parcel.
+- **parcel_only**: the permit has no house number; the parcel's address is used, flagged.
+- **held** (not loaded): house numbers disagree with no nearby match, no parcel at the
+  point, or an unaddressed parcel with a geocoded point. These could put a septic
+  result on the wrong house, so they wait in `data/held/` for review.
+
+Sample of 1,500: 70.5% confirmed by house number, 77% eligible to load, 23% held.
 
 ## Where the agent fits
 

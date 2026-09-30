@@ -24,6 +24,9 @@ CREATE TABLE IF NOT EXISTS septic_records_staging (
   location_method      text        NOT NULL,           -- gps_permit | imagery_interpolation | parcel_centroid | address_geocode | unknown
   location_confidence  text        NOT NULL,           -- high | medium | low
   data_quality         text        NOT NULL,
+  source_name          text,                           -- shown in reports as the data source
+  year_built           text,                           -- from appraisal parcel (TX)
+  address_match        text,                           -- verified | relocated | parcel_only | parcel_unaddressed (TX)
   source_url           text,
   validation_flags     text[]      DEFAULT '{}',
   validated_at         timestamptz NOT NULL,
@@ -36,3 +39,8 @@ CREATE INDEX IF NOT EXISTS septic_records_staging_state_county_idx ON septic_rec
 
 -- Staging is private: only the service role (the loader) can touch it.
 ALTER TABLE septic_records_staging ENABLE ROW LEVEL SECURITY;
+
+-- If the table already exists from an earlier run:
+ALTER TABLE septic_records_staging ADD COLUMN IF NOT EXISTS source_name text;
+ALTER TABLE septic_records_staging ADD COLUMN IF NOT EXISTS year_built text;
+ALTER TABLE septic_records_staging ADD COLUMN IF NOT EXISTS address_match text;

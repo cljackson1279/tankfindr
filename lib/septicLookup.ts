@@ -49,6 +49,8 @@ export interface SepticContext {
   riskLevel?: 'low' | 'medium' | 'high';
   dataQuality?: 'verified_permit' | 'estimated_inventory' | 'unknown';
   qualitySource?: string;
+  /** Whether the matched record's address was confirmed as the customer's property. */
+  propertyMatch?: 'address_match' | 'nearest_other_address' | 'nearest_unverified';
 }
 
 // Florida DEP ArcGIS REST API - covers all 67 Florida counties
@@ -270,14 +272,25 @@ export async function getSepticContextForLocation(
       };
     }
 
-    // 2. Find nearest septic features within radius
-    const nearestFeatures = await findNearestFeatures(lat, lng, radiusMeters);
+    // 2. Find nearest septic features within radius, then put the customer's own
+    //    property first when the addresses can be compared
+    const matched = matchProperty(await findNearestFeatures(lat, lng, radiusMeters), address);
+    const nearestFeatures = matched.features;
 
     // 3. Classify septic vs sewer (with data quality awareness)
-    const { classification, confidence } = classifySepticStatus(
+    let { classification, confidence } = classifySepticStatus(
       nearestFeatures,
       coverageSources
     );
+    if (matched.propertyMatch === 'address_match' && classification !== 'sewer' &&
+        detectDataQuality(nearestFeatures[0].attributes || {}).quality === 'verified_permit') {
+      // A verified permit at the customer's exact house number and street
+      classification = 'septic';
+      confidence = 'high';
+    } else if (matched.propertyMatch === 'nearest_other_address' && confidence === 'high') {
+      // Nearest record clearly belongs to a different house: don't overstate
+      confidence = 'medium';
+    }
 
     // 4. Get best tank point
     const tankPoint = getBestTankPoint(nearestFeatures);
@@ -309,6 +322,7 @@ export async function getSepticContextForLocation(
       riskLevel,
       dataQuality,
       qualitySource,
+      propertyMatch: matched.propertyMatch,
     };
   } catch (error) {
     console.error('Error in getSepticContextForLocation:', error);
@@ -413,6 +427,51 @@ async function findNearestFeatures(
     console.error('Error in findNearestFeatures:', error);
     return [];
   }
+}
+
+// ---------- Property matching ----------
+// The nearest record within 200 m is not always the customer's property: in a
+// subdivision a neighbor's permit can be 20-30 m away. When both addresses have a
+// house number, prefer the record at the customer's own house number and street.
+const STREET_NOISE = new Set(['ST', 'STREET', 'RD', 'ROAD', 'DR', 'DRIVE', 'LN', 'LANE', 'AVE', 'AVENUE', 'CT', 'COURT',
+  'WAY', 'BLVD', 'CIR', 'CIRCLE', 'PL', 'TRL', 'TRAIL', 'PKWY', 'HWY', 'N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW',
+  'COUNTY', 'CR', 'FM', 'TX', 'FL', 'DE', 'VA', 'CA', 'NC', 'USA', 'US']);
+
+function houseNumber(addr?: string | null): string | null {
+  const m = (addr || '').trim().match(/^0*(\d+)\b/);
+  return m ? m[1] : null;
+}
+
+function streetTokens(addr?: string | null): Set<string> {
+  const street = (addr || '').split(',')[0].replace(/^\s*\d+\S*\s*/, '');
+  return new Set(street.toUpperCase().split(/[^A-Z0-9]+/).filter(t => t.length >= 2 && !STREET_NOISE.has(t)));
+}
+
+function sameProperty(customerAddress: string, recordAddress?: string | null): boolean | null {
+  const a = houseNumber(customerAddress), b = houseNumber(recordAddress);
+  if (!a || !b) return null; // can't tell
+  if (a !== b) return false;
+  const ta = streetTokens(customerAddress), tb = streetTokens(recordAddress);
+  if (ta.size === 0 || tb.size === 0) return true; // number matches, street unknown
+  for (const t of ta) if (tb.has(t)) return true;
+  return false;
+}
+
+/** Reorders features so the customer's own property comes first, and reports what was matched. */
+function matchProperty(features: SepticFeature[], customerAddress?: string): {
+  features: SepticFeature[];
+  propertyMatch: 'address_match' | 'nearest_other_address' | 'nearest_unverified';
+} {
+  if (!customerAddress || features.length === 0) return { features, propertyMatch: 'nearest_unverified' };
+  const idx = features.findIndex(f => sameProperty(customerAddress, f.address) === true);
+  if (idx >= 0) {
+    const reordered = [features[idx], ...features.slice(0, idx), ...features.slice(idx + 1)];
+    return { features: reordered, propertyMatch: 'address_match' };
+  }
+  return {
+    features,
+    propertyMatch: sameProperty(customerAddress, features[0].address) === false ? 'nearest_other_address' : 'nearest_unverified',
+  };
 }
 
 /**
@@ -533,6 +592,14 @@ function detectDataQuality(attrs: any): { quality: 'verified_permit' | 'estimate
     };
   }
   
+  // Pipeline-standardized records (TX, DE and future sources) carry their own label
+  if (attrs.data_quality === 'verified_permit' || attrs.data_quality === 'estimated_inventory') {
+    return {
+      quality: attrs.data_quality,
+      source: attrs.quality_source || 'County permit records'
+    };
+  }
+
   // Unknown/other data
   return {
     quality: 'unknown',
@@ -657,6 +724,26 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
   if (attrs.SYSTADDR) {
     systemInfo.systemAddress = attrs.SYSTADDR;
   }
+
+  // Pipeline-standardized fields (TX, DE and future sources). A permit record's own
+  // fields are verified facts; only mark them verified when the record says so.
+  const pipelineVerified = attrs.data_quality === 'verified_permit';
+  if (!attrs.SYSTTYPE && attrs.system_type && pipelineVerified) systemInfo.systemTypeVerified = true;
+  if (!attrs.APNO && attrs.permit_number && pipelineVerified) systemInfo.permitNumberVerified = true;
+  if (!attrs.APPRDATE && attrs.permit_date && pipelineVerified) systemInfo.permitDateVerified = true;
+  if (attrs.tank_capacity_gal && !systemInfo.capacity) {
+    systemInfo.capacity = `${Number(attrs.tank_capacity_gal).toLocaleString('en-US')}-gallon tank`;
+    systemInfo.capacityVerified = pipelineVerified;
+  }
+  if (attrs.permit_status && !systemInfo.approvalStatus) {
+    systemInfo.approvalStatus = attrs.permit_status;
+    systemInfo.approvalStatusVerified = pipelineVerified;
+  }
+  if (attrs.year_built) systemInfo.yearBuilt = attrs.year_built;
+  if (attrs.location_method) systemInfo.locationMethod = attrs.location_method;
+  if (attrs.location_confidence) systemInfo.locationConfidence = attrs.location_confidence;
+  if (attrs.address_match) systemInfo.addressMatch = attrs.address_match;
+  if (attrs.source_url) systemInfo.sourceUrl = attrs.source_url;
 
   // Calculate age estimate from any available date
   const permitDate = systemInfo.permitDate || systemInfo.installDate;

@@ -17,7 +17,7 @@ BATCH = 1000
 COLUMNS = ["source", "source_record_id", "state", "county", "county_fips", "record_type", "permit_number",
            "permit_date", "permit_status", "system_type", "tank_capacity_gal", "address", "city", "zip",
            "parcel_id", "latitude", "longitude", "location_method", "location_confidence", "data_quality",
-           "source_url", "validation_flags", "validated_at"]
+           "source_url", "validation_flags", "validated_at", "source_name", "year_built", "address_match"]
 
 
 def main():

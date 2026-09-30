@@ -206,6 +206,7 @@ def run(sid):
                 "location_method": method,
                 "location_confidence": CONFIDENCE.get(method, "low"),
                 "data_quality": mapping.get("data_quality", "verified_permit"),
+                "source_name": mapping.get("name", sid),
                 "source_url": resolve(F.get("source_url"), raw),
             }
 
