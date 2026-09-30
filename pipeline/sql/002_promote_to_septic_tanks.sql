@@ -15,6 +15,7 @@ SELECT
   s.county,
   s.state,
   s.parcel_id,
+  CASE WHEN s.address IS NULL THEN NULL ELSE  -- no street address: leave empty, never "DE 19950"
   NULLIF(
     regexp_replace(regexp_replace(
       CASE
@@ -23,7 +24,7 @@ SELECT
         ELSE concat_ws(', ', s.address, s.city, NULLIF(concat_ws(' ', s.state, s.zip), s.state))
       END,
     '\s+', ' ', 'g'), '\s+,', ',', 'g'),
-  ''),
+  '') END,
   s.geom,
   s.latitude,
   s.longitude,
