@@ -117,9 +117,17 @@ def main():
         with open(clean_path, "w") as f:
             for r in live:
                 f.write(json.dumps(r) + "\n")
-        with open(os.path.join(DATA, "held", f"{SID}.ndjson"), "w") as f:
-            for r in hold:
+        held_path = os.path.join(DATA, "held", f"{SID}.ndjson")
+        prior = {}
+        if os.path.exists(held_path):  # keep records held by earlier runs
+            for l in open(held_path):
+                x = json.loads(l); prior[x["source_record_id"]] = x
+        for r in hold:
+            prior[r["source_record_id"]] = r
+        with open(held_path, "w") as f:
+            for r in prior.values():
                 f.write(json.dumps(r) + "\n")
+        hold = list(prior.values())
     n = max(sum(stats.values()), 1)
     lines = [f"# Delaware parcel verification {'(sample)' if limit else ''}", "",
              f"Records checked: {n:,}. Point inside its own tax parcel: **{stats['parcel_verified']:,} ({100*stats['parcel_verified']/n:.1f}%)**.", "",

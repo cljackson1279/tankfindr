@@ -104,9 +104,12 @@ Flagged but kept: `county_reassigned`, `near_boundary`, `coords_recovered_from_f
 Only residential onsite-system data belongs here. Treatment plants, discharge
 permits and sewer assets are sewer infrastructure and must not be imported as septic.
 
-## Current sources (dry run 2026-09-30)
+## Current sources (final runs 2026-09-30)
 
-| Source | Input | Clean | Main rejections |
-|---|---|---|---|
-| tx_hgac_ossf (16 TX counties) | 137,075 | 135,080 | 1,703 duplicates, 261 stacked geocodes |
-| de_dnrec_septic (statewide DE) | 88,171 | 63,371 | 17,431 superseded permits, 4,703 not built/abandoned/proposed, 2,657 duplicates |
+| Source | Raw | After cleaning | Location verification | Loads | Held |
+|---|---|---|---|---|---|
+| tx_hgac_ossf (16 TX counties) | 137,075 | 135,080 | 71.3% of addresses confirmed by house number (57.9% in place, 13.4% moved to the matching parcel) | **105,966** (97.3% with a street address) | 29,114 |
+| de_dnrec_septic (statewide DE) | 88,171 | 63,371 | 96.2% of points inside their own tax parcel | **60,943** | 2,428 |
+
+Lookup simulation on 200 final Texas addresses: the old nearest-record logic picked the
+right property 37% of the time; the address-first logic 99%. See `reports/`.
