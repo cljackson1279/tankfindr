@@ -1,0 +1,102 @@
+{
+  "name": "Texas H-GAC Permitted OSSFs",
+  "state": "TX",
+  "data_quality": "verified_permit",
+  "_agent_notes": [
+    "Written from data/profile/tx_hgac_ossf.json (137,075 records, 18 layers).",
+    "No street-name field exists in any layer (only Street_Number), so address is left null; lookups use coordinates. Fill later via appraisal-district parcel join.",
+    "GeoRef_Method has 22 spellings; normalized below. 'Latitude and Longitude' / 'Coordinates' = coordinates recorded on the permit (high). Appraisal/CAD/911 matches snap to the parcel or address point (medium). Street-network / Bing / Google / OCR geocodes (medium). Missing = unknown (low).",
+    "System_Classification has 1,100+ free-text values with typos (RESTOENTIAL, RESTDENTIAL). Normalized with regex rules; rows marked DUPLICATE by the county are excluded.",
+    "Source / MERGE_SRC / Authorized_Agent hold file paths and agency names, so they are excluded from the sewer-keyword scan to avoid false positives.",
+    "Review 1: 'LIFT STATION' in System_Type is the pump on an aerobic OSSF, not sewer infrastructure (27 false positives), so it is ignored by the sewer-keyword gate. Permit numbers repeat across counties (8,455 false duplicates) and 'No record' placeholders (314) were collapsing; dedupe is now per county and location-aware."
+  ],
+  "attr_coords": [
+    "Latitude",
+    "Longitude"
+  ],
+  "ignore_text_fields": [
+    "Source",
+    "MERGE_SRC",
+    "Authorized_Agent",
+    "_layer_name"
+  ],
+  "exclude_record_types": [
+    "duplicate_marker"
+  ],
+  "fields": {
+    "source_record_id": "OBJECTID",
+    "county": "County",
+    "permit_number": "Permit_Number",
+    "permit_date": {
+      "field": "Permit_Date",
+      "date": true,
+      "formats": [
+        "%m/%d/%Y",
+        "%m/%d/%y",
+        "%Y-%m-%d"
+      ]
+    },
+    "system_type": {
+      "field": "System_Type",
+      "map": {
+        "Unknown": null,
+        "UNKNOWN": null,
+        "Residential": null
+      }
+    },
+    "record_type": {
+      "field": "System_Classification",
+      "default": "septic_unclassified",
+      "rules": [
+        [
+          "^\\s*DUPLICATE",
+          "duplicate_marker"
+        ],
+        [
+          "COMM|WAREHOUSE|OFFICE|CHURCH|STORE|RESTAURANT|SCHOOL|SHOP|RETAIL|BUSINESS|INDUSTR|RV PARK|MOTEL|HOTEL|DAYCARE|CLINIC",
+          "commercial_septic"
+        ],
+        [
+          "RES|SINGLE|MOBILE|\\bMH\\b|HOME|DUPLEX|HOUSE|DWELLING|CABIN",
+          "residential_septic"
+        ]
+      ]
+    },
+    "location_method": {
+      "field": "GeoRef_Method",
+      "default": "unknown",
+      "rules": [
+        [
+          "LATI\\w* AND LONG|^COORDINATES",
+          "gps_permit"
+        ],
+        [
+          "APPRAISAL|CAD\\b|HCAD|PARCEL|911 ADDRESS",
+          "parcel_centroid"
+        ],
+        [
+          "GEOCOD|STREET NETWORK|BING|GOOGLE|STAR\\*?MAP|OCR",
+          "address_geocode"
+        ]
+      ]
+    },
+    "address": null,
+    "city": {
+      "field": "City",
+      "title": true
+    },
+    "zip": {
+      "first_of": [
+        "Zip_Code",
+        "Zip_Plus4"
+      ]
+    },
+    "parcel_id": null,
+    "tank_capacity_gal": null,
+    "permit_status": null,
+    "source_url": null
+  },
+  "sewer_keywords_ignore": [
+    "LIFT STATION"
+  ]
+}

@@ -49,6 +49,8 @@ export interface SepticContext {
   riskLevel?: 'low' | 'medium' | 'high';
   dataQuality?: 'verified_permit' | 'estimated_inventory' | 'unknown';
   qualitySource?: string;
+  /** Whether the matched record's address was confirmed as the customer's property. */
+  propertyMatch?: 'address_match' | 'parcel_match' | 'nearest_other_address' | 'nearest_unverified';
 }
 
 // Florida DEP ArcGIS REST API - covers all 67 Florida counties
@@ -270,14 +272,46 @@ export async function getSepticContextForLocation(
       };
     }
 
-    // 2. Find nearest septic features within radius
-    const nearestFeatures = await findNearestFeatures(lat, lng, radiusMeters);
+    // 2. Find nearest septic features within radius, then put the customer's own
+    //    property first when the addresses can be compared
+    const nearby = await findNearestFeatures(lat, lng, radiusMeters);
+    const byAddress = (await findByAddress(lat, lng, address)).filter(f => sameProperty(address!, f.address) === true);
+    const seen = new Set(byAddress.map(f => f.id));
+    const matched = matchProperty([...byAddress, ...nearby.filter(f => !seen.has(f.id))], address);
+    let propertyMatch: SepticContext['propertyMatch'] = matched.propertyMatch;
+    let nearestFeatures = matched.features;
+
+    // Delaware: no street addresses on permits, so match on the customer's tax parcel.
+    if (propertyMatch !== 'address_match' && nearestFeatures.some(f => f.state === 'DE' && f.parcel_id)) {
+      const pins = await delawareParcelPins(lat, lng);
+      if (pins.length) {
+        const pool = [...nearestFeatures];
+        const known = new Set(pool.map(f => f.id));
+        for (const f of await findCandidates(lat, lng)) if (!known.has(f.id)) pool.push(f);
+        const idx = pool.findIndex(f => f.parcel_id && pins.some(p => samePin(p, f.parcel_id)));
+        if (idx >= 0) {
+          nearestFeatures = [pool[idx], ...pool.filter((_, i) => i !== idx)];
+          propertyMatch = 'parcel_match';
+        } else if (nearestFeatures[0]?.state === 'DE' && nearestFeatures[0]?.parcel_id) {
+          propertyMatch = 'nearest_other_address'; // nearest permit is on a different parcel
+        }
+      }
+    }
 
     // 3. Classify septic vs sewer (with data quality awareness)
-    const { classification, confidence } = classifySepticStatus(
+    let { classification, confidence } = classifySepticStatus(
       nearestFeatures,
       coverageSources
     );
+    if ((propertyMatch === 'address_match' || propertyMatch === 'parcel_match') &&
+        detectDataQuality(nearestFeatures[0].attributes || {}).quality === 'verified_permit') {
+      // A verified permit on the customer's own property (same house number + street, or same tax parcel)
+      classification = 'septic';
+      confidence = 'high';
+    } else if (propertyMatch === 'nearest_other_address' && confidence === 'high') {
+      // Nearest record clearly belongs to a different house: don't overstate
+      confidence = 'medium';
+    }
 
     // 4. Get best tank point
     const tankPoint = getBestTankPoint(nearestFeatures);
@@ -309,6 +343,7 @@ export async function getSepticContextForLocation(
       riskLevel,
       dataQuality,
       qualitySource,
+      propertyMatch,
     };
   } catch (error) {
     console.error('Error in getSepticContextForLocation:', error);
@@ -411,6 +446,131 @@ async function findNearestFeatures(
     return data || [];
   } catch (error) {
     console.error('Error in findNearestFeatures:', error);
+    return [];
+  }
+}
+
+// ---------- Property matching ----------
+// The nearest record within 200 m is not always the customer's property: in a
+// subdivision a neighbor's permit can be 20-30 m away. When both addresses have a
+// house number, prefer the record at the customer's own house number and street.
+const STREET_NOISE = new Set(['ST', 'STREET', 'RD', 'ROAD', 'DR', 'DRIVE', 'LN', 'LANE', 'AVE', 'AVENUE', 'CT', 'COURT',
+  'WAY', 'BLVD', 'CIR', 'CIRCLE', 'PL', 'TRL', 'TRAIL', 'PKWY', 'HWY', 'N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW',
+  'COUNTY', 'CR', 'FM', 'TX', 'FL', 'DE', 'VA', 'CA', 'NC', 'USA', 'US']);
+
+function houseNumber(addr?: string | null): string | null {
+  const m = (addr || '').trim().match(/^0*(\d+)\b/);
+  return m ? m[1] : null;
+}
+
+function streetTokens(addr?: string | null): Set<string> {
+  const street = (addr || '').split(',')[0].replace(/^\s*\d+\S*\s*/, '');
+  return new Set(street.toUpperCase().split(/[^A-Z0-9]+/).filter(t => t.length >= 2 && !STREET_NOISE.has(t)));
+}
+
+function sameProperty(customerAddress: string, recordAddress?: string | null): boolean | null {
+  const a = houseNumber(customerAddress), b = houseNumber(recordAddress);
+  if (!a || !b) return null; // can't tell
+  if (a !== b) return false;
+  const ta = streetTokens(customerAddress), tb = streetTokens(recordAddress);
+  if (ta.size === 0 || tb.size === 0) return true; // number matches, street unknown
+  for (const t of ta) if (tb.has(t)) return true;
+  return false;
+}
+
+/** Reorders features so the customer's own property comes first, and reports what was matched. */
+function matchProperty(features: SepticFeature[], customerAddress?: string): {
+  features: SepticFeature[];
+  propertyMatch: 'address_match' | 'nearest_other_address' | 'nearest_unverified';
+} {
+  if (!customerAddress || features.length === 0) return { features, propertyMatch: 'nearest_unverified' };
+  const idx = features.findIndex(f => sameProperty(customerAddress, f.address) === true);
+  if (idx >= 0) {
+    const reordered = [features[idx], ...features.slice(0, idx), ...features.slice(idx + 1)];
+    return { features: reordered, propertyMatch: 'address_match' };
+  }
+  return {
+    features,
+    propertyMatch: sameProperty(customerAddress, features[0].address) === false ? 'nearest_other_address' : 'nearest_unverified',
+  };
+}
+
+// ---------- Delaware parcel matching ----------
+// Delaware permits carry the tax parcel number but rarely a street address, so
+// the customer's property is identified by the state parcel their geocoded
+// address falls in. Parcel numbers are written differently by county; pinKeys
+// makes them comparable (mirrors pipeline/enrich_de_parcels.py).
+const DE_PARCELS_URL = 'https://enterprise.firstmap.delaware.gov/arcgis/rest/services/PlanningCadastre/DE_StateParcels/MapServer/0/query';
+
+function pinKeys(pin?: string | null): Set<string> {
+  const s = (pin || '').toUpperCase();
+  const groups = s.match(/[A-Z]+|\d+/g) || [];
+  const digits = s.match(/\d+/g) || [];
+  const keys = new Set<string>();
+  if (digits.length) {
+    keys.add('A' + (s.match(/[A-Z]+/g) || []).join('') + digits.map(g => String(parseInt(g, 10))).join(''));
+    keys.add('B' + digits.join(''));
+  }
+  if (groups.length >= 4) {
+    keys.add('C' + groups.slice(1, -1).filter(g => /^\d+$/.test(g)).join(''));
+    keys.add('C' + groups.slice(1).filter(g => /^\d+$/.test(g)).join(''));
+  }
+  return keys;
+}
+
+function samePin(a?: string | null, b?: string | null): boolean {
+  const kb = pinKeys(b);
+  for (const k of pinKeys(a)) if (kb.has(k)) return true;
+  return false;
+}
+
+async function delawareParcelPins(lat: number, lng: number): Promise<string[]> {
+  const params = new URLSearchParams({
+    geometry: `${lng},${lat}`, geometryType: 'esriGeometryPoint', inSR: '4326',
+    spatialRel: 'esriSpatialRelIntersects', outFields: 'PIN', returnGeometry: 'false', f: 'json',
+  });
+  try {
+    const res = await fetch(`${DE_PARCELS_URL}?${params}`, { signal: AbortSignal.timeout(3000) });
+    const data = await res.json();
+    return (data.features || []).map((f: any) => f.attributes?.PIN).filter(Boolean);
+  } catch {
+    return []; // service slow/unavailable: fall back to distance-based matching
+  }
+}
+
+async function findCandidates(lat: number, lng: number): Promise<SepticFeature[]> {
+  try {
+    const { data, error } = await supabase.rpc('find_septic_candidates', {
+      search_lat: lat, search_lng: lng, search_radius_meters: 600, max_rows: 50,
+    });
+    return error ? [] : data || [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Address-first search: records within ~1.5 km whose address starts with the
+ * customer's house number (migration 007). Returns [] when the address has no
+ * house number or the function isn't installed yet, so behaviour falls back to
+ * nearest-record matching.
+ */
+async function findByAddress(lat: number, lng: number, customerAddress?: string): Promise<SepticFeature[]> {
+  const num = houseNumber(customerAddress);
+  if (!num) return [];
+  try {
+    const { data, error } = await supabase.rpc('find_septic_by_address', {
+      search_lat: lat,
+      search_lng: lng,
+      house_number: num,
+      search_radius_meters: 1500,
+    });
+    if (error) {
+      if (error.code !== 'PGRST202') console.error('find_septic_by_address failed:', error.message);
+      return [];
+    }
+    return data || [];
+  } catch {
     return [];
   }
 }
@@ -533,6 +693,14 @@ function detectDataQuality(attrs: any): { quality: 'verified_permit' | 'estimate
     };
   }
   
+  // Pipeline-standardized records (TX, DE and future sources) carry their own label
+  if (attrs.data_quality === 'verified_permit' || attrs.data_quality === 'estimated_inventory') {
+    return {
+      quality: attrs.data_quality,
+      source: attrs.quality_source || 'County permit records'
+    };
+  }
+
   // Unknown/other data
   return {
     quality: 'unknown',
@@ -657,6 +825,26 @@ function extractSystemInfo(features: SepticFeature[]): SepticContext['systemInfo
   if (attrs.SYSTADDR) {
     systemInfo.systemAddress = attrs.SYSTADDR;
   }
+
+  // Pipeline-standardized fields (TX, DE and future sources). A permit record's own
+  // fields are verified facts; only mark them verified when the record says so.
+  const pipelineVerified = attrs.data_quality === 'verified_permit';
+  if (!attrs.SYSTTYPE && attrs.system_type && pipelineVerified) systemInfo.systemTypeVerified = true;
+  if (!attrs.APNO && attrs.permit_number && pipelineVerified) systemInfo.permitNumberVerified = true;
+  if (!attrs.APPRDATE && attrs.permit_date && pipelineVerified) systemInfo.permitDateVerified = true;
+  if (attrs.tank_capacity_gal && !systemInfo.capacity) {
+    systemInfo.capacity = `${Number(attrs.tank_capacity_gal).toLocaleString('en-US')}-gallon tank`;
+    systemInfo.capacityVerified = pipelineVerified;
+  }
+  if (attrs.permit_status && !systemInfo.approvalStatus) {
+    systemInfo.approvalStatus = attrs.permit_status;
+    systemInfo.approvalStatusVerified = pipelineVerified;
+  }
+  if (attrs.year_built) systemInfo.yearBuilt = attrs.year_built;
+  if (attrs.location_method) systemInfo.locationMethod = attrs.location_method;
+  if (attrs.location_confidence) systemInfo.locationConfidence = attrs.location_confidence;
+  if (attrs.address_match) systemInfo.addressMatch = attrs.address_match;
+  if (attrs.source_url) systemInfo.sourceUrl = attrs.source_url;
 
   // Calculate age estimate from any available date
   const permitDate = systemInfo.permitDate || systemInfo.installDate;

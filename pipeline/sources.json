@@ -1,0 +1,20 @@
+{
+  "tx_hgac_ossf": {
+    "name": "Texas H-GAC Permitted OSSFs (Houston-Galveston region)",
+    "state": "TX",
+    "type": "arcgis",
+    "url": "https://gis.h-gac.com/arcgis/rest/services/OSSF/Permitted_OSSFs_by_Agent/MapServer",
+    "layers": "all",
+    "license_note": "Public government GIS service published by the Houston-Galveston Area Council.",
+    "drop_fields": []
+  },
+  "de_dnrec_septic": {
+    "name": "Delaware DNREC Septic Permits (statewide)",
+    "state": "DE",
+    "type": "arcgis",
+    "url": "https://enterprise.firstmap.delaware.gov/arcgis/rest/services/Environmental/DE_DNREC_Permits/MapServer",
+    "layers": [2],
+    "license_note": "Public FirstMap service published by the Delaware Dept. of Natural Resources and Environmental Control.",
+    "drop_fields": ["OwnerName", "OwnerAddress"]
+  }
+}
