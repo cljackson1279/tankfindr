@@ -1,11 +1,10 @@
 -- Promote reviewed staging records into the live septic_tanks table.
--- Run ONE source at a time, after reading data/reports/<source>.md.
--- Wrapped in a transaction: check the counts at the end, then COMMIT or ROLLBACK.
+-- Run ONE source at a time in the Supabase SQL editor: replace SOURCE_ID below
+-- with 'de_dnrec_septic' or 'tx_hgac_ossf'. The INSERT is a single statement,
+-- so it either fully succeeds or changes nothing.
 --
---   psql "$DATABASE_URL" -v src=tx_hgac_ossf -f pipeline/sql/002_promote_to_septic_tanks.sql
---   (or paste into the Supabase SQL editor and replace :'src' with 'tx_hgac_ossf')
-
-BEGIN;
+-- Undo for a source (removes only rows this script added):
+--   DELETE FROM septic_tanks WHERE data_source = 'SOURCE_ID';
 
 INSERT INTO septic_tanks (
   source_id, county, state, parcel_id, address, geom, latitude, longitude,
@@ -16,7 +15,15 @@ SELECT
   s.county,
   s.state,
   s.parcel_id,
-  NULLIF(concat_ws(', ', s.address, s.city, NULLIF(concat_ws(' ', s.state, s.zip), s.state)), ''),
+  NULLIF(
+    regexp_replace(regexp_replace(
+      CASE
+        -- Parcel addresses (TX) already carry city, state and ZIP
+        WHEN s.address ~ ',\s*[A-Za-z]{2}\s+\d{5}' THEN s.address
+        ELSE concat_ws(', ', s.address, s.city, NULLIF(concat_ws(' ', s.state, s.zip), s.state))
+      END,
+    '\s+', ' ', 'g'), '\s+,', ',', 'g'),
+  ''),
   s.geom,
   s.latitude,
   s.longitude,
@@ -42,7 +49,7 @@ SELECT
     'validated_at', s.validated_at
   ))
 FROM septic_records_staging s
-WHERE s.source = :'src'
+WHERE s.source = 'SOURCE_ID'
 ON CONFLICT (source_id, county, state) DO UPDATE SET
   parcel_id = EXCLUDED.parcel_id,
   address = EXCLUDED.address,
@@ -50,11 +57,10 @@ ON CONFLICT (source_id, county, state) DO UPDATE SET
   latitude = EXCLUDED.latitude,
   longitude = EXCLUDED.longitude,
   data_quality = EXCLUDED.data_quality,
+  quality_source = EXCLUDED.quality_source,
   attributes = EXCLUDED.attributes,
   updated_at = now();
 
--- Sanity check before committing: should match the "Clean" number in the report.
-SELECT state, county, count(*) FROM septic_tanks WHERE data_source = :'src' GROUP BY 1, 2 ORDER BY 3 DESC;
-
--- COMMIT;   -- uncomment after checking the counts
--- ROLLBACK; -- or undo everything
+-- Check: should match the staged count (TX 105,966 / DE 60,943).
+SELECT state, count(*) AS records, count(address) AS with_address
+FROM septic_tanks WHERE data_source = 'SOURCE_ID' GROUP BY state;
