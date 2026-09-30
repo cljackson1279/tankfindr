@@ -20,6 +20,8 @@ Standard library Python only. Data files live in `pipeline/data/` (git-ignored).
 | 3. Map (agent) | Read the profile, write or revise `mappings/<source>.json` | repo |
 | 4. Validate | `python3 pipeline/validate.py [source]` | `data/clean`, `data/rejected`, `data/reports` |
 | 4b. Texas addresses | `python3 pipeline/enrich_tx_parcels.py` | rewrites `data/clean/tx_hgac_ossf.ndjson`, moves unconfirmed records to `data/held/` |
+| 4c. Delaware parcels | `python3 pipeline/enrich_de_parcels.py` | rewrites `data/clean/de_dnrec_septic.ndjson`, moves off-parcel records to `data/held/` |
+| 4d. Accuracy check | `python3 pipeline/simulate_lookups.py <source>` | `data/reports/<source>_lookup_simulation.md` |
 | 5. Agent review | Read `data/reports/<source>.md` and a sample of `data/rejected/`, fix the mapping, re-run step 4 | repo |
 | 6. Load | `python3 pipeline/load.py <source> --confirm` (needs service-role key) | `septic_records_staging` |
 | 7. Promote | `sql/002_promote_to_septic_tanks.sql` with `src=<source>` | `septic_tanks` (live) |
@@ -42,6 +44,23 @@ its appraisal-district parcel through the free TxGIO statewide parcel service:
   result on the wrong house, so they wait in `data/held/` for review.
 
 Sample of 1,500: 70.5% confirmed by house number, 77% eligible to load, 23% held.
+
+## Delaware parcels (enrich_de_parcels.py)
+
+Delaware permits carry the tax parcel number but rarely a street address, so each
+record's point is checked against the state parcel layer: it must fall inside the
+parcel with the same number (formats differ by county; `pin_keys` normalizes them).
+Sample of 300: 96% inside their own parcel. The rest are held. At lookup time the
+site matches the customer's geocoded address to their parcel the same way.
+
+## Lookup matching (lib/septicLookup.ts + supabase/migrations/007)
+
+The site previously used the nearest record within 200 m (10 results). Simulated on
+120 Texas addresses, that picked the right property 32% of the time, because Texas
+lots are large and neighbors' records are often closer than the customer's own.
+The lookup now searches by house number within 1.5 km and confirms the street
+(Texas and any source with addresses), or by tax parcel (Delaware), before falling
+back to distance: 97% right property in the same simulation.
 
 ## Where the agent fits
 
