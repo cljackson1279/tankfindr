@@ -2,15 +2,16 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { StructuredData } from '@/components/StructuredData'
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Septic Tank Locator | Find Your Septic Tank in Seconds | 2.5M+ Records',
+    default: `Septic Tank Locator | Find Your Septic Tank in Seconds | ${TOTAL_RECORDS_DISPLAY} Records`,
     template: '%s | TankFindr',
   },
-  description: 'Find your septic tank instantly with GPS-accurate locations from government permit records. Access 2.5M+ septic system records across 20 states with transparent data quality labels. Free coverage check. Where is my septic tank? Find out now.',
+  description: `Find your septic tank with GPS locations from government permit records. ${COVERAGE_CLAIM_LONG}, with every result labeled by data quality. Free coverage check.`,
   keywords: [
     // Primary keywords (high volume, high intent)
     'septic tank locator',
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
   // homepage. Per-page canonicals are set in each route's metadata.
   openGraph: {
     title: 'Septic Tank Locator | Find Your Septic Tank in Seconds',
-    description: '🎯 Find your septic tank instantly with GPS coordinates from government permit records. 2.5M+ records across 20 states. Free coverage check.',
+    description: `Find your septic tank with GPS coordinates from government permit records. ${COVERAGE_CLAIM_LONG}. Free coverage check.`,
     type: 'website',
     url: 'https://tankfindr.com',
     siteName: 'TankFindr - Septic Tank Locator',
@@ -67,7 +68,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Find Your Septic Tank in Seconds | TankFindr',
-    description: '🎯 GPS-accurate septic tank locations from government records. 2.5M+ records across 20 states.',
+    description: `Septic tank locations from government records. ${COVERAGE_CLAIM_LONG}.`,
     // twitter:image comes from app/twitter-image.png via the file convention.
     creator: '@tankfindr'
   },

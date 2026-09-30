@@ -1,288 +1,164 @@
-'use client'
+// Coverage page. All numbers come from lib/coverage.ts (audited against the
+// production septic_tanks table). Do not hardcode states or counts here.
 
-import { CheckCircle, MapPin } from 'lucide-react'
-import { Card } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
+import { SiteHeader } from '@/components/SiteHeader'
+import { SiteFooter } from '@/components/SiteFooter'
+import {
+  FEATURED_COVERAGE,
+  PARTIAL_COVERAGE,
+  FEATURED_STATE_COUNT,
+  TOTAL_STATE_COUNT,
+  TOTAL_RECORDS_DISPLAY,
+  COUNTY_DATASET_COUNT,
+  type CoverageRow,
+  type DataQuality,
+} from '@/lib/coverage'
 
-const coverageData = [
-  {
-    state: 'Florida',
-    counties: 'All 67 counties',
-    records: '2,081,191',
-    quality: 'Mixed: Verified + Estimated',
-    notes: 'Miami-Dade: Verified DOH permits. Statewide: 2009-2015 estimated inventory. All clearly labeled.',
-  },
-  {
-    state: 'Virginia',
-    counties: 'Fairfax',
-    records: '44,548',
-    quality: 'High',
-    notes: 'Verified septic permits with GPS coordinates',
-  },
-  {
-    state: 'California',
-    counties: 'Sonoma',
-    records: '33,631',
-    quality: 'High',
-    notes: 'Verified septic permits with GPS coordinates',
-  },
-  {
-    state: 'North Carolina',
-    counties: 'Chatham',
-    records: '4,849',
-    quality: 'High',
-    notes: 'Septic system locations with GPS coordinates',
-  },
-  {
-    state: 'New Mexico',
-    counties: 'Statewide',
-    records: '60,642',
-    quality: 'Medium',
-    notes: 'Liquid waste management facilities',
-  },
-  {
-    state: 'Ohio',
-    counties: 'Limited',
-    records: '1',
-    quality: 'Medium',
-    notes: 'Limited coverage',
-  },
-  {
-    state: 'Iowa',
-    counties: 'Statewide',
-    records: '11,078',
-    quality: 'Medium',
-    notes: 'Septic system locations',
-  },
-  {
-    state: 'Utah',
-    counties: 'Weber, Central Utah (multi-county)',
-    records: '7,364',
-    quality: 'High',
-    notes: 'Onsite wastewater systems',
-  },
-  {
-    state: 'South Dakota',
-    counties: 'Minnehaha',
-    records: '926',
-    quality: 'High',
-    notes: 'Septic system locations',
-  },
-  {
-    state: 'Montana',
-    counties: 'Flathead',
-    records: '6',
-    quality: 'Medium',
-    notes: 'Limited coverage',
-  },
-  {
-    state: 'Rhode Island',
-    counties: 'Statewide',
-    records: '805',
-    quality: 'High',
-    notes: 'OWTS permit locations with GPS coordinates',
-  },
-  {
-    state: 'Maryland',
-    counties: 'Garrett',
-    records: '11,148',
-    quality: 'Medium',
-    notes: 'Septic application parcels',
-  },
-  {
-    state: 'Vermont',
-    counties: 'Chittenden Area',
-    records: '38,775',
-    quality: 'High',
-    notes: 'OWTS permit locations',
-  },
-]
+const QUALITY_TONE: Record<DataQuality, string> = {
+  High: 'bg-emerald-50 text-emerald-800 ring-emerald-600/20',
+  Mixed: 'bg-sky-50 text-sky-800 ring-sky-600/20',
+  Medium: 'bg-amber-50 text-amber-800 ring-amber-600/20',
+}
+
+function CoverageTable({ rows }: { rows: CoverageRow[] }) {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table className="w-full min-w-[720px] text-left text-sm">
+        <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+          <tr>
+            <th scope="col" className="px-5 py-3 font-medium">State</th>
+            <th scope="col" className="px-5 py-3 font-medium">Coverage area</th>
+            <th scope="col" className="px-5 py-3 text-right font-medium">Records</th>
+            <th scope="col" className="px-5 py-3 font-medium">Quality</th>
+            <th scope="col" className="px-5 py-3 font-medium">Source notes</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100">
+          {rows.map((r) => (
+            <tr key={r.abbr} className="align-top hover:bg-slate-50/70">
+              <td className="whitespace-nowrap px-5 py-4 font-medium text-slate-900">
+                {r.slug ? (
+                  <Link href={`/septic-records/${r.slug}`} className="hover:text-emerald-800 hover:underline">
+                    {r.state}
+                  </Link>
+                ) : (
+                  r.state
+                )}
+              </td>
+              <td className="px-5 py-4 text-slate-700">{r.areas}</td>
+              <td className="whitespace-nowrap px-5 py-4 text-right font-mono tabular-nums text-slate-900">
+                {r.records.toLocaleString('en-US')}
+              </td>
+              <td className="px-5 py-4">
+                <span className={`inline-flex rounded px-2 py-0.5 text-xs font-semibold ring-1 ring-inset ${QUALITY_TONE[r.quality]}`}>
+                  {r.quality}
+                </span>
+              </td>
+              <td className="px-5 py-4 text-slate-600">{r.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
 export default function CoveragePage() {
-  const totalRecords = coverageData.reduce(
-    (sum, item) => sum + parseInt(item.records.replace(/,/g, '')),
-    0
-  )
-
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Coverage Areas
-          </h1>
-          <p className="text-xl text-gray-600 mb-6">
-            Real county septic records across {coverageData.length} states
+    <div className="min-h-screen bg-white text-slate-900 antialiased">
+      <SiteHeader />
+
+      <section className="border-b border-slate-200">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-emerald-700">Coverage</p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">Where our septic records come from</h1>
+          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+            Every record is sourced from a county health department, state environmental agency or
+            state septic inventory. Coverage depth varies a lot by area, so we list it exactly.
           </p>
-          <div className="inline-flex items-center gap-6 bg-white rounded-lg shadow-sm px-8 py-4">
-            <div>
-              <p className="text-3xl font-bold text-emerald-600">
-                {totalRecords.toLocaleString()}+
-              </p>
-              <p className="text-sm text-gray-600">Septic Tanks Mapped</p>
-            </div>
-            <div className="w-px h-12 bg-gray-200"></div>
-            <div>
-              <p className="text-3xl font-bold text-emerald-600">
-                {coverageData.length}
-              </p>
-              <p className="text-sm text-gray-600">States Covered</p>
-            </div>
-            <div className="w-px h-12 bg-gray-200"></div>
-            <div>
-              <p className="text-3xl font-bold text-emerald-600">
-                85+
-              </p>
-              <p className="text-sm text-gray-600">Counties</p>
-            </div>
-          </div>
+          <dl className="mt-10 grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-4">
+            {[
+              [TOTAL_RECORDS_DISPLAY, 'septic records'],
+              [String(FEATURED_STATE_COUNT), 'states in depth'],
+              [String(TOTAL_STATE_COUNT), 'states with any data'],
+              [String(COUNTY_DATASET_COUNT), 'county & state datasets'],
+            ].map(([v, l]) => (
+              <div key={l}>
+                <dd className="text-3xl font-semibold tracking-tight">{v}</dd>
+                <dt className="mt-1 text-sm text-slate-500">{l}</dt>
+              </div>
+            ))}
+          </dl>
         </div>
+      </section>
 
-        {/* Coverage Table */}
-        <Card className="p-6 mb-8">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    State
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Counties
-                  </th>
-                  <th className="text-right py-3 px-4 font-semibold text-gray-900">
-                    Records
-                  </th>
-                  <th className="text-center py-3 px-4 font-semibold text-gray-900">
-                    Quality
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-gray-900">
-                    Notes
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {coverageData.map((item, index) => (
-                  <tr
-                    key={index}
-                    className="border-b border-gray-100 hover:bg-gray-50"
-                  >
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-emerald-600" />
-                        <span className="font-semibold">{item.state}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-gray-700">{item.counties}</td>
-                    <td className="py-3 px-4 text-right font-mono text-gray-900">
-                      {item.records}
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <span
-                        className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-                          item.quality === 'High'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}
-                      >
-                        {item.quality}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
-                      {item.notes}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-
-        {/* Quality Explanation */}
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          <Card className="p-6">
-            <h3 className="font-bold text-lg text-gray-900 mb-3">
-              High Quality Data
-            </h3>
-            <p className="text-gray-700 mb-3">
-              GPS-surveyed tank locations from county permit records. Accuracy within 5-15 meters.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                <span>Exact GPS coordinates from field surveys</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                <span>System type and permit information</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
-                <span>Installation dates and age estimates</span>
-              </li>
-            </ul>
-          </Card>
-
-          <Card className="p-6">
-            <h3 className="font-bold text-lg text-gray-900 mb-3">
-              Medium Quality Data
-            </h3>
-            <p className="text-gray-700 mb-3">
-              Parcel-based or area-based septic classifications. Accuracy within 30-50 meters.
-            </p>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Parcel centroid or address-based locations</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Septic classification from county records</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
-                <span>Useful for initial property assessment</span>
-              </li>
-            </ul>
-          </Card>
+      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8">
+        <h2 className="text-2xl font-semibold tracking-tight">In-depth coverage</h2>
+        <p className="mt-2 max-w-2xl text-slate-600">
+          States with substantial record sets. Each has its own state page with regulations and
+          record-lookup guidance.
+        </p>
+        <div className="mt-6">
+          <CoverageTable rows={FEATURED_COVERAGE} />
         </div>
+      </section>
 
-        {/* Request Coverage */}
-        <Card className="p-8 text-center bg-gradient-to-br from-emerald-50 to-white">
-          <MapPin className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
-            Don't See Your County?
-          </h2>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            We're adding new counties every week! Request your county and we'll prioritize it.
-            Most counties can be added within 1-2 weeks.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="mailto:support@tankfindr.com?subject=County Coverage Request">
-              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                Request Your County
-              </Button>
-            </Link>
-            <Link href="/pricing-pro">
-              <Button variant="outline">
-                View Pricing
-              </Button>
+      <section className="mx-auto max-w-6xl px-5 pb-14 sm:px-8">
+        <h2 className="text-2xl font-semibold tracking-tight">Partial coverage</h2>
+        <p className="mt-2 max-w-2xl text-slate-600">
+          Real records, but limited in size or area. A lookup here may return septic/sewer status
+          without a precise tank location.
+        </p>
+        <div className="mt-6">
+          <CoverageTable rows={PARTIAL_COVERAGE} />
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-slate-50/60">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
+          {[
+            ['High', 'Permit records with GPS points recorded by the county — typically the most precise locations available.'],
+            ['Mixed', 'A blend of verified permits and estimated inventory. Each result in your report says which one it is.'],
+            ['Medium', 'Parcel- or area-level locations. Reliable for septic vs. sewer; confirm the exact tank spot before digging.'],
+          ].map(([q, body]) => (
+            <div key={q}>
+              <span className={`inline-flex rounded px-2 py-0.5 text-xs font-semibold ring-1 ring-inset ${QUALITY_TONE[q as DataQuality]}`}>
+                {q}
+              </span>
+              <p className="mt-3 leading-relaxed text-slate-600">{body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <div className="flex flex-col justify-between gap-6 rounded-xl border border-slate-200 p-8 md:flex-row md:items-center">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">Don&apos;t see your county?</h2>
+            <p className="mt-2 max-w-xl text-slate-600">
+              Tell us where you need records. Requests directly decide which counties we add next.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <a
+              href="mailto:support@tankfindr.com?subject=County%20Coverage%20Request"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-emerald-700 px-5 text-sm font-medium text-white hover:bg-emerald-800"
+            >
+              Request your county <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
+            <Link
+              href="/pricing-pro"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-slate-300 px-5 text-sm font-medium text-slate-800 hover:bg-slate-50"
+            >
+              View pricing
             </Link>
           </div>
-        </Card>
-
-        {/* Coming Soon */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-600 mb-2">
-            <strong>Coming Soon:</strong> Washington, Oregon, Colorado, Nebraska, and 20+ more states
-          </p>
-          <p className="text-sm text-gray-500">
-            We're actively expanding coverage nationwide. Check back soon!
-          </p>
         </div>
-      </div>
+      </section>
+
+      <SiteFooter />
     </div>
   )
 }

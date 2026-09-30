@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { Loader2, MapPin, FileText, Home, Calendar, Droplets, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
 
 interface ReportData {
   address: string
@@ -180,7 +181,7 @@ function ProReportContent() {
             <div>
               <h3 className="font-bold text-blue-900 mb-2">📍 Tank Location Data</h3>
               <p className="text-sm text-blue-800 mb-2">
-                This report shows the GPS coordinates of the septic tank based on county permit records and our database of 2.5+ million septic systems across 20 states.
+                This report shows the GPS coordinates of the septic tank based on county permit records and our database of {TOTAL_RECORDS_DISPLAY} septic systems with in-depth coverage in {FEATURED_STATE_COUNT} states.
               </p>
               <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
                 <li>Coordinates are from official county permit records where available</li>

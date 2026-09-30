@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Calendar, Clock, ArrowRight } from 'lucide-react'
 import { SiteHeader } from '@/components/SiteHeader'
+import { TOTAL_RECORDS_DISPLAY, FEATURED_STATE_COUNT, COVERAGE_CLAIM_LONG } from '@/lib/coverage'
 
 export const metadata: Metadata = {
   title: 'Septic Tank Blog | Expert Guides & Tips',
@@ -146,7 +147,7 @@ export default function BlogPage() {
             Ready to Find Your Septic Tank?
           </h2>
           <p className="text-xl text-blue-100 mb-6">
-            Access 2.5M+ septic tank records instantly
+            Access {TOTAL_RECORDS_DISPLAY} septic tank records
           </p>
           <Link href="/pro">
             <Button size="lg" variant="secondary">
