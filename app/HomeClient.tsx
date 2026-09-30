@@ -133,7 +133,10 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-4 text-sm text-slate-500">
-              $19 per report · Instant access · No account required
+              $19 per report · Instant access · No account required ·{' '}
+              <a href="#plans" className="font-medium text-slate-700 underline underline-offset-2 hover:text-emerald-800">
+                Plans for inspectors &amp; septic pros
+              </a>
             </p>
           </div>
 
@@ -215,7 +218,7 @@ export default function HomePage() {
       </section>
 
       {/* ─── How it works ─────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
+      <section className="mx-auto max-w-6xl px-5 pt-16 pb-14 sm:px-8">
         <h2 className="max-w-xl text-3xl font-semibold tracking-tight">
           Where is my septic tank? Answered from the public record.
         </h2>
@@ -228,6 +231,48 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      {/* ─── Plans ────────────────────────────────────────────── */}
+      <section id="plans" className="scroll-mt-20 border-t border-slate-200">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+          <h2 className="text-3xl font-semibold tracking-tight">Pick the plan that fits the job.</h2>
+          <div className="mt-12 grid overflow-hidden rounded-xl border border-slate-200 md:grid-cols-3 md:divide-x md:divide-slate-200">
+            {PLANS.map((p) => (
+              <div key={p.name} className={`flex flex-col border-b border-slate-200 p-8 last:border-b-0 md:border-b-0 ${p.featured ? 'bg-slate-50/70' : 'bg-white'}`}>
+                <p className="text-sm text-slate-500">{p.audience}</p>
+                <h3 className="mt-1 text-xl font-semibold">{p.name}</h3>
+                <p className="mt-6 flex items-baseline gap-2">
+                  <span className="text-4xl font-semibold tracking-tight">{p.price}</span>
+                  <span className="text-sm text-slate-500">{p.cadence}</span>
+                </p>
+                <p className="mt-4 leading-relaxed text-slate-600">{p.body}</p>
+                <ul className="mt-6 space-y-2 text-sm text-slate-700">
+                  {p.points.map((pt) => (
+                    <li key={pt} className="flex gap-3">
+                      <span className="mt-2 h-1 w-3 shrink-0 bg-emerald-700" aria-hidden />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto pt-8">
+                  <Link
+                    href={p.href}
+                    className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-md px-5 text-sm font-medium transition-colors ${
+                      p.featured
+                        ? 'bg-emerald-700 text-white hover:bg-emerald-800'
+                        : 'border border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
+                    }`}
+                  >
+                    {p.cta}
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
+                  <p className="mt-3 text-center text-xs text-slate-500">{p.note}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ─── Data quality ─────────────────────────────────────── */}
@@ -269,48 +314,6 @@ export default function HomePage() {
           </div>
           <div>
             <SewerOrSepticWidget />
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Plans ────────────────────────────────────────────── */}
-      <section className="border-t border-slate-200">
-        <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-          <h2 className="text-3xl font-semibold tracking-tight">Pick the plan that fits the job.</h2>
-          <div className="mt-12 grid overflow-hidden rounded-xl border border-slate-200 md:grid-cols-3 md:divide-x md:divide-slate-200">
-            {PLANS.map((p) => (
-              <div key={p.name} className={`flex flex-col border-b border-slate-200 p-8 last:border-b-0 md:border-b-0 ${p.featured ? 'bg-slate-50/70' : 'bg-white'}`}>
-                <p className="text-sm text-slate-500">{p.audience}</p>
-                <h3 className="mt-1 text-xl font-semibold">{p.name}</h3>
-                <p className="mt-6 flex items-baseline gap-2">
-                  <span className="text-4xl font-semibold tracking-tight">{p.price}</span>
-                  <span className="text-sm text-slate-500">{p.cadence}</span>
-                </p>
-                <p className="mt-4 leading-relaxed text-slate-600">{p.body}</p>
-                <ul className="mt-6 space-y-2 text-sm text-slate-700">
-                  {p.points.map((pt) => (
-                    <li key={pt} className="flex gap-3">
-                      <span className="mt-2 h-1 w-3 shrink-0 bg-emerald-700" aria-hidden />
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-auto pt-8">
-                  <Link
-                    href={p.href}
-                    className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-md px-5 text-sm font-medium transition-colors ${
-                      p.featured
-                        ? 'bg-emerald-700 text-white hover:bg-emerald-800'
-                        : 'border border-slate-300 text-slate-800 hover:border-slate-400 hover:bg-slate-50'
-                    }`}
-                  >
-                    {p.cta}
-                    <ArrowRight className="h-4 w-4" aria-hidden />
-                  </Link>
-                  <p className="mt-3 text-center text-xs text-slate-500">{p.note}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
