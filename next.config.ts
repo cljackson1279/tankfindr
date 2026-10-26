@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
       { source: '/florida-septic-tank-locator', destination: '/septic-records/florida', permanent: true },
       { source: '/california-septic-tank-locator', destination: '/septic-records/california', permanent: true },
       { source: '/virginia-septic-tank-locator', destination: '/septic-records/virginia', permanent: true },
+      // Removed pages Google still has indexed (Search Console 404s, Oct 2026).
+      // /pricing was replaced by /pricing-pro; /protected was the Supabase starter page.
+      { source: '/pricing', destination: '/pricing-pro', permanent: true },
+      { source: '/protected', destination: '/account', permanent: true },
     ];
   },
 };
